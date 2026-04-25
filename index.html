@@ -1,0 +1,2259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meal Prep Planner — Sheng</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: #F4F5F0;
+  color: #1A1A1A;
+  min-height: 100vh;
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+.app { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+
+/* ── Header ── */
+.header {
+  background: #fff; border-bottom: 1px solid #E4E7E0;
+  padding: 11px 20px; display: flex; align-items: center;
+  justify-content: space-between; flex-shrink: 0; gap: 12px;
+}
+.header-brand { display: flex; align-items: center; gap: 8px; }
+.header-logo { font-size: 20px; }
+.header-title { font-size: 15px; font-weight: 700; }
+.header-sub { font-size: 11px; color: #9CA899; }
+.week-nav { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.week-label { font-size: 13px; font-weight: 600; color: #374139; min-width: 185px; text-align: center; }
+.nav-btn {
+  background: #F4F5F0; border: 1px solid #E4E7E0; border-radius: 6px;
+  width: 28px; height: 28px; cursor: pointer; font-size: 14px; color: #374139;
+  display: flex; align-items: center; justify-content: center; transition: all 0.13s;
+}
+.nav-btn:hover { background: #E4E7E0; }
+.today-btn {
+  font-family: inherit; background: #F4F5F0; border: 1px solid #E4E7E0; border-radius: 6px;
+  padding: 4px 10px; font-size: 12px; font-weight: 500; color: #374139; cursor: pointer;
+}
+.today-btn:hover { background: #E4E7E0; }
+.header-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.goals-bar { display: flex; gap: 8px; }
+.goal-pill {
+  display: flex; align-items: center; gap: 4px; background: #F4F5F0; border: 1px solid #E4E7E0;
+  padding: 3px 9px; border-radius: 20px; font-size: 11px; font-weight: 500; color: #374139;
+}
+.goal-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+/* Brand colours — used consistently everywhere */
+.dot-kcal    { background: #D4714A; }
+.dot-protein { background: #6B47A8; }
+.dot-fiber   { background: #2D8F5C; }
+
+.tracker-btn {
+  display: flex; align-items: center; gap: 5px; font-family: inherit; font-size: 12px;
+  font-weight: 600; cursor: pointer; padding: 5px 12px; border-radius: 7px; border: 1px solid;
+  transition: all 0.13s; white-space: nowrap;
+}
+.tracker-btn-unlinked { background: #fff; color: #374139; border-color: #C4CABA; }
+.tracker-btn-unlinked:hover { background: #F4F5F0; }
+.tracker-btn-linked { background: #EBF5EF; color: #2D8F5C; border-color: #A3D4B8; }
+.tracker-btn-linked:hover { background: #D8EDDF; }
+.tracker-btn-pending { background: #FEF3DC; color: #C9920A; border-color: #F0D490; }
+.tracker-btn-pending:hover { background: #FDE8B4; }
+
+/* ── Main / Grid ── */
+.main { flex: 1; overflow: hidden; }
+.planner-area { height: 100%; overflow: auto; padding: 16px 20px 8px; }
+
+.grid-wrapper {
+  display: grid; grid-template-columns: 82px repeat(7, 1fr);
+  border: 1px solid #E4E7E0; border-radius: 12px; overflow: hidden;
+  background: #E4E7E0; gap: 1px; min-width: 860px;
+}
+.col-label { background: #F4F5F0; }
+.day-hdr { background: #FAFBF8; padding: 9px 6px; text-align: center; }
+.day-hdr.is-today { background: #EBF5EF; }
+.day-hdr-name { font-size: 11px; font-weight: 700; color: #374139; letter-spacing: 0.04em; }
+.day-hdr-date { font-size: 11px; color: #9CA899; margin-top: 1px; }
+.day-hdr.is-today .day-hdr-name { color: #2D8F5C; }
+.day-hdr.is-today .day-hdr-date { color: #5BAC80; }
+.row-lbl { background: #FAFBF8; display: flex; align-items: center; padding: 0 10px; }
+.row-lbl-text { font-size: 10px; font-weight: 700; color: #9CA899; text-transform: uppercase; letter-spacing: 0.07em; }
+.meal-cell { background: #fff; padding: 7px; min-height: 85px; }
+.meal-cell.is-selected { background: #F0FBF4; outline: 2px solid #2D8F5C; outline-offset: -2px; }
+
+/* Plan entries inside cells */
+.meal-entry {
+  display: flex; align-items: flex-start; gap: 4px;
+  background: #F0FBF4; border: 1px solid #C3E6D4; border-radius: 5px;
+  padding: 4px 6px; margin-bottom: 3px;
+}
+.meal-entry-name { flex: 1; font-size: 11px; font-weight: 500; color: #1A4A2A; line-height: 1.3; }
+.meal-entry-right { display: flex; align-items: center; gap: 3px; flex-shrink: 0; }
+/* Kcal + serving badge — clickable to edit serving */
+.meal-entry-kcal {
+  font-size: 10px; color: #5BAC80; font-weight: 600;
+  cursor: pointer; border-radius: 3px; padding: 1px 3px;
+  transition: background 0.13s;
+}
+.meal-entry-kcal:hover { background: #C3E6D4; color: #1A4A2A; }
+.serving-badge {
+  font-size: 9px; background: #2D8F5C; color: #fff; border-radius: 3px;
+  padding: 1px 4px; font-weight: 700;
+}
+.meal-rm-btn {
+  background: none; border: none; cursor: pointer; color: #A8C8B8; font-size: 13px;
+  line-height: 1; padding: 0; flex-shrink: 0; transition: color 0.13s;
+}
+.meal-rm-btn:hover { color: #C0392B; }
+
+.add-cell-btn {
+  display: flex; align-items: center; justify-content: center; gap: 3px;
+  width: 100%; padding: 4px; border: 1px dashed #D4D9CE; border-radius: 5px;
+  background: none; cursor: pointer; color: #B0B8A8; font-size: 10px; font-weight: 600;
+  font-family: inherit; transition: all 0.13s; margin-top: 2px;
+}
+.add-cell-btn:hover { border-color: #2D8F5C; color: #2D8F5C; background: #F0FBF4; }
+
+/* ── Totals row ── */
+.totals-lbl { background: #F4F5F0; display: flex; align-items: flex-start; padding: 8px 10px; }
+.totals-lbl-text { font-size: 10px; font-weight: 700; color: #9CA899; text-transform: uppercase; letter-spacing: 0.07em; }
+.totals-cell { background: #FAFBF8; padding: 8px 9px; }
+.totals-empty { color: #D4D9CE; font-size: 11px; text-align: center; padding: 16px 0; }
+
+/* Kcal headline — colour depends on status */
+.total-kcal-row { display: flex; align-items: baseline; gap: 4px; margin-bottom: 7px; flex-wrap: wrap; }
+.total-kcal-num { font-size: 18px; font-weight: 700; line-height: 1; }
+.total-kcal-unit { font-size: 10px; color: #9CA899; font-weight: 500; }
+.total-kcal-badge {
+  font-size: 10px; font-weight: 700; padding: 1px 5px; border-radius: 10px; white-space: nowrap;
+}
+/* kcal status: on-track=green, under=amber, over=red */
+.kcal-perfect .total-kcal-num   { color: #2D8F5C; }
+.kcal-perfect .total-kcal-badge { background: #D8EDDF; color: #2D8F5C; }
+.kcal-under   .total-kcal-num   { color: #C9920A; }
+.kcal-under   .total-kcal-badge { background: #FEF3DC; color: #C9920A; }
+.kcal-over    .total-kcal-num   { color: #C0392B; }
+.kcal-over    .total-kcal-badge { background: #FDECEA; color: #C0392B; }
+.kcal-low     .total-kcal-num   { color: #C9920A; }
+.kcal-low     .total-kcal-badge { background: #FEF3DC; color: #C9920A; }
+
+/* Macro bars — protein always purple, fiber always green (matching header dots) */
+.macro-bar-row { display: flex; align-items: center; gap: 4px; margin-bottom: 4px; }
+.bar-track { flex: 1; height: 5px; border-radius: 3px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 3px; transition: width 0.4s ease; }
+
+/* Protein bar: always brand purple */
+.bar-track-protein { background: rgba(107,71,168,0.15); }
+.fill-protein { background: #6B47A8; }
+
+/* Fiber bar: always brand green */
+.bar-track-fiber { background: rgba(45,143,92,0.15); }
+.fill-fiber { background: #2D8F5C; }
+
+/* Value text colour changes by status (protein/fiber: min-based) */
+.macro-val { font-size: 10px; font-weight: 600; min-width: 26px; text-align: right; }
+.val-met   { color: #2D8F5C; }   /* at or over goal */
+.val-close { color: #C9920A; }   /* within 25% of goal */
+.val-low   { color: #C0392B; }   /* well under */
+
+/* Status icon after value */
+.status-icon { font-size: 9px; flex-shrink: 0; width: 10px; }
+
+/* ── Footer ── */
+.footer {
+  background: #fff; border-top: 1px solid #E4E7E0;
+  padding: 9px 20px; display: flex; align-items: center;
+  justify-content: space-between; flex-shrink: 0; gap: 12px;
+}
+.week-summary { display: flex; align-items: center; gap: 16px; }
+.week-summary-label { font-size: 11px; font-weight: 700; color: #9CA899; text-transform: uppercase; letter-spacing: 0.06em; }
+.week-divider { width: 1px; height: 28px; background: #E4E7E0; }
+.week-metric { text-align: center; }
+.week-metric-val { font-size: 18px; font-weight: 700; line-height: 1; }
+.week-metric-lbl { font-size: 10px; color: #9CA899; margin-top: 1px; }
+/* Footer week totals use brand colours */
+.wm-kcal    { color: #D4714A; }
+.wm-protein { color: #6B47A8; }
+.wm-fiber   { color: #2D8F5C; }
+.wm-days    { color: #374139; }
+
+.footer-actions { display: flex; gap: 7px; }
+.action-btn {
+  display: flex; align-items: center; gap: 5px; padding: 6px 12px; border-radius: 7px;
+  font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit; border: 1px solid; transition: all 0.13s;
+}
+.action-btn-ghost  { background: #fff; color: #374139; border-color: #E4E7E0; }
+.action-btn-ghost:hover { background: #F4F5F0; }
+.action-btn-danger { background: #fff; color: #C0392B; border-color: #E4E7E0; }
+.action-btn-danger:hover { background: #FEF2F0; border-color: #F0B9B2; }
+
+/* ── Picker Panel ── */
+.picker-backdrop {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.15); z-index: 100;
+  opacity: 0; pointer-events: none; transition: opacity 0.18s;
+}
+.picker-backdrop.open { opacity: 1; pointer-events: all; }
+.picker-panel {
+  position: fixed; top: 0; right: 0; bottom: 0; width: 340px;
+  background: #fff; border-left: 1px solid #E4E7E0; box-shadow: -8px 0 32px rgba(0,0,0,0.08);
+  z-index: 101; display: flex; flex-direction: column;
+  transform: translateX(100%); transition: transform 0.2s cubic-bezier(0.4,0,0.2,1);
+}
+.picker-panel.open { transform: translateX(0); }
+.picker-hdr {
+  padding: 14px 16px; border-bottom: 1px solid #E4E7E0;
+  display: flex; align-items: flex-start; justify-content: space-between;
+}
+.picker-hdr-info h3 { font-size: 14px; font-weight: 700; }
+.picker-hdr-info p  { font-size: 11px; color: #8A9180; margin-top: 1px; }
+.picker-close-btn {
+  background: #F4F5F0; border: none; border-radius: 6px; width: 28px; height: 28px;
+  font-size: 17px; cursor: pointer; color: #374139; display: flex; align-items: center; justify-content: center;
+}
+.picker-close-btn:hover { background: #E4E7E0; }
+.picker-search { padding: 10px 14px; border-bottom: 1px solid #E4E7E0; }
+.picker-search input {
+  width: 100%; padding: 7px 11px; border: 1px solid #E4E7E0; border-radius: 7px;
+  font-size: 13px; font-family: inherit; outline: none; background: #FAFBF8; transition: border-color 0.13s;
+}
+.picker-search input:focus { border-color: #2D8F5C; background: #fff; }
+.picker-list { flex: 1; overflow-y: auto; padding: 6px; }
+.picker-section { margin-bottom: 2px; }
+.picker-section-hdr {
+  font-size: 10px; font-weight: 700; color: #9CA899; text-transform: uppercase;
+  letter-spacing: 0.08em; padding: 8px 8px 3px;
+}
+.picker-section-hdr.from-tracker { color: #2D8F5C; }
+
+/* Picker item with serving stepper */
+.picker-item {
+  padding: 8px 9px; border-radius: 7px; border: 1px solid transparent;
+  transition: all 0.12s; margin-bottom: 3px; cursor: default;
+}
+.picker-item:hover { background: #F8FDF9; border-color: #D8EDDF; }
+.picker-item.already-added { background: #F0FBF4; border-color: #C3E6D4; }
+.picker-item-top { display: flex; align-items: center; gap: 6px; }
+.picker-item-name { flex: 1; font-size: 12px; font-weight: 600; color: #1A1A1A; }
+/* Serving stepper */
+.serving-ctrl { display: flex; align-items: center; gap: 3px; flex-shrink: 0; }
+.serving-step-btn {
+  background: #F4F5F0; border: 1px solid #E4E7E0; border-radius: 4px;
+  width: 20px; height: 20px; font-size: 13px; cursor: pointer; color: #374139;
+  display: flex; align-items: center; justify-content: center; line-height: 1;
+  transition: background 0.1s; flex-shrink: 0;
+}
+.serving-step-btn:hover { background: #E4E7E0; }
+.serving-val {
+  font-size: 11px; font-weight: 700; color: #2D8F5C; min-width: 28px; text-align: center;
+}
+.picker-add-btn {
+  background: #2D8F5C; color: #fff; border: none; border-radius: 6px;
+  width: 24px; height: 24px; font-size: 16px; cursor: pointer; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; transition: background 0.13s;
+}
+.picker-add-btn:hover { background: #247A4E; }
+.picker-item-macros { font-size: 10px; color: #8A9180; margin-top: 3px; }
+.picker-item-note   { font-size: 10px; color: #B0B8A8; margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.picker-footer { padding: 10px 14px; border-top: 1px solid #E4E7E0; }
+.picker-add-custom-btn {
+  width: 100%; padding: 8px; background: #F4F5F0; border: 1px dashed #C4CAB A; border-radius: 7px;
+  font-size: 12px; font-weight: 600; color: #6A7A60; cursor: pointer; font-family: inherit; transition: all 0.13s;
+}
+.picker-add-custom-btn:hover { background: #EBF5EF; border-color: #2D8F5C; color: #2D8F5C; }
+.picker-no-results { text-align: center; padding: 28px 14px; color: #9CA899; font-size: 12px; }
+
+/* ── Serving edit overlay ── */
+.serving-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.2); z-index: 300;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity 0.15s;
+}
+.serving-overlay.open { opacity: 1; pointer-events: all; }
+.serving-popup {
+  background: #fff; border-radius: 10px; padding: 18px 20px; width: 240px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.15); transform: scale(0.95); transition: transform 0.15s;
+}
+.serving-overlay.open .serving-popup { transform: scale(1); }
+.serving-popup h4 { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+.serving-popup p  { font-size: 11px; color: #8A9180; margin-bottom: 12px; }
+.serving-popup-ctrl { display: flex; align-items: center; gap: 8px; justify-content: center; margin-bottom: 12px; }
+.spc-btn {
+  background: #F4F5F0; border: 1px solid #E4E7E0; border-radius: 6px; width: 32px; height: 32px;
+  font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.1s;
+}
+.spc-btn:hover { background: #E4E7E0; }
+.spc-val {
+  font-size: 20px; font-weight: 700; color: #2D8F5C; min-width: 50px; text-align: center;
+}
+.serving-popup-actions { display: flex; gap: 7px; justify-content: flex-end; }
+.spo-cancel { background: #F4F5F0; border: none; border-radius: 6px; padding: 7px 12px; font-size: 12px; font-weight: 500; cursor: pointer; font-family: inherit; }
+.spo-cancel:hover { background: #E4E7E0; }
+.spo-save { background: #2D8F5C; color: #fff; border: none; border-radius: 6px; padding: 7px 14px; font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit; }
+.spo-save:hover { background: #247A4E; }
+
+/* ── Custom meal modal ── */
+.modal-backdrop {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.25); z-index: 200;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity 0.18s;
+}
+.modal-backdrop.open { opacity: 1; pointer-events: all; }
+.modal {
+  background: #fff; border-radius: 12px; width: 370px; max-width: 95vw;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.14); padding: 22px;
+  transform: scale(0.96); transition: transform 0.18s;
+}
+.modal-backdrop.open .modal { transform: scale(1); }
+.modal h3 { font-size: 15px; font-weight: 700; margin-bottom: 14px; }
+.form-group { margin-bottom: 10px; }
+.form-label { font-size: 10px; font-weight: 700; color: #6A7A60; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; display: block; }
+.form-input { width: 100%; padding: 7px 10px; border: 1px solid #E4E7E0; border-radius: 6px; font-size: 13px; font-family: inherit; outline: none; transition: border-color 0.13s; }
+.form-input:focus { border-color: #2D8F5C; }
+.form-row { display: flex; gap: 8px; }
+.form-row .form-group { flex: 1; }
+.form-actions { display: flex; gap: 7px; justify-content: flex-end; margin-top: 14px; }
+.btn-cancel { background: #F4F5F0; border: none; border-radius: 6px; padding: 7px 13px; font-size: 13px; font-weight: 500; cursor: pointer; font-family: inherit; color: #374139; }
+.btn-cancel:hover { background: #E4E7E0; }
+.btn-save { background: #2D8F5C; color: #fff; border: none; border-radius: 6px; padding: 7px 15px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; }
+.btn-save:hover { background: #247A4E; }
+
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #D4D9CE; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #9CA899; }
+
+/* ── Toast notification ── */
+.toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(8px);
+  background: #1A1A1A; color: #fff; padding: 10px 18px; border-radius: 8px;
+  font-size: 13px; font-weight: 500; z-index: 600; white-space: nowrap;
+  opacity: 0; transition: opacity 0.22s, transform 0.22s; pointer-events: none;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ── Meal Library Modal ── */
+.ml-modal {
+  background: #fff; border-radius: 12px; width: 630px; max-width: 96vw; max-height: 88vh;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.14); transform: scale(0.96); transition: transform 0.18s;
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.modal-backdrop.open .ml-modal { transform: scale(1); }
+.ml-modal-hdr {
+  padding: 15px 20px 12px; border-bottom: 1px solid #E4E7E0;
+  display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
+}
+.ml-modal-hdr h3 { font-size: 15px; font-weight: 700; }
+.ml-controls {
+  padding: 10px 14px; border-bottom: 1px solid #F0F2ED;
+  display: flex; align-items: center; gap: 8px; flex-shrink: 0; flex-wrap: wrap;
+}
+.ml-search {
+  flex: 1; min-width: 120px; padding: 7px 11px; border: 1px solid #E4E7E0; border-radius: 7px;
+  font-size: 12px; font-family: inherit; outline: none; background: #FAFBF8; transition: border-color 0.13s;
+}
+.ml-search:focus { border-color: #2D8F5C; background: #fff; }
+.ml-sort-btn {
+  padding: 6px 10px; border: 1px solid #E4E7E0; border-radius: 6px;
+  font-size: 11px; font-weight: 600; color: #374139; background: #F4F5F0;
+  cursor: pointer; font-family: inherit; transition: all 0.13s; white-space: nowrap;
+}
+.ml-sort-btn:hover { background: #E4E7E0; }
+.ml-sort-btn.active { background: #EBF5EF; color: #2D8F5C; border-color: #A3D4B8; }
+.ml-add-btn {
+  padding: 6px 12px; background: #2D8F5C; color: #fff; border: none; border-radius: 7px;
+  font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit; transition: background 0.13s; flex-shrink: 0;
+}
+.ml-add-btn:hover { background: #247A4E; }
+.ml-tabs { display: flex; border-bottom: 1px solid #E4E7E0; flex-shrink: 0; }
+.ml-tab {
+  flex: 1; padding: 9px 12px; font-size: 12px; font-weight: 600; color: #8A9180;
+  background: none; border: none; cursor: pointer; font-family: inherit;
+  border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all 0.13s;
+}
+.ml-tab:hover { color: #374139; background: #FAFBF8; }
+.ml-tab.active { color: #2D8F5C; border-bottom-color: #2D8F5C; background: none; }
+.ml-list { flex: 1; overflow-y: auto; }
+.ml-section-hdr {
+  font-size: 10px; font-weight: 700; color: #9CA899; text-transform: uppercase;
+  letter-spacing: 0.08em; padding: 12px 16px 4px; background: #FAFBF8;
+  position: sticky; top: 0;
+}
+.ml-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 16px; border-bottom: 1px solid #F4F5F0; transition: background 0.1s;
+}
+.ml-item:hover { background: #FAFBF8; }
+.ml-item-info { flex: 1; min-width: 0; }
+.ml-item-name { font-size: 13px; font-weight: 500; color: #1A1A1A; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ml-item-macros { font-size: 11px; color: #8A9180; margin-top: 2px; }
+.ml-item-note { font-size: 10px; color: #B0B8A8; margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ml-cat-pill {
+  font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 10px; white-space: nowrap; flex-shrink: 0;
+}
+.ml-cat-breakfast { background: #FFF8E8; color: #C9920A; }
+.ml-cat-lunch     { background: #FFF0E0; color: #D4714A; }
+.ml-cat-dinner    { background: #EEE8F8; color: #6B47A8; }
+.ml-cat-sides     { background: #EBF5EF; color: #2D8F5C; }
+.ml-cat-snacks    { background: #E8F4FF; color: #3A8FBC; }
+.ml-item-actions  { display: flex; gap: 4px; flex-shrink: 0; }
+.ml-edit-btn, .ml-del-btn {
+  width: 26px; height: 26px; border-radius: 5px; border: 1px solid #E4E7E0;
+  font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: all 0.13s; background: #F4F5F0; color: #6A7A60;
+}
+.ml-edit-btn:hover { background: #EBF5EF; color: #2D8F5C; border-color: #A3D4B8; }
+.ml-del-btn:hover  { background: #FEF2F0; color: #C0392B; border-color: #F0B9B2; }
+.ml-readonly-badge {
+  font-size: 9px; font-weight: 700; color: #B0B8A8; background: #F4F5F0;
+  border: 1px solid #E4E7E0; border-radius: 4px; padding: 2px 6px; flex-shrink: 0;
+}
+.ml-empty { text-align: center; padding: 40px 16px; color: #9CA899; font-size: 13px; }
+
+/* ── Saved Weeks modal list ── */
+.saved-week-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 0; border-bottom: 1px solid #F0F2ED;
+}
+.saved-week-item:last-child { border-bottom: none; }
+.saved-week-label { font-size: 13px; font-weight: 600; color: #1A1A1A; }
+.saved-week-meta  { font-size: 11px; color: #9CA899; margin-top: 2px; }
+.saved-week-actions { display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
+.swa-load {
+  background: #2D8F5C; color: #fff; border: none; border-radius: 6px;
+  padding: 5px 12px; font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit; transition: background 0.13s;
+}
+.swa-load:hover { background: #247A4E; }
+.swa-del {
+  background: #F4F5F0; border: 1px solid #E4E7E0; border-radius: 6px;
+  width: 26px; height: 26px; font-size: 15px; cursor: pointer; color: #9CA899;
+  display: flex; align-items: center; justify-content: center; transition: all 0.13s;
+}
+.swa-del:hover { background: #FEF2F0; color: #C0392B; border-color: #F0B9B2; }
+.saved-weeks-empty { text-align: center; padding: 24px 0; color: #9CA899; font-size: 13px; }
+
+/* ── Grocery List modal ── */
+.grocery-modal {
+  background: #fff; border-radius: 12px; width: 460px; max-width: 95vw; max-height: 82vh;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.14); transform: scale(0.96); transition: transform 0.18s;
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.modal-backdrop.open .grocery-modal { transform: scale(1); }
+.grocery-modal-hdr {
+  padding: 16px 20px 13px; border-bottom: 1px solid #E4E7E0;
+  display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
+}
+.grocery-modal-hdr h3 { font-size: 15px; font-weight: 700; }
+.grocery-modal-hdr-actions { display: flex; gap: 8px; align-items: center; }
+.grocery-modal-body { flex: 1; overflow-y: auto; padding: 6px 20px 16px; }
+.grocery-week-summary {
+  background: #F8FDF9; border: 1px solid #D8EDDF; border-radius: 8px;
+  padding: 10px 14px; margin: 10px 0; display: flex; gap: 16px; align-items: center;
+}
+.grocery-summary-item { text-align: center; }
+.grocery-summary-val { font-size: 15px; font-weight: 700; line-height: 1; }
+.grocery-summary-lbl { font-size: 10px; color: #9CA899; margin-top: 2px; }
+.grocery-section { margin-bottom: 8px; }
+.grocery-section-hdr {
+  font-size: 10px; font-weight: 700; color: #9CA899; text-transform: uppercase;
+  letter-spacing: 0.08em; padding: 10px 0 5px; border-top: 1px solid #F0F2ED; margin-top: 4px;
+}
+.grocery-section:first-child .grocery-section-hdr { border-top: none; margin-top: 0; }
+.grocery-item {
+  display: flex; align-items: flex-start; gap: 8px; padding: 6px 0;
+  border-bottom: 1px solid #F9FAF7;
+}
+.grocery-item:last-child { border-bottom: none; }
+.grocery-item-check { font-size: 14px; color: #C4CAB0; flex-shrink: 0; margin-top: 1px; cursor: pointer; user-select: none; }
+.grocery-item-check.checked { color: #2D8F5C; text-decoration: line-through; }
+.grocery-item-info { flex: 1; }
+.grocery-item-name { font-size: 13px; font-weight: 500; color: #1A1A1A; }
+.grocery-item-name.checked { color: #9CA899; text-decoration: line-through; }
+.grocery-item-meta { font-size: 11px; color: #9CA899; margin-top: 2px; }
+.grocery-item-qty { font-size: 13px; font-weight: 700; color: #2D8F5C; flex-shrink: 0; min-width: 28px; text-align: right; }
+</style>
+<script id="baked-meal-library">
+// Auto-generated by build.py on 2026-04-25 09:26 — do not edit manually.
+// Re-run: python3 build.py
+window.BAKED_LIBRARY={meals:[{"id":"chia-base","name":"Regular chia pudding base","cat":"breakfast","kcal":268.0,"protein":22.0,"fiber":10.0},{"id":"chia-kiwi","name":"Chia Pudding + Kiwi (80g)","cat":"breakfast","kcal":334.0,"protein":23.0,"fiber":12.0},{"id":"chia-blueberry","name":"Chia Pudding + Blueberries (50g)","cat":"breakfast","kcal":314.0,"protein":22.0,"fiber":12.0},{"id":"chia-strawberry","name":"Chia Pudding + Strawberries (120g)","cat":"breakfast","kcal":323.0,"protein":22.0,"fiber":13.0},{"id":"chia-raspberry","name":"Raspberry Chia Pudding (no maple syrup)","cat":"breakfast","kcal":278.0,"protein":22.0,"fiber":11.0},{"id":"chia-protein","name":"Protein Chia Pudding (½ scoop Leanfit)","cat":"breakfast","kcal":328.0,"protein":33.0,"fiber":12.5},{"id":"chia-mod","name":"Modified Chia Pudding (⅓c yogurt + ⅓c almond milk)","cat":"breakfast","kcal":292.0,"protein":16.0,"fiber":9.0},{"id":"chia-mod-blue","name":"Modified Chia Pudding + Blueberries (50g)","cat":"breakfast","kcal":321.0,"protein":16.0,"fiber":10.0},{"id":"chia-mango-coconut","name":"Mango Coconut Chia Pudding","cat":"breakfast","kcal":338.0,"protein":16.0,"fiber":12.0,"note":"Meal-prep — 4 servings per batch. Refrigerate 4+ hrs or overnight."},{"id":"collagen-coffee","name":"Collagen Peptide + Black Coffee","cat":"breakfast","kcal":36.0,"protein":9.0,"fiber":0.0,"note":"Sports Research 1 scoop"},{"id":"good-protein","name":"Good Protein Shake + Blueberries (50g)","cat":"breakfast","kcal":189.0,"protein":22.0,"fiber":2.0},{"id":"good-protein-plain","name":"Good Protein Shake (mixed berries)","cat":"breakfast","kcal":170.0,"protein":21.0,"fiber":7.0},{"id":"siggis","name":"Siggi's High Protein Vanilla Yogurt (100g)","cat":"breakfast","kcal":100.0,"protein":10.0,"fiber":0.0},{"id":"turkey-sandwich","name":"Turkey Sandwich","cat":"lunch","kcal":330.0,"protein":25.0,"fiber":4.0,"note":"2 protein bread, 3 turkey, 1 Kraft cheese, veg"},{"id":"jalapeno-bowl","name":"Creamy Jalapeño Chicken Bowl","cat":"lunch","kcal":465.0,"protein":49.0,"fiber":11.0,"note":"Meal-prep — 4 servings per batch"},{"id":"chicken-wrap","name":"High-Protein Chicken Wrap","cat":"lunch","kcal":370.0,"protein":42.0,"fiber":6.0},{"id":"chicken-salad","name":"High-Protein Chicken Salad","cat":"lunch","kcal":230.0,"protein":29.0,"fiber":6.0},{"id":"tortilla-eggs","name":"Protein Tortilla + 2 Eggs + Spinach + Feta","cat":"lunch","kcal":320.0,"protein":26.0,"fiber":4.0,"note":"1 PC Protein Tortilla + 2 eggs + 1 cup spinach + 20g feta"},{"id":"cottage-eggs","name":"2 Eggs + Cottage Cheese + Protein Bread","cat":"lunch","kcal":305.0,"protein":25.0,"fiber":3.0},{"id":"turkey-marinara-sauce","name":"Turkey Marinara Sauce, no pasta","cat":"lunch","kcal":353.0,"protein":56.0,"fiber":5.0},{"id":"chicken-adobo","name":"Chicken Adobo","cat":"dinner","kcal":379.0,"protein":42.0,"fiber":1.0,"note":"Base only — add rice + lentils. 3 servings per batch."},{"id":"ginisang-munggo","name":"Ginisang Munggo","cat":"dinner","kcal":435.0,"protein":33.0,"fiber":10.0,"note":"Mung bean stew. 3 servings per batch."},{"id":"sinigang-hipon","name":"Sinigang na Hipon","cat":"dinner","kcal":385.0,"protein":27.0,"fiber":8.0,"note":"Shrimp sinigang. 2 servings per batch."},{"id":"beef-enoki","name":"Beef Enoki Mushroom Wraps","cat":"dinner","kcal":530.0,"protein":51.0,"fiber":3.0},{"id":"chicken-thighs","name":"Chicken Thighs x2 + Olive Oil (base only)","cat":"dinner","kcal":420.0,"protein":48.0,"fiber":0.0},{"id":"chicken-asparagus","name":"Chicken Thighs & Asparagus","cat":"dinner","kcal":476.0,"protein":68.0,"fiber":4.5},{"id":"lemon-shrimp","name":"Lemon Herb Shrimp Bowl","cat":"dinner","kcal":424.0,"protein":49.0,"fiber":10.0},{"id":"turkey-marinara","name":"Butternut Squash Turkey Marinara Bowl","cat":"dinner","kcal":445.0,"protein":49.0,"fiber":6.0},{"id":"chicken-tinola","name":"Chicken Tinola","cat":"dinner","kcal":380.0,"protein":41.5,"fiber":2.2,"note":"2 chicken thighs. 2 servings per batch."},{"id":"chicken-soup","name":"Chicken Soup with Cabbage","cat":"dinner","kcal":420.0,"protein":50.0,"fiber":3.0,"note":"2 servings per batch."},{"id":"chicken-curry","name":"Filipino Chicken Curry with Coconut Milk","cat":"dinner","kcal":471.0,"protein":42.0,"fiber":4.6,"note":"4 servings per batch."},{"id":"turkey-stir-fry","name":"Ground Turkey Basil Stir-Fry","cat":"dinner","kcal":350.0,"protein":55.0,"fiber":3.0,"note":"2 servings per batch."},{"id":"turkey-pasta","name":"Turkey Marinara Protein Pasta","cat":"dinner","kcal":460.0,"protein":57.0,"fiber":7.0,"note":"3 servings per batch."},{"id":"ginger-soy-chicken","name":"Ginger Soy Chicken with Cabbage","cat":"dinner","kcal":397.0,"protein":36.0,"fiber":6.3,"note":"4 servings per batch."},{"id":"sinampalukan","name":"Sinampalukan na Manok","cat":"dinner","kcal":450.0,"protein":52.0,"fiber":7.0,"note":"Tamarind-sour chicken soup. 3 servings per batch."},{"id":"shrimp-cauli-alfredo","name":"Shrimp Cauliflower Alfredo","cat":"dinner","kcal":379.0,"protein":57.0,"fiber":3.0},{"id":"chicken-noodle","name":"Chicken Noodle Soup + Cabbage + Protein Pasta","cat":"dinner","kcal":460.0,"protein":52.0,"fiber":8.0},{"id":"rice-100","name":"Cooked Rice (100g)","cat":"sides","kcal":115.0,"protein":2.0,"fiber":1.0,"note":"×0.75 = 75g · ×0.5 = 50g"},{"id":"lentils-100","name":"Cooked Lentils (100g)","cat":"sides","kcal":115.0,"protein":9.0,"fiber":8.0,"note":"×0.75 = 75g · ×0.5 = 50g"},{"id":"mango-100","name":"Mango (100g)","cat":"sides","kcal":60.0,"protein":0.8,"fiber":1.6},{"id":"kabocha-100","name":"Kabocha Squash, Roasted (100g)","cat":"sides","kcal":40.0,"protein":1.0,"fiber":2.5},{"id":"green-beans","name":"Green Beans (100g)","cat":"sides","kcal":31.0,"protein":2.0,"fiber":3.4},{"id":"broccoli-100","name":"Broccoli (100g)","cat":"sides","kcal":34.0,"protein":2.0,"fiber":2.0},{"id":"edamame-85","name":"Edamame Shelled (85g)","cat":"sides","kcal":103.0,"protein":9.0,"fiber":4.0},{"id":"catelli-pasta","name":"Catelli Protein+ Spaghetti (100g dry)","cat":"sides","kcal":360.0,"protein":21.0,"fiber":5.0},{"id":"zucchini-100","name":"Zucchini (100g)","cat":"sides","kcal":20.0,"protein":1.3,"fiber":1.0},{"id":"egg-1","name":"Large Egg (1)","cat":"sides","kcal":72.0,"protein":6.0,"fiber":0.0},{"id":"eggs-100g","name":"Whole Eggs (100g)","cat":"sides","kcal":155.0,"protein":13.0,"fiber":0.0,"note":"~2 large eggs with yolk"},{"id":"egg-whites-100g","name":"Egg Whites (100g)","cat":"sides","kcal":52.0,"protein":11.0,"fiber":0.0},{"id":"cottage-cheese-100","name":"Cottage Cheese 1% (100g)","cat":"sides","kcal":85.0,"protein":12.0,"fiber":0.0},{"id":"jollibee-rice","name":"Jollibee Steamed Rice (1 serving)","cat":"sides","kcal":190.0,"protein":4.0,"fiber":1.0,"note":"~175g per serving"},{"id":"rice-lentils-200","name":"Rice + Lentils (200g)","cat":"sides","kcal":230.0,"protein":11.0,"fiber":9.0,"note":"1:1 ratio — 100g rice + 100g lentils cooked"},{"id":"rice-lentils-quinoa-200","name":"Rice + Lentils + Quinoa (200g)","cat":"sides","kcal":233.0,"protein":9.0,"fiber":6.4,"note":"1:½:½ ratio — 100g rice + 50g lentils + 50g quinoa cooked"},{"id":"matcha","name":"Matcha Latte (Iced, Almond Milk)","cat":"snacks","kcal":85.0,"protein":2.0,"fiber":0.0},{"id":"halo-top","name":"Halo Top Ice Cream (1 serving)","cat":"snacks","kcal":110.0,"protein":7.0,"fiber":2.5},{"id":"kiwi-80","name":"Kiwi (80g)","cat":"snacks","kcal":49.0,"protein":0.8,"fiber":2.4},{"id":"blueberries-50","name":"Blueberries (50g)","cat":"snacks","kcal":29.0,"protein":0.4,"fiber":1.5},{"id":"raspberries-80","name":"Raspberries (80g)","cat":"snacks","kcal":42.0,"protein":1.0,"fiber":5.0},{"id":"strawberries-120","name":"Strawberries (120g)","cat":"snacks","kcal":38.0,"protein":0.8,"fiber":3.0},{"id":"lemon-cheesecake","name":"Lemon Cheesecake Bowl","cat":"snacks","kcal":210.0,"protein":26.0,"fiber":1.0},{"id":"premier-protein","name":"Premier Protein Shake","cat":"snacks","kcal":160.0,"protein":30.0,"fiber":1.0,"note":"Almazing flavour"},{"id":"apple-100","name":"Apple (100g)","cat":"snacks","kcal":52.0,"protein":0.3,"fiber":2.4},{"id":"banana-80","name":"Banana (80g)","cat":"snacks","kcal":73.0,"protein":0.9,"fiber":2.1},{"id":"red-wine-150","name":"Glass of Red Wine (150ml)","cat":"snacks","kcal":125.0,"protein":0.0,"fiber":0.0},{"id":"oysters-6","name":"Oysters — 6 pieces (restaurant)","cat":"snacks","kcal":110.0,"protein":12.0,"fiber":0.0},{"id":"jalapeno-popcorn","name":"Farmboy Jalapeño White Cheddar Popcorn (10g)","cat":"snacks","kcal":60.0,"protein":1.0,"fiber":1.0,"note":"~1 cup"},{"id":"metamucil-gummies","name":"Metamucil Fibre Gummies (3 gummies)","cat":"snacks","kcal":20.0,"protein":0.0,"fiber":5.0,"note":"1 serving = 3 gummies"},{"id":"alani-munchies","name":"Alani Nu Protein Shake, Munchies (1 bottle)","cat":"snacks","kcal":160.0,"protein":26.0,"fiber":0.0,"note":"355ml bottle"},{"id":"fairlife-vanilla","name":"Fairlife Protein Shake, Vanilla (1 bottle)","cat":"snacks","kcal":150.0,"protein":30.0,"fiber":0.0,"note":"340ml bottle"},{"id":"sleepytime-tea","name":"Sleepytime Tea + ½ tsp Honey","cat":"snacks","kcal":15.0,"protein":0.0,"fiber":0.0}],ingr:{"chia-base":[{"n":"Oikos Greek Yogurt 0%","q":112.0,"u":"g","c":"dairy"},{"n":"Almond milk, vanilla unsweetened","q":120.0,"u":"ml","c":"dairy"},{"n":"Chia seeds","q":30.0,"u":"g","c":"pantry"},{"n":"Granola","q":8.0,"u":"g","c":"pantry"},{"n":"Pumpkin seeds","q":8.0,"u":"g","c":"pantry"}],"chia-kiwi":[{"n":"Oikos Greek Yogurt 0%","q":112.0,"u":"g","c":"dairy"},{"n":"Almond milk, vanilla unsweetened","q":120.0,"u":"ml","c":"dairy"},{"n":"Chia seeds","q":30.0,"u":"g","c":"pantry"},{"n":"Granola","q":8.0,"u":"g","c":"pantry"},{"n":"Pumpkin seeds","q":8.0,"u":"g","c":"pantry"},{"n":"Maple syrup","q":5.0,"u":"ml","c":"pantry"},{"n":"Kiwi","q":80.0,"u":"g","c":"produce"}],"chia-blueberry":[{"n":"Oikos Greek Yogurt 0%","q":112.0,"u":"g","c":"dairy"},{"n":"Almond milk, vanilla unsweetened","q":120.0,"u":"ml","c":"dairy"},{"n":"Chia seeds","q":30.0,"u":"g","c":"pantry"},{"n":"Granola","q":8.0,"u":"g","c":"pantry"},{"n":"Pumpkin seeds","q":8.0,"u":"g","c":"pantry"},{"n":"Maple syrup","q":5.0,"u":"ml","c":"pantry"},{"n":"Blueberries","q":50.0,"u":"g","c":"produce"}],"chia-strawberry":[{"n":"Oikos Greek Yogurt 0%","q":112.0,"u":"g","c":"dairy"},{"n":"Almond milk, vanilla unsweetened","q":120.0,"u":"ml","c":"dairy"},{"n":"Chia seeds","q":30.0,"u":"g","c":"pantry"},{"n":"Granola","q":8.0,"u":"g","c":"pantry"},{"n":"Pumpkin seeds","q":8.0,"u":"g","c":"pantry"},{"n":"Maple syrup","q":5.0,"u":"ml","c":"pantry"},{"n":"Strawberries","q":120.0,"u":"g","c":"produce"}],"chia-raspberry":[{"n":"Oikos Greek Yogurt 0%","q":112.0,"u":"g","c":"dairy"},{"n":"Almond milk, vanilla unsweetened","q":120.0,"u":"ml","c":"dairy"},{"n":"Chia seeds","q":30.0,"u":"g","c":"pantry"},{"n":"Granola","q":8.0,"u":"g","c":"pantry"},{"n":"Pumpkin seeds","q":8.0,"u":"g","c":"pantry"},{"n":"Raspberries","q":20.0,"u":"g","c":"produce"}],"chia-protein":[{"n":"Oikos Greek Yogurt 0%","q":112.0,"u":"g","c":"dairy"},{"n":"Almond milk, vanilla unsweetened","q":120.0,"u":"ml","c":"dairy"},{"n":"Chia seeds","q":30.0,"u":"g","c":"pantry"},{"n":"Granola","q":8.0,"u":"g","c":"pantry"},{"n":"Pumpkin seeds","q":8.0,"u":"g","c":"pantry"},{"n":"Leanfit Plant-Based Protein, vanilla","q":17.0,"u":"g","c":"supplements"}],"chia-mod":[{"n":"Oikos or Siggi's yogurt","q":80.0,"u":"g","c":"dairy"},{"n":"Almond milk, vanilla unsweetened","q":80.0,"u":"ml","c":"dairy"},{"n":"Chia seeds","q":30.0,"u":"g","c":"pantry"},{"n":"Granola","q":8.0,"u":"g","c":"pantry"},{"n":"Pumpkin seeds","q":8.0,"u":"g","c":"pantry"},{"n":"Maple syrup","q":5.0,"u":"ml","c":"pantry"}],"chia-mod-blue":[{"n":"Oikos or Siggi's yogurt","q":80.0,"u":"g","c":"dairy"},{"n":"Almond milk, vanilla unsweetened","q":80.0,"u":"ml","c":"dairy"},{"n":"Chia seeds","q":30.0,"u":"g","c":"pantry"},{"n":"Granola","q":8.0,"u":"g","c":"pantry"},{"n":"Pumpkin seeds","q":8.0,"u":"g","c":"pantry"},{"n":"Maple syrup","q":5.0,"u":"ml","c":"pantry"},{"n":"Blueberries","q":50.0,"u":"g","c":"produce"}],"chia-mango-coconut":[{"n":"Fresh mango, peeled & diced","q":100.0,"u":"g","c":"produce"},{"n":"Skim milk","q":100.0,"u":"ml","c":"dairy"},{"n":"Plain Greek yogurt 0%","q":60.0,"u":"g","c":"dairy"},{"n":"Coconut milk, full-fat unsweetened","q":15.0,"u":"ml","c":"pantry"},{"n":"Vanilla extract","q":0.25,"u":"tsp","c":"pantry"},{"n":"Chia seeds","q":30.0,"u":"g","c":"pantry"},{"n":"Coconut shavings, unsweetened","q":5.0,"u":"g","c":"pantry"}],"collagen-coffee":[{"n":"Sports Research Collagen Peptide","q":1.0,"u":"scoop","c":"supplements"},{"n":"Black coffee","q":240.0,"u":"ml","c":"pantry"}],"good-protein":[{"n":"Good Protein powder (mixed berries)","q":1.0,"u":"scoop","c":"supplements"},{"n":"Blueberries","q":50.0,"u":"g","c":"produce"}],"good-protein-plain":[{"n":"Good Protein powder (mixed berries)","q":1.0,"u":"scoop","c":"supplements"}],"siggis":[{"n":"Siggi's high protein vanilla yogurt","q":100.0,"u":"g","c":"dairy"}],"turkey-sandwich":[{"n":"Country Harvest Protein Bread","q":2.0,"u":"slices","c":"pantry"},{"n":"Turkey deli slices","q":3.0,"u":"slices","c":"protein"},{"n":"Kraft cheese slice","q":1.0,"u":"slice","c":"dairy"},{"n":"Lettuce","q":20.0,"u":"g","c":"produce"},{"n":"Cucumber","q":30.0,"u":"g","c":"produce"}],"jalapeno-bowl":[{"n":"Rotisserie chicken, shredded (skin off)","q":180.0,"u":"g","c":"protein"},{"n":"Butternut squash, cubed","q":200.0,"u":"g","c":"produce"},{"n":"Baby spinach","q":30.0,"u":"g","c":"produce"},{"n":"Jalapeño, fresh","q":1.0,"u":"each","c":"produce"},{"n":"Lime","q":0.25,"u":"each","c":"produce"},{"n":"Fresh cilantro","q":5.0,"u":"g","c":"produce"},{"n":"Corn, canned, drained","q":30.0,"u":"g","c":"pantry"},{"n":"Black beans, canned, drained","q":80.0,"u":"g","c":"pantry"},{"n":"Nonfat Greek yogurt (sauce)","q":43.0,"u":"g","c":"dairy"},{"n":"Low-fat cottage cheese (sauce)","q":19.0,"u":"g","c":"dairy"},{"n":"Cooking oil","q":3.0,"u":"ml","c":"pantry"},{"n":"Garlic powder","q":0.5,"u":"tsp","c":"pantry"},{"n":"Onion powder","q":0.5,"u":"tsp","c":"pantry"},{"n":"Cumin","q":0.25,"u":"tsp","c":"pantry"}],"chicken-wrap":[{"n":"PC Protein Tortilla","q":1.0,"u":"each","c":"pantry"},{"n":"Rotisserie chicken, shredded (skin off)","q":100.0,"u":"g","c":"protein"},{"n":"Cottage cheese 1%","q":80.0,"u":"g","c":"dairy"},{"n":"Baby spinach","q":30.0,"u":"g","c":"produce"},{"n":"Cucumber","q":50.0,"u":"g","c":"produce"},{"n":"Feta cheese","q":20.0,"u":"g","c":"dairy"}],"chicken-salad":[{"n":"Rotisserie chicken, shredded (skin off)","q":100.0,"u":"g","c":"protein"},{"n":"Cottage cheese 1%","q":80.0,"u":"g","c":"dairy"},{"n":"Baby spinach","q":30.0,"u":"g","c":"produce"},{"n":"Cucumber","q":50.0,"u":"g","c":"produce"},{"n":"Feta cheese","q":20.0,"u":"g","c":"dairy"}],"tortilla-eggs":[{"n":"PC Protein Tortilla","q":1.0,"u":"each","c":"pantry"},{"n":"Eggs","q":2.0,"u":"each","c":"dairy"},{"n":"Baby spinach","q":30.0,"u":"g","c":"produce"},{"n":"Feta cheese","q":20.0,"u":"g","c":"dairy"}],"cottage-eggs":[{"n":"Eggs","q":2.0,"u":"each","c":"dairy"},{"n":"Cottage cheese 1%","q":75.0,"u":"g","c":"dairy"},{"n":"Country Harvest Protein Bread","q":1.0,"u":"slice","c":"pantry"}],"turkey-marinara-sauce":[{"n":"Lean ground turkey","q":151.0,"u":"g","c":"protein"},{"n":"Tomato basil sauce (e.g. Classico)","q":120.0,"u":"g","c":"pantry"},{"n":"Baby spinach","q":30.0,"u":"g","c":"produce"},{"n":"Cottage cheese 1%","q":40.0,"u":"g","c":"dairy"},{"n":"Garlic","q":0.5,"u":"cloves","c":"produce"},{"n":"Onion","q":15.0,"u":"g","c":"produce"},{"n":"Olive oil","q":3.0,"u":"ml","c":"pantry"}],"chicken-adobo":[{"n":"Chicken thighs, bone-in, skin removed","q":240.0,"u":"g","c":"protein"},{"n":"Sweet onion","q":33.0,"u":"g","c":"produce"},{"n":"Garlic","q":3.0,"u":"cloves","c":"produce"},{"n":"Soy sauce","q":27.0,"u":"ml","c":"pantry"},{"n":"White vinegar","q":27.0,"u":"ml","c":"pantry"},{"n":"Olive oil","q":5.0,"u":"ml","c":"pantry"}],"ginisang-munggo":[{"n":"Mung beans (dry)","q":67.0,"u":"g","c":"pantry"},{"n":"Pork loin","q":100.0,"u":"g","c":"protein"},{"n":"Garlic","q":2.0,"u":"cloves","c":"produce"},{"n":"Onion","q":40.0,"u":"g","c":"produce"},{"n":"Tomato","q":67.0,"u":"g","c":"produce"},{"n":"Spinach or malunggay","q":40.0,"u":"g","c":"produce"},{"n":"Fish sauce (patis)","q":7.0,"u":"ml","c":"pantry"},{"n":"Olive oil","q":2.0,"u":"ml","c":"pantry"}],"sinigang-hipon":[{"n":"Shrimp, shell-on, no head","q":170.0,"u":"g","c":"protein"},{"n":"Chinese eggplant","q":100.0,"u":"g","c":"produce"},{"n":"Okra","q":75.0,"u":"g","c":"produce"},{"n":"Tomatoes","q":75.0,"u":"g","c":"produce"},{"n":"Onion","q":40.0,"u":"g","c":"produce"},{"n":"Spinach","q":75.0,"u":"g","c":"produce"},{"n":"Knorr Sinigang mix","q":0.5,"u":"packet","c":"pantry"},{"n":"Magic Sarap","q":0.5,"u":"packet","c":"pantry"}],"beef-enoki":[{"n":"Beef, thin sliced","q":180.0,"u":"g","c":"protein"},{"n":"Enoki mushrooms","q":110.0,"u":"g","c":"produce"},{"n":"Onion","q":75.0,"u":"g","c":"produce"},{"n":"Garlic","q":1.0,"u":"cloves","c":"produce"},{"n":"Eggs","q":1.0,"u":"each","c":"dairy"},{"n":"Soy sauce","q":22.0,"u":"ml","c":"pantry"},{"n":"Sesame seeds","q":2.0,"u":"g","c":"pantry"}],"chicken-thighs":[{"n":"Chicken thighs, skinless","q":2.0,"u":"each","c":"protein"},{"n":"Olive oil","q":5.0,"u":"ml","c":"pantry"}],"chicken-asparagus":[{"n":"Chicken thighs, skinless","q":325.0,"u":"g","c":"protein"},{"n":"Asparagus","q":200.0,"u":"g","c":"produce"},{"n":"Garlic","q":2.0,"u":"cloves","c":"produce"},{"n":"Soy sauce","q":5.0,"u":"ml","c":"pantry"},{"n":"Honey","q":10.0,"u":"ml","c":"pantry"},{"n":"Turmeric","q":1.0,"u":"tsp","c":"pantry"}],"lemon-shrimp":[{"n":"Shrimp, peeled and deveined","q":130.0,"u":"g","c":"protein"},{"n":"Lemon","q":1.0,"u":"each","c":"produce"},{"n":"Cherry tomatoes","q":50.0,"u":"g","c":"produce"},{"n":"Cucumber","q":50.0,"u":"g","c":"produce"},{"n":"Baby spinach","q":30.0,"u":"g","c":"produce"},{"n":"Fresh herbs (dill)","q":5.0,"u":"g","c":"produce"},{"n":"Nonfat Greek yogurt (sauce)","q":50.0,"u":"g","c":"dairy"},{"n":"Cottage cheese 1% (sauce)","q":60.0,"u":"g","c":"dairy"},{"n":"Olive oil","q":5.0,"u":"ml","c":"pantry"},{"n":"Garlic powder","q":1.0,"u":"tsp","c":"pantry"}],"turkey-marinara":[{"n":"Lean ground turkey","q":151.0,"u":"g","c":"protein"},{"n":"Frozen butternut squash","q":200.0,"u":"g","c":"produce"},{"n":"Tomato basil sauce (e.g. Classico)","q":120.0,"u":"g","c":"pantry"},{"n":"Baby spinach","q":30.0,"u":"g","c":"produce"},{"n":"Cottage cheese 1%","q":40.0,"u":"g","c":"dairy"},{"n":"Garlic","q":1.0,"u":"cloves","c":"produce"},{"n":"Olive oil","q":3.0,"u":"ml","c":"pantry"}],"chicken-tinola":[{"n":"Chicken thighs, bone-in, skin removed","q":360.0,"u":"g","c":"protein"},{"n":"Ginger","q":15.0,"u":"g","c":"produce"},{"n":"Onion","q":40.0,"u":"g","c":"produce"},{"n":"Garlic","q":2.0,"u":"cloves","c":"produce"},{"n":"Chayote (sayote)","q":100.0,"u":"g","c":"produce"},{"n":"Spinach or malunggay","q":30.0,"u":"g","c":"produce"},{"n":"Fish sauce (patis)","q":8.0,"u":"ml","c":"pantry"},{"n":"Cooking oil","q":3.0,"u":"ml","c":"pantry"}],"chicken-soup":[{"n":"Chicken thighs, cooked & shredded","q":200.0,"u":"g","c":"protein"},{"n":"Green cabbage, chopped","q":75.0,"u":"g","c":"produce"},{"n":"Carrots","q":50.0,"u":"g","c":"produce"},{"n":"Celery","q":1.0,"u":"stalk","c":"produce"},{"n":"Garlic","q":2.0,"u":"cloves","c":"produce"},{"n":"Onion","q":50.0,"u":"g","c":"produce"}],"chicken-curry":[{"n":"Chicken thighs, boneless skinless","q":189.0,"u":"g","c":"protein"},{"n":"Coconut milk, full-fat","q":50.0,"u":"ml","c":"pantry"},{"n":"Potato","q":63.0,"u":"g","c":"produce"},{"n":"Zucchini","q":50.0,"u":"g","c":"produce"},{"n":"Carrot","q":30.0,"u":"g","c":"produce"},{"n":"Green beans","q":38.0,"u":"g","c":"produce"},{"n":"Bell pepper (red + green)","q":50.0,"u":"g","c":"produce"},{"n":"Onion","q":30.0,"u":"g","c":"produce"},{"n":"Garlic","q":1.0,"u":"cloves","c":"produce"},{"n":"Ginger","q":4.0,"u":"g","c":"produce"},{"n":"Curry powder / Filipino curry mix","q":1.0,"u":"tbsp","c":"pantry"},{"n":"Fish sauce (patis)","q":4.0,"u":"ml","c":"pantry"},{"n":"Olive oil","q":3.0,"u":"ml","c":"pantry"}],"turkey-stir-fry":[{"n":"Lean ground turkey","q":227.0,"u":"g","c":"protein"},{"n":"Green beans (long beans)","q":80.0,"u":"g","c":"produce"},{"n":"Shallots","q":30.0,"u":"g","c":"produce"},{"n":"Garlic","q":3.0,"u":"cloves","c":"produce"},{"n":"Fresh Thai basil","q":10.0,"u":"g","c":"produce"},{"n":"Soy sauce","q":10.0,"u":"ml","c":"pantry"},{"n":"Fish sauce (patis)","q":5.0,"u":"ml","c":"pantry"},{"n":"Oyster sauce","q":10.0,"u":"ml","c":"pantry"},{"n":"Cooking oil","q":5.0,"u":"ml","c":"pantry"}],"turkey-pasta":[{"n":"Lean ground turkey","q":151.0,"u":"g","c":"protein"},{"n":"Banza chickpea pasta, dry","q":30.0,"u":"g","c":"pantry"},{"n":"Tomato basil pasta sauce","q":120.0,"u":"g","c":"pantry"},{"n":"Baby spinach","q":30.0,"u":"g","c":"produce"},{"n":"Cottage cheese 1%","q":40.0,"u":"g","c":"dairy"},{"n":"Garlic","q":1.0,"u":"cloves","c":"produce"},{"n":"Onion","q":30.0,"u":"g","c":"produce"},{"n":"Olive oil","q":3.0,"u":"ml","c":"pantry"}],"ginger-soy-chicken":[{"n":"Chicken thighs, boneless skinless","q":188.0,"u":"g","c":"protein"},{"n":"Green cabbage, shredded","q":225.0,"u":"g","c":"produce"},{"n":"Onion","q":30.0,"u":"g","c":"produce"},{"n":"Garlic","q":4.0,"u":"g","c":"produce"},{"n":"Fresh ginger","q":5.0,"u":"g","c":"produce"},{"n":"Soy sauce","q":8.0,"u":"ml","c":"pantry"},{"n":"Rice vinegar","q":4.0,"u":"ml","c":"pantry"},{"n":"Sesame oil","q":1.0,"u":"ml","c":"pantry"},{"n":"Olive oil","q":3.0,"u":"ml","c":"pantry"}],"sinampalukan":[{"n":"Chicken thighs, bone-in, skin removed","q":250.0,"u":"g","c":"protein"},{"n":"Eggplant","q":83.0,"u":"g","c":"produce"},{"n":"Kangkong or spinach","q":67.0,"u":"g","c":"produce"},{"n":"Okra","q":33.0,"u":"g","c":"produce"},{"n":"Long beans","q":67.0,"u":"g","c":"produce"},{"n":"Tomatoes","q":33.0,"u":"g","c":"produce"},{"n":"Onion","q":27.0,"u":"g","c":"produce"},{"n":"Garlic","q":7.0,"u":"g","c":"produce"},{"n":"Cooking oil","q":5.0,"u":"ml","c":"pantry"},{"n":"Sinigang sa Sampalok mix","q":2.0,"u":"tsp","c":"pantry"},{"n":"Fish sauce (patis)","q":10.0,"u":"ml","c":"pantry"}],"shrimp-cauli-alfredo":[{"n":"Shrimp","q":200.0,"u":"g","c":"protein"},{"n":"Parmesan cheese","q":11.0,"u":"g","c":"dairy"},{"n":"Pecorino Romano cheese","q":11.0,"u":"g","c":"dairy"},{"n":"Cauliflower","q":250.0,"u":"g","c":"produce"},{"n":"Skim milk","q":0.25,"u":"cup","c":"dairy"},{"n":"Garlic","q":1.5,"u":"cloves","c":"produce"}],"chicken-noodle":[{"n":"Chicken thighs, bone-in","q":200.0,"u":"g","c":"protein"},{"n":"Protein pasta (Barilla+)","q":80.0,"u":"g","c":"pantry"},{"n":"Green cabbage","q":100.0,"u":"g","c":"produce"},{"n":"Chicken broth","q":400.0,"u":"ml","c":"pantry"},{"n":"Garlic","q":2.0,"u":"cloves","c":"produce"},{"n":"Onion","q":50.0,"u":"g","c":"produce"},{"n":"Carrots","q":50.0,"u":"g","c":"produce"}],"rice-100":[{"n":"White rice, dry (~45g raw = 100g cooked)","q":45.0,"u":"g","c":"pantry"}],"lentils-100":[{"n":"Green/red lentils, dry (~45g raw = 100g cooked)","q":45.0,"u":"g","c":"pantry"}],"mango-100":[{"n":"Fresh mango, peeled & diced","q":100.0,"u":"g","c":"produce"}],"kabocha-100":[{"n":"Kabocha squash, cubed","q":100.0,"u":"g","c":"produce"}],"green-beans":[{"n":"Green beans, fresh or frozen","q":100.0,"u":"g","c":"produce"}],"broccoli-100":[{"n":"Broccoli, fresh or frozen","q":100.0,"u":"g","c":"produce"}],"edamame-85":[{"n":"Edamame, shelled (frozen)","q":85.0,"u":"g","c":"produce"}],"catelli-pasta":[{"n":"Catelli Protein+ Spaghetti (dry)","q":100.0,"u":"g","c":"pantry"}],"zucchini-100":[{"n":"Zucchini, sliced","q":100.0,"u":"g","c":"produce"}],"egg-1":[{"n":"Large egg","q":1.0,"u":"each","c":"dairy"}],"eggs-100g":[{"n":"Large eggs","q":100.0,"u":"g","c":"dairy"}],"egg-whites-100g":[{"n":"Egg whites","q":100.0,"u":"g","c":"dairy"}],"cottage-cheese-100":[{"n":"Cottage cheese 1%","q":100.0,"u":"g","c":"dairy"}],"jollibee-rice":[{"n":"Steamed white rice","q":175.0,"u":"g","c":"pantry"}],"rice-lentils-200":[{"n":"White rice, dry (~45g raw = 100g cooked)","q":45.0,"u":"g","c":"pantry"},{"n":"Green/red lentils, dry (~45g raw = 100g cooked)","q":45.0,"u":"g","c":"pantry"}],"rice-lentils-quinoa-200":[{"n":"White rice, dry (~45g raw = 100g cooked)","q":45.0,"u":"g","c":"pantry"},{"n":"Green/red lentils, dry (~22g raw = 50g cooked)","q":22.0,"u":"g","c":"pantry"},{"n":"Quinoa, dry (~18g raw = 50g cooked)","q":18.0,"u":"g","c":"pantry"}],"matcha":[{"n":"Matcha powder","q":2.0,"u":"g","c":"pantry"},{"n":"Almond milk, unsweetened","q":240.0,"u":"ml","c":"dairy"}],"halo-top":[{"n":"Halo Top ice cream","q":87.0,"u":"g","c":"dairy"}],"kiwi-80":[{"n":"Kiwi","q":80.0,"u":"g","c":"produce"}],"blueberries-50":[{"n":"Blueberries","q":50.0,"u":"g","c":"produce"}],"raspberries-80":[{"n":"Raspberries","q":80.0,"u":"g","c":"produce"}],"strawberries-120":[{"n":"Strawberries","q":120.0,"u":"g","c":"produce"}],"lemon-cheesecake":[{"n":"Cottage cheese, low fat","q":190.0,"u":"g","c":"dairy"},{"n":"Lemon","q":0.5,"u":"each","c":"produce"},{"n":"Stevia or sweetener","q":1.0,"u":"tsp","c":"pantry"},{"n":"Vanilla extract","q":0.5,"u":"tsp","c":"pantry"}],"premier-protein":[{"n":"Premier Protein shake","q":1.0,"u":"each","c":"supplements"}],"apple-100":[{"n":"Apple, medium","q":100.0,"u":"g","c":"produce"}],"banana-80":[{"n":"Banana","q":80.0,"u":"g","c":"produce"}],"red-wine-150":[{"n":"Red wine","q":150.0,"u":"ml","c":"pantry"}],"oysters-6":[{"n":"Oysters","q":6.0,"u":"each","c":"protein"}],"jalapeno-popcorn":[{"n":"Farmboy Jalapeño White Cheddar Popcorn","q":10.0,"u":"g","c":"pantry"}],"metamucil-gummies":[{"n":"Metamucil Fibre Gummies","q":3.0,"u":"gummies","c":"supplements"}],"alani-munchies":[{"n":"Alani Nu Protein Shake, Munchies","q":1.0,"u":"bottle","c":"supplements"}],"fairlife-vanilla":[{"n":"Fairlife Nutrition Plan Protein Shake, vanilla","q":1.0,"u":"bottle","c":"supplements"}],"sleepytime-tea":[{"n":"Sleepytime tea bag","q":1.0,"u":"each","c":"pantry"},{"n":"Honey","q":3.0,"u":"ml","c":"pantry"}]}};
+</script>
+</head>
+<body>
+
+<div class="app" id="app"></div>
+
+<!-- Picker panel -->
+<div class="picker-backdrop" id="pickerBackdrop" onclick="closePicker()"></div>
+<div class="picker-panel" id="pickerPanel">
+  <div class="picker-hdr">
+    <div class="picker-hdr-info">
+      <h3 id="pickerTitle">Add Meal</h3>
+      <p id="pickerSubtitle"></p>
+    </div>
+    <button class="picker-close-btn" onclick="closePicker()">×</button>
+  </div>
+  <div class="picker-search">
+    <input type="text" id="pickerSearchInput" placeholder="Search meals…" oninput="filterPicker(this.value)">
+  </div>
+  <div class="picker-list" id="pickerList"></div>
+  <div class="picker-footer">
+    <button class="picker-add-custom-btn" onclick="openCustomModal()">+ Add Custom Meal</button>
+  </div>
+</div>
+
+<!-- Serving edit popup -->
+<div class="serving-overlay" id="servingOverlay">
+  <div class="serving-popup" onclick="event.stopPropagation()">
+    <h4 id="spoMealName">Edit Serving</h4>
+    <p id="spoMacros"></p>
+    <div class="serving-popup-ctrl">
+      <button class="spc-btn" onclick="stepPopupServing(-0.25)">−</button>
+      <div class="spc-val" id="spoVal">1×</div>
+      <button class="spc-btn" onclick="stepPopupServing(0.25)">+</button>
+    </div>
+    <div class="serving-popup-actions">
+      <button class="spo-cancel" onclick="closeServingPopup()">Cancel</button>
+      <button class="spo-save" onclick="saveServingEdit()">Update</button>
+    </div>
+  </div>
+</div>
+
+<!-- Saved Weeks Modal -->
+<div class="modal-backdrop" id="savedWeeksModal">
+  <div class="modal" onclick="event.stopPropagation()" style="width:420px;">
+    <h3>📋 Saved Week Templates</h3>
+    <div id="savedWeeksList" style="max-height:340px;overflow-y:auto;"></div>
+    <div class="form-actions" style="margin-top:12px;">
+      <button class="btn-cancel" onclick="closeSavedWeeksModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Grocery List Modal -->
+<div class="modal-backdrop" id="groceryListModal">
+  <div class="grocery-modal" onclick="event.stopPropagation()">
+    <div class="grocery-modal-hdr">
+      <h3>🛒 Grocery / Prep List</h3>
+      <div class="grocery-modal-hdr-actions">
+        <button class="action-btn action-btn-ghost" style="padding:5px 10px;font-size:11px;" onclick="copyGroceryListForNotes(window._currentDates)">📝 Copy to Notes</button>
+        <button class="action-btn action-btn-ghost" style="padding:5px 10px;font-size:11px;" onclick="exportGroceryList(window._currentDates)">📥 Export .md</button>
+        <button class="picker-close-btn" onclick="closeGroceryList()">×</button>
+      </div>
+    </div>
+    <div class="grocery-modal-body" id="groceryListContent"></div>
+  </div>
+</div>
+
+<!-- Meal Library Modal -->
+<div class="modal-backdrop" id="mealLibraryModal">
+  <div class="ml-modal" onclick="event.stopPropagation()">
+    <div class="ml-modal-hdr">
+      <h3>📚 Meal Library</h3>
+      <button class="picker-close-btn" onclick="closeMealLibrary()">×</button>
+    </div>
+    <div class="ml-controls">
+      <input class="ml-search" type="text" id="mlSearch" placeholder="Search meals…" oninput="mealLibrarySearch=this.value;renderMealLibraryContent()">
+      <button class="ml-sort-btn active" id="mlSortName" onclick="setLibrarySort('name')">A–Z</button>
+      <button class="ml-sort-btn" id="mlSortKcal" onclick="setLibrarySort('kcal')">Calories ↑</button>
+      <button class="ml-sort-btn" id="mlSortCat"  onclick="setLibrarySort('cat')">Category</button>
+      <button class="ml-add-btn" onclick="openCustomModal()">+ New Meal</button>
+    </div>
+    <div class="ml-tabs">
+      <button class="ml-tab active" id="mlTabAll"    onclick="setLibraryTab('all')">All Meals</button>
+      <button class="ml-tab"        id="mlTabCustom" onclick="setLibraryTab('custom')">⭐ My Custom</button>
+    </div>
+    <div class="ml-list" id="mlList"></div>
+  </div>
+</div>
+
+<!-- Toast notification -->
+<div class="toast" id="toast"></div>
+
+<!-- Custom meal modal -->
+<div class="modal-backdrop" id="customModalBackdrop">
+  <div class="modal" onclick="event.stopPropagation()">
+    <h3 id="customModalTitle">Add Custom Meal</h3>
+    <div class="form-group">
+      <label class="form-label">Meal Name *</label>
+      <input class="form-input" id="cmName" type="text" placeholder="e.g. Overnight Oats">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Calories *</label>
+        <input class="form-input" id="cmKcal" type="number" placeholder="0">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Protein (g)</label>
+        <input class="form-input" id="cmProtein" type="number" placeholder="0">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Fiber (g)</label>
+        <input class="form-input" id="cmFiber" type="number" placeholder="0">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Category</label>
+      <select class="form-input" id="cmCategory">
+        <option value="breakfast">Breakfast</option>
+        <option value="lunch">Lunch</option>
+        <option value="dinner" selected>Dinner</option>
+        <option value="sides">Sides & Staples</option>
+        <option value="snacks">Snacks & Drinks</option>
+      </select>
+    </div>
+    <div class="form-actions">
+      <button class="btn-cancel" onclick="closeCustomModal()">Cancel</button>
+      <button class="btn-save" onclick="saveCustomMeal()">Add to Library</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════
+// CONSTANTS
+// ══════════════════════════════════════════════
+const GOALS = { kcal: 1500, protein: 100, fiber: 25 };
+const DAY_LABELS  = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+const MEAL_TYPES  = [
+  { key:'breakfast', label:'Breakfast',       icon:'🌅' },
+  { key:'lunch',     label:'Lunch',           icon:'☀️' },
+  { key:'dinner',    label:'Dinner',          icon:'🌙' },
+  { key:'snacks',    label:'Snacks & Drinks', icon:'🍎' },
+];
+const CAT_ORDER  = ['breakfast','lunch','dinner','sides','snacks'];
+const CAT_LABELS = { breakfast:'Breakfast', lunch:'Lunch', dinner:'Dinner', sides:'Sides & Add-Ons', snacks:'Snacks & Drinks' };
+
+// Meals are loaded dynamically from meal-library.md via linkLibraryFile().
+// BASE_MEALS is kept as an empty array for legacy compatibility with any saved state references.
+const BASE_MEALS = [];
+
+// ══════════════════════════════════════════════
+// GROCERY CATEGORIES
+// ══════════════════════════════════════════════
+const GROCERY_CATS = [
+  { key:'protein',     label:'Proteins',          emoji:'🥩' },
+  { key:'produce',     label:'Produce',            emoji:'🥦' },
+  { key:'dairy',       label:'Dairy & Eggs',       emoji:'🥛' },
+  { key:'pantry',      label:'Pantry & Dry Goods', emoji:'🛒' },
+  { key:'supplements', label:'Supplements',         emoji:'💊' },
+];
+
+// Ingredient data is loaded dynamically from meal-library.md.
+// MEAL_INGREDIENTS is kept as an empty stub; the live data lives in MEAL_INGR (populated by parseMealLibrary).
+const MEAL_INGREDIENTS = {
+  /* ── BREAKFAST ── */
+  'chia-base': [
+    {n:'Oikos Greek Yogurt 0%',                q:112, u:'g',      c:'dairy'       },
+    {n:'Almond milk, vanilla unsweetened',      q:120, u:'ml',     c:'dairy'       },
+    {n:'Chia seeds',                            q:30,  u:'g',      c:'pantry'      },
+    {n:'Granola',                               q:8,   u:'g',      c:'pantry'      },
+    {n:'Pumpkin seeds',                         q:8,   u:'g',      c:'pantry'      },
+  ],
+  'chia-kiwi': [
+    {n:'Oikos Greek Yogurt 0%',                q:112, u:'g',      c:'dairy'       },
+    {n:'Almond milk, vanilla unsweetened',      q:120, u:'ml',     c:'dairy'       },
+    {n:'Chia seeds',                            q:30,  u:'g',      c:'pantry'      },
+    {n:'Granola',                               q:8,   u:'g',      c:'pantry'      },
+    {n:'Pumpkin seeds',                         q:8,   u:'g',      c:'pantry'      },
+    {n:'Maple syrup',                           q:5,   u:'ml',     c:'pantry'      },
+    {n:'Kiwi',                                  q:80,  u:'g',      c:'produce'     },
+  ],
+  'chia-blueberry': [
+    {n:'Oikos Greek Yogurt 0%',                q:112, u:'g',      c:'dairy'       },
+    {n:'Almond milk, vanilla unsweetened',      q:120, u:'ml',     c:'dairy'       },
+    {n:'Chia seeds',                            q:30,  u:'g',      c:'pantry'      },
+    {n:'Granola',                               q:8,   u:'g',      c:'pantry'      },
+    {n:'Pumpkin seeds',                         q:8,   u:'g',      c:'pantry'      },
+    {n:'Maple syrup',                           q:5,   u:'ml',     c:'pantry'      },
+    {n:'Blueberries',                           q:50,  u:'g',      c:'produce'     },
+  ],
+  'chia-strawberry': [
+    {n:'Oikos Greek Yogurt 0%',                q:112, u:'g',      c:'dairy'       },
+    {n:'Almond milk, vanilla unsweetened',      q:120, u:'ml',     c:'dairy'       },
+    {n:'Chia seeds',                            q:30,  u:'g',      c:'pantry'      },
+    {n:'Granola',                               q:8,   u:'g',      c:'pantry'      },
+    {n:'Pumpkin seeds',                         q:8,   u:'g',      c:'pantry'      },
+    {n:'Maple syrup',                           q:5,   u:'ml',     c:'pantry'      },
+    {n:'Strawberries',                          q:120, u:'g',      c:'produce'     },
+  ],
+  'chia-mod': [
+    {n:'Oikos or Siggi\'s yogurt',             q:80,  u:'g',      c:'dairy'       },
+    {n:'Almond milk, vanilla unsweetened',      q:80,  u:'ml',     c:'dairy'       },
+    {n:'Chia seeds',                            q:30,  u:'g',      c:'pantry'      },
+    {n:'Granola',                               q:8,   u:'g',      c:'pantry'      },
+    {n:'Pumpkin seeds',                         q:8,   u:'g',      c:'pantry'      },
+    {n:'Maple syrup',                           q:5,   u:'ml',     c:'pantry'      },
+  ],
+  'chia-mod-blue': [
+    {n:'Oikos or Siggi\'s yogurt',             q:80,  u:'g',      c:'dairy'       },
+    {n:'Almond milk, vanilla unsweetened',      q:80,  u:'ml',     c:'dairy'       },
+    {n:'Chia seeds',                            q:30,  u:'g',      c:'pantry'      },
+    {n:'Granola',                               q:8,   u:'g',      c:'pantry'      },
+    {n:'Pumpkin seeds',                         q:8,   u:'g',      c:'pantry'      },
+    {n:'Maple syrup',                           q:5,   u:'ml',     c:'pantry'      },
+    {n:'Blueberries',                           q:50,  u:'g',      c:'produce'     },
+  ],
+  'chia-raspberry': [
+    {n:'Oikos Greek Yogurt 0%',                q:112, u:'g',      c:'dairy'       },
+    {n:'Almond milk, vanilla unsweetened',      q:120, u:'ml',     c:'dairy'       },
+    {n:'Chia seeds',                            q:30,  u:'g',      c:'pantry'      },
+    {n:'Granola',                               q:8,   u:'g',      c:'pantry'      },
+    {n:'Pumpkin seeds',                         q:8,   u:'g',      c:'pantry'      },
+    {n:'Raspberries',                           q:20,  u:'g',      c:'produce'     },
+  ],
+  'chia-protein': [
+    {n:'Oikos Greek Yogurt 0%',                q:112, u:'g',      c:'dairy'       },
+    {n:'Almond milk, vanilla unsweetened',      q:120, u:'ml',     c:'dairy'       },
+    {n:'Chia seeds',                            q:30,  u:'g',      c:'pantry'      },
+    {n:'Granola',                               q:8,   u:'g',      c:'pantry'      },
+    {n:'Pumpkin seeds',                         q:8,   u:'g',      c:'pantry'      },
+    {n:'Leanfit Plant-Based Protein, vanilla',  q:17,  u:'g',      c:'supplements' },
+  ],
+  'collagen-coffee': [
+    {n:'Sports Research Collagen Peptide',      q:1,   u:'scoop',  c:'supplements' },
+    {n:'Black coffee',                          q:240, u:'ml',     c:'pantry'      },
+  ],
+  'good-protein-plain': [
+    {n:'Good Protein powder (mixed berries)',   q:1,   u:'scoop',  c:'supplements' },
+  ],
+  'good-protein': [
+    {n:'Good Protein powder (mixed berries)',   q:1,   u:'scoop',  c:'supplements' },
+    {n:'Blueberries',                           q:50,  u:'g',      c:'produce'     },
+  ],
+  'siggis': [
+    {n:"Siggi's high protein vanilla yogurt",  q:100, u:'g',      c:'dairy'       },
+  ],
+
+  /* ── LUNCH ── */
+  'turkey-sandwich': [
+    {n:'Country Harvest Protein Bread',        q:2,   u:'slices', c:'pantry'      },
+    {n:'Turkey deli slices',                   q:3,   u:'slices', c:'protein'     },
+    {n:'Kraft cheese slice',                   q:1,   u:'slice',  c:'dairy'       },
+    {n:'Lettuce',                              q:20,  u:'g',      c:'produce'     },
+    {n:'Cucumber',                             q:30,  u:'g',      c:'produce'     },
+  ],
+  'jalapeno-bowl': [
+    {n:'Rotisserie chicken, shredded (skin off)',q:180, u:'g',     c:'protein'     },
+    {n:'Butternut squash, cubed',              q:200, u:'g',      c:'produce'     },
+    {n:'Baby spinach',                         q:30,  u:'g',      c:'produce'     },
+    {n:'Jalapeño, fresh',                      q:1,   u:'each',   c:'produce'     },
+    {n:'Lime',                                 q:0.25,u:'each',   c:'produce'     },
+    {n:'Fresh cilantro',                       q:5,   u:'g',      c:'produce'     },
+    {n:'Corn, canned, drained',                q:30,  u:'g',      c:'pantry'      },
+    {n:'Black beans, canned, drained',         q:80,  u:'g',      c:'pantry'      },
+    {n:'Nonfat Greek yogurt (sauce)',          q:43,  u:'g',      c:'dairy'       },
+    {n:'Low-fat cottage cheese (sauce)',       q:19,  u:'g',      c:'dairy'       },
+    {n:'Cooking oil',                          q:3,   u:'ml',     c:'pantry'      },
+    {n:'Garlic powder',                        q:0.5, u:'tsp',    c:'pantry'      },
+    {n:'Onion powder',                         q:0.5, u:'tsp',    c:'pantry'      },
+    {n:'Cumin',                                q:0.25,u:'tsp',    c:'pantry'      },
+  ],
+  'chicken-wrap': [
+    {n:'PC Protein Tortilla',                  q:1,   u:'each',   c:'pantry'      },
+    {n:'Rotisserie chicken, shredded (skin off)',q:100, u:'g',     c:'protein'     },
+    {n:'Cottage cheese 1%',                    q:80,  u:'g',      c:'dairy'       },
+    {n:'Baby spinach',                         q:30,  u:'g',      c:'produce'     },
+    {n:'Cucumber',                             q:50,  u:'g',      c:'produce'     },
+    {n:'Feta cheese',                          q:20,  u:'g',      c:'dairy'       },
+  ],
+  'chicken-salad': [
+    {n:'Rotisserie chicken, shredded (skin off)',q:100, u:'g',     c:'protein'     },
+    {n:'Cottage cheese 1%',                    q:80,  u:'g',      c:'dairy'       },
+    {n:'Baby spinach',                         q:30,  u:'g',      c:'produce'     },
+    {n:'Cucumber',                             q:50,  u:'g',      c:'produce'     },
+    {n:'Feta cheese',                          q:20,  u:'g',      c:'dairy'       },
+  ],
+  'tortilla-eggs': [
+    {n:'PC Protein Tortilla',                  q:1,   u:'each',   c:'pantry'      },
+    {n:'Eggs',                                 q:2,   u:'each',   c:'dairy'       },
+    {n:'Baby spinach',                         q:30,  u:'g',      c:'produce'     },
+    {n:'Feta cheese',                          q:20,  u:'g',      c:'dairy'       },
+  ],
+  'cottage-eggs': [
+    {n:'Eggs',                                 q:2,   u:'each',   c:'dairy'       },
+    {n:'Cottage cheese 1%',                    q:75,  u:'g',      c:'dairy'       },
+    {n:'Country Harvest Protein Bread',        q:1,   u:'slice',  c:'pantry'      },
+  ],
+  'shrimp-cauli-alfredo': [
+    {n:'Shrimp',                               q:200, u:'g',      c:'protein'     },
+    {n:'Parmesan cheese',                      q:11,  u:'g',      c:'dairy'       },
+    {n:'Pecorino Romano cheese',               q:11,  u:'g',      c:'dairy'       },
+    {n:'Cauliflower',                          q:250, u:'g',      c:'produce'     },
+    {n:'Skim milk',                            q:0.25,u:'cup',    c:'dairy'       },
+    {n:'Garlic',                               q:1.5, u:'cloves', c:'produce'     },
+  ],
+
+  /* ── DINNER ── */
+  'chicken-adobo': [
+    {n:'Chicken thighs, bone-in, skin removed',q:240, u:'g',      c:'protein'     },
+    {n:'Sweet onion',                          q:33,  u:'g',      c:'produce'     },
+    {n:'Garlic',                               q:3,   u:'cloves', c:'produce'     },
+    {n:'Soy sauce',                            q:27,  u:'ml',     c:'pantry'      },
+    {n:'White vinegar',                        q:27,  u:'ml',     c:'pantry'      },
+    {n:'Olive oil',                            q:5,   u:'ml',     c:'pantry'      },
+  ],
+  'ginisang-munggo': [
+    {n:'Mung beans (dry)',                     q:67,  u:'g',      c:'pantry'      },
+    {n:'Pork loin',                            q:100, u:'g',      c:'protein'     },
+    {n:'Garlic',                               q:2,   u:'cloves', c:'produce'     },
+    {n:'Onion',                                q:40,  u:'g',      c:'produce'     },
+    {n:'Tomato',                               q:67,  u:'g',      c:'produce'     },
+    {n:'Spinach or malunggay',                 q:40,  u:'g',      c:'produce'     },
+    {n:'Fish sauce (patis)',                   q:7,   u:'ml',     c:'pantry'      },
+    {n:'Olive oil',                            q:2,   u:'ml',     c:'pantry'      },
+  ],
+  'sinigang-hipon': [
+    {n:'Shrimp, shell-on, no head',            q:170, u:'g',      c:'protein'     },
+    {n:'Chinese eggplant',                     q:100, u:'g',      c:'produce'     },
+    {n:'Okra',                                 q:75,  u:'g',      c:'produce'     },
+    {n:'Tomatoes',                             q:75,  u:'g',      c:'produce'     },
+    {n:'Onion',                                q:40,  u:'g',      c:'produce'     },
+    {n:'Spinach',                              q:75,  u:'g',      c:'produce'     },
+    {n:'Knorr Sinigang mix',                   q:0.5, u:'packet', c:'pantry'      },
+    {n:'Magic Sarap',                          q:0.5, u:'packet', c:'pantry'      },
+  ],
+  'beef-enoki': [
+    {n:'Beef, thin sliced',                    q:180, u:'g',      c:'protein'     },
+    {n:'Enoki mushrooms',                      q:110, u:'g',      c:'produce'     },
+    {n:'Onion',                                q:75,  u:'g',      c:'produce'     },
+    {n:'Garlic',                               q:1,   u:'cloves', c:'produce'     },
+    {n:'Eggs',                                 q:1,   u:'each',   c:'dairy'       },
+    {n:'Soy sauce',                            q:22,  u:'ml',     c:'pantry'      },
+    {n:'Sesame seeds',                         q:2,   u:'g',      c:'pantry'      },
+  ],
+  'chicken-thighs': [
+    {n:'Chicken thighs, skinless',             q:2,   u:'each',   c:'protein'     },
+    {n:'Olive oil',                            q:5,   u:'ml',     c:'pantry'      },
+  ],
+  'chicken-asparagus': [
+    {n:'Chicken thighs, skinless',             q:325, u:'g',      c:'protein'     },
+    {n:'Asparagus',                            q:200, u:'g',      c:'produce'     },
+    {n:'Garlic',                               q:2,   u:'cloves', c:'produce'     },
+    {n:'Soy sauce',                            q:5,   u:'ml',     c:'pantry'      },
+    {n:'Honey',                                q:10,  u:'ml',     c:'pantry'      },
+    {n:'Turmeric',                             q:1,   u:'tsp',    c:'pantry'      },
+  ],
+  'lemon-shrimp': [
+    {n:'Shrimp, peeled and deveined',          q:130, u:'g',      c:'protein'     },
+    {n:'Lemon',                                q:1,   u:'each',   c:'produce'     },
+    {n:'Cherry tomatoes',                      q:50,  u:'g',      c:'produce'     },
+    {n:'Cucumber',                             q:50,  u:'g',      c:'produce'     },
+    {n:'Baby spinach',                         q:30,  u:'g',      c:'produce'     },
+    {n:'Fresh herbs (dill)',                   q:5,   u:'g',      c:'produce'     },
+    {n:'Nonfat Greek yogurt (sauce)',          q:50,  u:'g',      c:'dairy'       },
+    {n:'Cottage cheese 1% (sauce)',            q:60,  u:'g',      c:'dairy'       },
+    {n:'Olive oil',                            q:5,   u:'ml',     c:'pantry'      },
+    {n:'Garlic powder',                        q:1,   u:'tsp',    c:'pantry'      },
+  ],
+  'turkey-marinara': [
+    {n:'Lean ground turkey',                   q:151, u:'g',      c:'protein'     },
+    {n:'Frozen butternut squash',              q:200, u:'g',      c:'produce'     },
+    {n:'Tomato basil sauce (e.g. Classico)',   q:120, u:'g',      c:'pantry'      },
+    {n:'Baby spinach',                         q:30,  u:'g',      c:'produce'     },
+    {n:'Cottage cheese 1%',                    q:40,  u:'g',      c:'dairy'       },
+    {n:'Garlic',                               q:1,   u:'cloves', c:'produce'     },
+    {n:'Olive oil',                            q:3,   u:'ml',     c:'pantry'      },
+  ],
+  'chicken-tinola': [
+    {n:'Chicken thighs, bone-in, skin removed',q:360, u:'g',      c:'protein'     },
+    {n:'Ginger',                               q:15,  u:'g',      c:'produce'     },
+    {n:'Onion',                                q:40,  u:'g',      c:'produce'     },
+    {n:'Garlic',                               q:2,   u:'cloves', c:'produce'     },
+    {n:'Chayote (sayote)',                      q:100, u:'g',      c:'produce'     },
+    {n:'Spinach or malunggay',                 q:30,  u:'g',      c:'produce'     },
+    {n:'Fish sauce (patis)',                   q:8,   u:'ml',     c:'pantry'      },
+    {n:'Cooking oil',                          q:3,   u:'ml',     c:'pantry'      },
+  ],
+  'chicken-noodle': [
+    {n:'Chicken thighs, bone-in',              q:200, u:'g',      c:'protein'     },
+    {n:'Protein pasta (Barilla+)',             q:80,  u:'g',      c:'pantry'      },
+    {n:'Green cabbage',                        q:100, u:'g',      c:'produce'     },
+    {n:'Chicken broth',                        q:400, u:'ml',     c:'pantry'      },
+    {n:'Garlic',                               q:2,   u:'cloves', c:'produce'     },
+    {n:'Onion',                                q:50,  u:'g',      c:'produce'     },
+    {n:'Carrots',                              q:50,  u:'g',      c:'produce'     },
+  ],
+  'chicken-curry': [
+    {n:'Chicken thighs, boneless skinless',    q:189, u:'g',      c:'protein'     },
+    {n:'Coconut milk, full-fat',               q:50,  u:'ml',     c:'pantry'      },
+    {n:'Potato',                               q:63,  u:'g',      c:'produce'     },
+    {n:'Zucchini',                             q:50,  u:'g',      c:'produce'     },
+    {n:'Carrot',                               q:30,  u:'g',      c:'produce'     },
+    {n:'Green beans',                          q:38,  u:'g',      c:'produce'     },
+    {n:'Bell pepper (red + green)',             q:50,  u:'g',      c:'produce'     },
+    {n:'Onion',                                q:30,  u:'g',      c:'produce'     },
+    {n:'Garlic',                               q:1,   u:'cloves', c:'produce'     },
+    {n:'Ginger',                               q:4,   u:'g',      c:'produce'     },
+    {n:'Curry powder / Filipino curry mix',    q:1,   u:'tbsp',   c:'pantry'      },
+    {n:'Fish sauce (patis)',                   q:4,   u:'ml',     c:'pantry'      },
+    {n:'Olive oil',                            q:3,   u:'ml',     c:'pantry'      },
+  ],
+  'turkey-stir-fry': [
+    {n:'Lean ground turkey',                   q:227, u:'g',      c:'protein'     },
+    {n:'Green beans (long beans)',             q:80,  u:'g',      c:'produce'     },
+    {n:'Shallots',                             q:30,  u:'g',      c:'produce'     },
+    {n:'Garlic',                               q:3,   u:'cloves', c:'produce'     },
+    {n:'Fresh Thai basil',                     q:10,  u:'g',      c:'produce'     },
+    {n:'Soy sauce',                            q:10,  u:'ml',     c:'pantry'      },
+    {n:'Fish sauce (patis)',                   q:5,   u:'ml',     c:'pantry'      },
+    {n:'Oyster sauce',                         q:10,  u:'ml',     c:'pantry'      },
+    {n:'Cooking oil',                          q:5,   u:'ml',     c:'pantry'      },
+  ],
+  'turkey-pasta': [
+    {n:'Lean ground turkey',                   q:151, u:'g',      c:'protein'     },
+    {n:'Banza chickpea pasta, dry',            q:30,  u:'g',      c:'pantry'      },
+    {n:'Tomato basil pasta sauce',             q:120, u:'g',      c:'pantry'      },
+    {n:'Baby spinach',                         q:30,  u:'g',      c:'produce'     },
+    {n:'Cottage cheese 1%',                    q:40,  u:'g',      c:'dairy'       },
+    {n:'Garlic',                               q:1,   u:'cloves', c:'produce'     },
+    {n:'Onion',                                q:30,  u:'g',      c:'produce'     },
+    {n:'Olive oil',                            q:3,   u:'ml',     c:'pantry'      },
+  ],
+  'chicken-soup': [
+    {n:'Chicken thighs, cooked & shredded',    q:200, u:'g',      c:'protein'     },
+    {n:'Green cabbage, chopped',               q:75,  u:'g',      c:'produce'     },
+    {n:'Carrots',                              q:50,  u:'g',      c:'produce'     },
+    {n:'Celery',                               q:1,   u:'stalk',  c:'produce'     },
+    {n:'Garlic',                               q:2,   u:'cloves', c:'produce'     },
+    {n:'Onion',                                q:50,  u:'g',      c:'produce'     },
+  ],
+  'ginger-soy-chicken': [
+    {n:'Chicken thighs, boneless skinless',    q:188, u:'g',      c:'protein'     },
+    {n:'Green cabbage, shredded',              q:225, u:'g',      c:'produce'     },
+    {n:'Onion',                                q:30,  u:'g',      c:'produce'     },
+    {n:'Garlic',                               q:4,   u:'g',      c:'produce'     },
+    {n:'Fresh ginger',                         q:5,   u:'g',      c:'produce'     },
+    {n:'Soy sauce',                            q:8,   u:'ml',     c:'pantry'      },
+    {n:'Rice vinegar',                         q:4,   u:'ml',     c:'pantry'      },
+    {n:'Sesame oil',                           q:1,   u:'ml',     c:'pantry'      },
+    {n:'Olive oil',                            q:3,   u:'ml',     c:'pantry'      },
+  ],
+  'sinampalukan': [
+    {n:'Chicken thighs, bone-in, skin removed',q:250, u:'g',      c:'protein'     },
+    {n:'Eggplant',                             q:83,  u:'g',      c:'produce'     },
+    {n:'Kangkong or spinach',                  q:67,  u:'g',      c:'produce'     },
+    {n:'Okra',                                 q:33,  u:'g',      c:'produce'     },
+    {n:'Long beans',                           q:67,  u:'g',      c:'produce'     },
+    {n:'Tomatoes',                             q:33,  u:'g',      c:'produce'     },
+    {n:'Onion',                                q:27,  u:'g',      c:'produce'     },
+    {n:'Garlic',                               q:7,   u:'g',      c:'produce'     },
+    {n:'Cooking oil',                          q:5,   u:'ml',     c:'pantry'      },
+    {n:'Sinigang sa Sampalok mix',             q:2,   u:'tsp',    c:'pantry'      },
+    {n:'Fish sauce (patis)',                   q:10,  u:'ml',     c:'pantry'      },
+  ],
+  'turkey-marinara-sauce': [
+    {n:'Lean ground turkey',                   q:151, u:'g',      c:'protein'     },
+    {n:'Tomato basil sauce (e.g. Classico)',   q:120, u:'g',      c:'pantry'      },
+    {n:'Baby spinach',                         q:30,  u:'g',      c:'produce'     },
+    {n:'Cottage cheese 1%',                    q:40,  u:'g',      c:'dairy'       },
+    {n:'Garlic',                               q:0.5, u:'cloves', c:'produce'     },
+    {n:'Onion',                                q:15,  u:'g',      c:'produce'     },
+    {n:'Olive oil',                            q:3,   u:'ml',     c:'pantry'      },
+  ],
+
+  /* ── SIDES ── */
+  'rice-100': [
+    {n:'White rice, dry (~45g raw = 100g cooked)', q:45, u:'g',  c:'pantry'      },
+  ],
+  'lentils-100': [
+    {n:'Green/red lentils, dry (~45g raw = 100g cooked)', q:45, u:'g', c:'pantry'},
+  ],
+  'green-beans': [
+    {n:'Green beans, fresh or frozen',         q:100, u:'g',      c:'produce'     },
+  ],
+  'broccoli-100': [
+    {n:'Broccoli, fresh or frozen',            q:100, u:'g',      c:'produce'     },
+  ],
+  'edamame-85': [
+    {n:'Edamame, shelled (frozen)',            q:85,  u:'g',      c:'produce'     },
+  ],
+  'catelli-pasta': [
+    {n:'Catelli Protein+ Spaghetti (dry)',     q:100, u:'g',      c:'pantry'      },
+  ],
+
+  /* ── SNACKS ── */
+  'matcha': [
+    {n:'Matcha powder',                        q:2,   u:'g',      c:'pantry'      },
+    {n:'Almond milk, unsweetened',             q:240, u:'ml',     c:'dairy'       },
+  ],
+  'halo-top': [
+    {n:'Halo Top ice cream',                   q:87,  u:'g',      c:'dairy'       },
+  ],
+  'kiwi-80':         [ {n:'Kiwi',             q:80,  u:'g',      c:'produce'     } ],
+  'blueberries-50':  [ {n:'Blueberries',      q:50,  u:'g',      c:'produce'     } ],
+  'raspberries-80':  [ {n:'Raspberries',      q:80,  u:'g',      c:'produce'     } ],
+  'strawberries-120':[ {n:'Strawberries',     q:120, u:'g',      c:'produce'     } ],
+  'lemon-cheesecake': [
+    {n:'Cottage cheese, low fat',              q:190, u:'g',      c:'dairy'       },
+    {n:'Lemon',                                q:0.5, u:'each',   c:'produce'     },
+    {n:'Stevia or sweetener',                  q:1,   u:'tsp',    c:'pantry'      },
+    {n:'Vanilla extract',                      q:0.5, u:'tsp',    c:'pantry'      },
+  ],
+  'premier-protein': [
+    {n:'Premier Protein shake',                q:1,   u:'each',   c:'supplements' },
+  ],
+  'sleepytime-tea': [
+    {n:'Sleepytime tea bag',                   q:1,   u:'each',   c:'pantry'      },
+    {n:'Honey',                                q:3,   u:'ml',     c:'pantry'      },
+  ],
+};
+// Live ingredient map — populated by parseMealLibrary(); overrides the stub above.
+let MEAL_INGR = {};
+
+// ══════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════
+let weekOffset    = 0;
+let plan          = {};
+let customMeals   = [];
+let trackerMeals  = [];
+let savedWeeks    = [];   // [ { label, dateKey, snapshot } ]
+let trackerLinked        = false;
+let pendingTrackerHandle = null;  // stored handle awaiting permission re-grant
+let libraryMeals         = [];    // loaded from meal-library.md
+let libraryLinked        = false;
+let pendingLibraryHandle = null;
+
+let selectedCell  = null;
+let pickerSearch  = '';
+let pickerServings = {};   // mealId -> current serving in the picker (reset on close)
+
+// Serving edit popup state
+let editTarget = null;     // { dateStr, mealType, uid }
+let editServing = 1;
+
+// Custom meal edit state
+let editingCustomMealId = null;
+
+// Meal library state
+let mealLibraryTab    = 'all';
+let mealLibrarySearch = '';
+let mealLibrarySort   = 'name';
+
+function loadState() {
+  try {
+    const d = JSON.parse(localStorage.getItem('mpp_v3') || '{}');
+    plan        = d.plan        || {};
+    customMeals = d.customMeals || [];
+    weekOffset  = d.weekOffset  || 0;
+    savedWeeks  = d.savedWeeks  || [];
+  } catch(e) {}
+}
+function saveState() {
+  try { localStorage.setItem('mpp_v3', JSON.stringify({ plan, customMeals, weekOffset, savedWeeks })); } catch(e) {}
+}
+
+// ══════════════════════════════════════════════
+// DATE HELPERS
+// ══════════════════════════════════════════════
+function getWeekDates(offset = 0) {
+  const now = new Date(), dow = now.getDay();
+  const diff = dow === 0 ? -6 : 1 - dow;
+  const mon = new Date(now);
+  mon.setDate(now.getDate() + diff + offset * 7);
+  mon.setHours(0,0,0,0);
+  return Array.from({length:7}, (_,i) => { const d=new Date(mon); d.setDate(mon.getDate()+i); return d; });
+}
+function toStr(d) { return d.toISOString().split('T')[0]; }
+function isToday(d) {
+  const n=new Date();
+  return d.getDate()===n.getDate() && d.getMonth()===n.getMonth() && d.getFullYear()===n.getFullYear();
+}
+function fmtWeekLabel(dates) {
+  const s=dates[0], e=dates[6];
+  const mo=d=>d.toLocaleDateString('en',{month:'short'}), dy=d=>d.toLocaleDateString('en',{day:'numeric'});
+  return s.getMonth()===e.getMonth()
+    ? `${mo(s)} ${dy(s)}–${dy(e)}, ${s.getFullYear()}`
+    : `${mo(s)} ${dy(s)} – ${mo(e)} ${dy(e)}, ${s.getFullYear()}`;
+}
+
+// ══════════════════════════════════════════════
+// PLAN HELPERS
+// ══════════════════════════════════════════════
+function getDayPlan(ds) {
+  if (!plan[ds]) plan[ds] = {breakfast:[],lunch:[],dinner:[],snacks:[]};
+  return plan[ds];
+}
+function getDayTotals(ds) {
+  const dp=getDayPlan(ds), t={kcal:0,protein:0,fiber:0};
+  for (const mt of ['breakfast','lunch','dinner','snacks'])
+    for (const m of (dp[mt]||[])) { t.kcal+=m.kcal||0; t.protein+=m.protein||0; t.fiber+=m.fiber||0; }
+  return t;
+}
+function getWeekTotals(dates) {
+  const t={kcal:0,protein:0,fiber:0};
+  for (const d of dates) { const dt=getDayTotals(toStr(d)); t.kcal+=dt.kcal; t.protein+=dt.protein; t.fiber+=dt.fiber; }
+  return t;
+}
+function getAllMeals() { return [...libraryMeals, ...customMeals]; }
+
+// ══════════════════════════════════════════════
+// GOAL STATUS
+// ══════════════════════════════════════════════
+function kcalStatus(v) {
+  if (v > GOALS.kcal)          return 'over';
+  if (v >= GOALS.kcal * 0.87)  return 'perfect';
+  if (v >= GOALS.kcal * 0.60)  return 'under';
+  return 'low';
+}
+function kcalBadge(v) {
+  const diff = Math.round(Math.abs(v - GOALS.kcal));
+  const s = kcalStatus(v);
+  if (s==='perfect') return '✓ on track';
+  if (s==='over')    return `↑ +${diff} over`;
+  if (s==='under')   return `↓ ${diff} under`;
+  return '⚠ very low';
+}
+function minStatus(v, goal) {
+  if (v >= goal)          return 'met';
+  if (v >= goal * 0.75)   return 'close';
+  return 'low';
+}
+function minIcon(v, goal) {
+  const s = minStatus(v, goal);
+  return s==='met' ? '✓' : s==='close' ? '⚠' : '✕';
+}
+function minValClass(v, goal) {
+  const s = minStatus(v, goal);
+  return s==='met' ? 'val-met' : s==='close' ? 'val-close' : 'val-low';
+}
+
+// ══════════════════════════════════════════════
+// TRACKER FILE PARSING + PERSISTENCE
+// ══════════════════════════════════════════════
+
+// IndexedDB helpers — store the FileSystemFileHandle so it survives page refreshes
+function openHandleDB() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open('mpp-tracker-handle', 1);
+    req.onupgradeneeded = e => e.target.result.createObjectStore('handles');
+    req.onsuccess  = e => resolve(e.target.result);
+    req.onerror    = () => reject();
+  });
+}
+async function saveTrackerHandle(handle) {
+  try {
+    const db = await openHandleDB();
+    const tx = db.transaction('handles', 'readwrite');
+    tx.objectStore('handles').put(handle, 'tracker');
+  } catch(e) {}
+}
+async function clearTrackerHandle() {
+  try {
+    const db = await openHandleDB();
+    const tx = db.transaction('handles', 'readwrite');
+    tx.objectStore('handles').delete('tracker');
+  } catch(e) {}
+}
+async function getStoredTrackerHandle() {
+  try {
+    const db = await openHandleDB();
+    return await new Promise((resolve, reject) => {
+      const tx  = db.transaction('handles', 'readonly');
+      const req = tx.objectStore('handles').get('tracker');
+      req.onsuccess = () => resolve(req.result);
+      req.onerror   = () => reject();
+    });
+  } catch(e) { return null; }
+}
+
+// Called on page load — silently reloads tracker if permission is already granted,
+// or surfaces a one-click "Reconnect" button if Chrome needs a re-grant.
+async function loadStoredTracker() {
+  const handle = await getStoredTrackerHandle();
+  if (!handle) return;
+  try {
+    const perm = await handle.queryPermission({ mode: 'read' });
+    if (perm === 'granted') {
+      // Permission still active — reload silently
+      const file = await handle.getFile();
+      parseTrackerMeals(await file.text());
+      trackerLinked = true;
+      render();
+    } else if (perm === 'prompt') {
+      // Chrome needs one user click to re-grant — show Reconnect button
+      pendingTrackerHandle = handle;
+      render();
+    } else {
+      // Permission denied — clear stored handle
+      clearTrackerHandle();
+    }
+  } catch(e) {
+    clearTrackerHandle();
+  }
+}
+
+async function linkTrackerFile() {
+  // If we already have a stored handle awaiting permission, try to re-grant it
+  // (avoids opening the file picker again — just one click)
+  if (pendingTrackerHandle) {
+    try {
+      const perm = await pendingTrackerHandle.requestPermission({ mode: 'read' });
+      if (perm === 'granted') {
+        const file = await pendingTrackerHandle.getFile();
+        parseTrackerMeals(await file.text());
+        trackerLinked = true;
+        pendingTrackerHandle = null;
+        render();
+        if (document.getElementById('pickerPanel').classList.contains('open')) renderPickerList(pickerSearch);
+        return;
+      }
+    } catch(e) {}
+    pendingTrackerHandle = null;
+    clearTrackerHandle();
+    render();
+    return;
+  }
+
+  if (!window.showOpenFilePicker) {
+    alert('Direct file access requires Chrome 86+. Make sure you are using a recent version of Chrome.');
+    return;
+  }
+  try {
+    const [handle] = await window.showOpenFilePicker({
+      types:[{ description:'Markdown', accept:{'text/markdown':['.md']} }], multiple:false
+    });
+    const file = await handle.getFile();
+    parseTrackerMeals(await file.text());
+    trackerLinked = true;
+    saveTrackerHandle(handle);   // persist for future page loads
+    render();
+    if (document.getElementById('pickerPanel').classList.contains('open')) renderPickerList(pickerSearch);
+  } catch(e) {
+    if (e.name !== 'AbortError') alert('Could not read tracker file: ' + e.message);
+  }
+}
+
+// ══════════════════════════════════════════════
+// MEAL LIBRARY FILE (meal-library.md)
+// ══════════════════════════════════════════════
+async function saveLibraryHandle(handle) {
+  try { const db = await openHandleDB(); db.transaction('handles','readwrite').objectStore('handles').put(handle,'library'); } catch(e) {}
+}
+async function clearLibraryHandle() {
+  try { const db = await openHandleDB(); db.transaction('handles','readwrite').objectStore('handles').delete('library'); } catch(e) {}
+}
+async function getStoredLibraryHandle() {
+  try {
+    const db = await openHandleDB();
+    return await new Promise((res, rej) => {
+      const req = db.transaction('handles','readonly').objectStore('handles').get('library');
+      req.onsuccess = () => res(req.result); req.onerror = () => rej();
+    });
+  } catch(e) { return null; }
+}
+
+function parseMealLibrary(content) {
+  const meals = [];
+  const ingr = {};
+  const VALID_CATS = ['breakfast','lunch','dinner','sides','snacks'];
+
+  // Split on ## category headings
+  const catBlocks = content.split(/^##\s+/m);
+  for (const catBlock of catBlocks.slice(1)) {
+    const catLines = catBlock.split('\n');
+    const cat = catLines[0].trim().toLowerCase();
+    if (!VALID_CATS.includes(cat)) continue;
+
+    // Split on ### meal headings within the category
+    const mealBlocks = catBlock.split(/^###\s+/m);
+    for (const block of mealBlocks.slice(1)) {
+      const lines = block.split('\n');
+      const name = lines[0].trim();
+      if (!name) continue;
+
+      // Parse metadata line: id: x | kcal: y | protein: z | fiber: w | note: optional
+      const metaLine = lines.find(l => /^\s*id\s*:/i.test(l));
+      if (!metaLine) continue;
+      const meta = {};
+      for (const part of metaLine.split('|')) {
+        const colon = part.indexOf(':');
+        if (colon === -1) continue;
+        const key = part.slice(0, colon).trim().toLowerCase();
+        const val = part.slice(colon + 1).trim();
+        meta[key] = val;
+      }
+      const id      = meta['id'];
+      const kcal    = parseFloat(meta['kcal'])    || 0;
+      const protein = parseFloat(meta['protein']) || 0;
+      const fiber   = parseFloat(meta['fiber'])   || 0;
+      const note    = meta['note'] || '';
+      if (!id || !kcal) continue;
+
+      meals.push({ id, name, cat, kcal, protein, fiber, ...(note ? { note } : {}) });
+
+      // Parse ingredient table
+      const ings = [];
+      let inTable = false;
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (/^\|\s*ingredient/i.test(trimmed)) { inTable = true; continue; }
+        if (inTable && /^\|\s*[-:]+/.test(trimmed)) continue; // separator row
+        if (inTable && trimmed.startsWith('|')) {
+          const cells = trimmed.split('|').map(c => c.trim()).filter(Boolean);
+          if (cells.length >= 4) {
+            const q = parseFloat(cells[1]);
+            if (!isNaN(q) && cells[0]) {
+              ings.push({ n: cells[0], q, u: cells[2], c: cells[3] });
+            }
+          }
+        } else if (inTable && trimmed && !trimmed.startsWith('|')) {
+          inTable = false;
+        }
+      }
+      if (ings.length > 0) ingr[id] = ings;
+    }
+  }
+
+  libraryMeals = meals;
+  MEAL_INGR    = ingr;
+}
+
+async function loadStoredLibrary() {
+  const handle = await getStoredLibraryHandle();
+  if (!handle) return;
+  try {
+    const perm = await handle.queryPermission({ mode: 'read' });
+    if (perm === 'granted') {
+      parseMealLibrary(await (await handle.getFile()).text());
+      libraryLinked = true;
+      render();
+      if (document.getElementById('pickerPanel').classList.contains('open')) renderPickerList(pickerSearch);
+    } else if (perm === 'prompt') {
+      pendingLibraryHandle = handle;
+      render();
+    } else {
+      clearLibraryHandle();
+    }
+  } catch(e) { clearLibraryHandle(); }
+}
+
+async function linkLibraryFile() {
+  if (pendingLibraryHandle) {
+    try {
+      const perm = await pendingLibraryHandle.requestPermission({ mode: 'read' });
+      if (perm === 'granted') {
+        parseMealLibrary(await (await pendingLibraryHandle.getFile()).text());
+        libraryLinked = true;
+        pendingLibraryHandle = null;
+        render();
+        if (document.getElementById('pickerPanel').classList.contains('open')) renderPickerList(pickerSearch);
+        return;
+      }
+    } catch(e) {}
+    pendingLibraryHandle = null;
+    clearLibraryHandle();
+    render();
+    return;
+  }
+  if (!window.showOpenFilePicker) {
+    alert('Direct file access requires Chrome 86+.');
+    return;
+  }
+  try {
+    const [handle] = await window.showOpenFilePicker({
+      types:[{ description:'Meal Library (Markdown)', accept:{'text/markdown':['.md']} }], multiple:false
+    });
+    parseMealLibrary(await (await handle.getFile()).text());
+    libraryLinked = true;
+    saveLibraryHandle(handle);
+    render();
+    if (document.getElementById('pickerPanel').classList.contains('open')) renderPickerList(pickerSearch);
+  } catch(e) {
+    if (e.name !== 'AbortError') alert('Could not read meal library: ' + e.message);
+  }
+}
+
+function parseTrackerMeals(content) {
+  const seen = new Set(BASE_MEALS.map(m => cleanMealName(m.name)));
+  const start = content.indexOf('## Recurring Meals Reference');
+  if (start === -1) return;
+  const end = content.indexOf('\n---', start + 10);
+  const section = content.slice(start, end === -1 ? content.length : end);
+  const parsed = [];
+  for (const line of section.split('\n')) {
+    if (!line.startsWith('|') || /^\|\s*[-:]/.test(line)) continue;
+    const cells = line.split('|').map(c => c.replace(/\*\*/g,'').trim()).filter(Boolean);
+    if (cells.length < 2) continue;
+    const name = cells[0].replace(/,\s*see recipe/gi,'').replace(/,\s*base only/gi,'').replace(/\(see recipe\)/gi,'').replace(/\(base only\)/gi,'').trim();
+    if (!name || /^(meal|item)$/i.test(name)) continue;
+    const kcal    = parseFloat((cells[1]||'').replace(/[~,≈]/g,'').split(/[–\-]/)[0]) || 0;
+    const protein = parseFloat((cells[2]||'').replace(/[~,≈]/g,'').split(/[–\-]/)[0]) || 0;
+    const fiber   = parseFloat((cells[3]||'').replace(/[~,≈]/g,'').split(/[–\-]/)[0]) || 0;
+    if (!kcal || seen.has(cleanMealName(name))) continue;
+    seen.add(cleanMealName(name));
+    parsed.push({ id:'tracker-'+norm(name).slice(0,40), name, cat:guessCat(name), kcal, protein, fiber, note:'From your tracker', fromTracker:true });
+  }
+  trackerMeals = parsed;
+}
+function norm(n) { return n.toLowerCase().replace(/\s+/g,' ').replace(/[^a-z0-9 ]/g,'').replace(/\s+/g,' ').trim(); }
+// Normalizes a meal name for matching — strips tracker qualifiers, serving counts, etc.
+function cleanMealName(n) {
+  return norm((n || '')
+    .replace(/^(regular|modified)\s+/i, '')   // "Regular chia pudding" → "chia pudding"
+    .replace(/,\s*see recipe/gi, '')
+    .replace(/,\s*base only/gi, '')
+    .replace(/\(see recipe\)/gi, '')
+    .replace(/\(base only\)/gi, '')
+    .replace(/\(\d+\.?\d*\s+serving[^)]*\)/gi, '')
+    .replace(/,\s*\d+\.?\d*\s+servings?/gi, '')
+    .replace(/\s*\(\d+\.?\d*\s*g\)/gi, '')    // "(80g)" weight annotations
+    .trim());
+}
+function guessCat(n) {
+  const l = n.toLowerCase();
+  if (/chia|collagen|coffee|yogurt|shake|oat|granola/.test(l)) return 'breakfast';
+  if (/sandwich|wrap|tortilla/.test(l)) return 'lunch';
+  if (/rice|lentil|green bean|edamame/.test(l)) return 'sides';
+  if (/tea|latte|matcha|ice cream|halo|kiwi|blueberr|strawberr|raspberr|mango|banana|fruit|snack|popcorn|chip|bar/.test(l)) return 'snacks';
+  return 'dinner';
+}
+
+// ══════════════════════════════════════════════
+// ACTIONS — ADD / REMOVE
+// ══════════════════════════════════════════════
+function addMealToCell(mealId) {
+  if (!selectedCell) return;
+  const base = getAllMeals().find(m => m.id === mealId);
+  if (!base) return;
+  const sv = pickerServings[mealId] || 1;
+  const dp = getDayPlan(selectedCell.dateStr);
+  dp[selectedCell.mealType].push({
+    ...base,
+    serving:      sv,
+    kcal:         parseFloat((base.kcal    * sv).toFixed(1)),
+    protein:      parseFloat((base.protein * sv).toFixed(1)),
+    fiber:        parseFloat((base.fiber   * sv).toFixed(1)),
+    _baseKcal:    base.kcal,
+    _baseProtein: base.protein,
+    _baseFiber:   base.fiber,
+    _uid: Date.now() + Math.random(),
+  });
+  saveState();
+  render();
+  renderPickerList(pickerSearch);
+}
+
+function removeMeal(dateStr, mealType, uid) {
+  const dp = getDayPlan(dateStr);
+  dp[mealType] = (dp[mealType]||[]).filter(m => m._uid !== uid);
+  saveState(); render();
+}
+
+// ══════════════════════════════════════════════
+// PICKER
+// ══════════════════════════════════════════════
+function openPicker(dateStr, mealType) {
+  selectedCell   = { dateStr, mealType };
+  pickerSearch   = '';
+  pickerServings = {};
+  const mt = MEAL_TYPES.find(m => m.key === mealType);
+  const date = new Date(dateStr + 'T00:00:00');
+  document.getElementById('pickerTitle').textContent    = `${mt.icon} Add to ${mt.label}`;
+  document.getElementById('pickerSubtitle').textContent = date.toLocaleDateString('en',{weekday:'long',month:'short',day:'numeric'});
+  document.getElementById('pickerSearchInput').value    = '';
+  document.getElementById('pickerBackdrop').classList.add('open');
+  document.getElementById('pickerPanel').classList.add('open');
+  renderPickerList('');
+  setTimeout(() => document.getElementById('pickerSearchInput').focus(), 50);
+  render();
+}
+function closePicker() {
+  selectedCell   = null;
+  pickerServings = {};
+  document.getElementById('pickerBackdrop').classList.remove('open');
+  document.getElementById('pickerPanel').classList.remove('open');
+  render();
+}
+function filterPicker(q) { pickerSearch = q; renderPickerList(q); }
+
+// Serving stepper inside picker
+function stepPickerServing(mealId, delta) {
+  const cur = pickerServings[mealId] || 1;
+  pickerServings[mealId] = Math.max(0.25, Math.min(4, Math.round((cur + delta) * 4) / 4));
+  renderPickerList(pickerSearch);
+}
+
+function renderPickerList(q) {
+  if (!libraryLinked && customMeals.length === 0) {
+    document.getElementById('pickerList').innerHTML = `<div class="picker-no-results" style="padding:24px 16px;line-height:1.7">
+      📚 Link your meal library to get started.<br>
+      <button class="tracker-btn tracker-btn-unlinked" style="margin-top:10px" onclick="closePicker();linkLibraryFile()">🔗 Link meal-library.md</button>
+    </div>`;
+    return;
+  }
+  const lq = q.toLowerCase();
+  const all = getAllMeals();
+  const filtered = lq ? all.filter(m => m.name.toLowerCase().includes(lq) || (m.note||'').toLowerCase().includes(lq)) : all;
+
+  if (!filtered.length) {
+    document.getElementById('pickerList').innerHTML = `<div class="picker-no-results">No meals match "${q}"</div>`;
+    return;
+  }
+
+  const addedIds = new Set();
+  if (selectedCell) {
+    const dp = getDayPlan(selectedCell.dateStr);
+    (dp[selectedCell.mealType]||[]).forEach(m => addedIds.add(m.id));
+  }
+
+  const fmtSv = sv => sv === 1 ? '1×' : `${sv}×`;
+
+  const makeItem = m => {
+    const sv      = pickerServings[m.id] || 1;
+    const sKcal   = Math.round(m.kcal    * sv);
+    const sProt   = parseFloat((m.protein * sv).toFixed(1));
+    const sFiber  = parseFloat((m.fiber   * sv).toFixed(1));
+    const added   = addedIds.has(m.id);
+    return `
+      <div class="picker-item${added ? ' already-added' : ''}">
+        <div class="picker-item-top">
+          <div class="picker-item-name">${m.name}${added ? ' ✓' : ''}</div>
+          <div class="serving-ctrl">
+            <button class="serving-step-btn" onclick="stepPickerServing('${m.id}',-0.25)">−</button>
+            <span class="serving-val">${fmtSv(sv)}</span>
+            <button class="serving-step-btn" onclick="stepPickerServing('${m.id}',0.25)">+</button>
+          </div>
+          <button class="picker-add-btn" onclick="addMealToCell('${m.id}')">+</button>
+        </div>
+        <div class="picker-item-macros">${sKcal} kcal · ${sProt}g protein · ${sFiber}g fiber</div>
+        ${m.note ? `<div class="picker-item-note">${m.note}</div>` : ''}
+      </div>`;
+  };
+
+  let html = '';
+  const trackerFiltered = filtered.filter(m => m.fromTracker);
+  if (trackerFiltered.length) {
+    html += `<div class="picker-section"><div class="picker-section-hdr from-tracker">📄 From Your Tracker</div>${trackerFiltered.map(makeItem).join('')}</div>`;
+  }
+  for (const cat of CAT_ORDER) {
+    const meals = filtered.filter(m => m.cat === cat && !m.fromTracker && !m.custom);
+    if (!meals.length) continue;
+    html += `<div class="picker-section"><div class="picker-section-hdr">${CAT_LABELS[cat]}</div>${meals.map(makeItem).join('')}</div>`;
+  }
+  const customFiltered = filtered.filter(m => m.custom);
+  if (customFiltered.length) {
+    html += `<div class="picker-section"><div class="picker-section-hdr">⭐ My Custom Meals</div>${customFiltered.map(makeItem).join('')}</div>`;
+  }
+  document.getElementById('pickerList').innerHTML = html;
+}
+
+// ══════════════════════════════════════════════
+// SERVING EDIT POPUP (click kcal in grid)
+// ══════════════════════════════════════════════
+function openServingPopup(dateStr, mealType, uid) {
+  const dp = getDayPlan(dateStr);
+  const item = (dp[mealType]||[]).find(m => m._uid === uid);
+  if (!item) return;
+  editTarget  = { dateStr, mealType, uid };
+  editServing = item.serving || 1;
+  document.getElementById('spoMealName').textContent = item.name;
+  document.getElementById('spoMacros').textContent   =
+    `Base: ${item._baseKcal||item.kcal} kcal · ${item._baseProtein||item.protein}g protein · ${item._baseFiber||item.fiber}g fiber`;
+  updateSpoVal();
+  document.getElementById('servingOverlay').classList.add('open');
+}
+function stepPopupServing(delta) {
+  editServing = Math.max(0.25, Math.min(4, Math.round((editServing + delta) * 4) / 4));
+  updateSpoVal();
+}
+function updateSpoVal() {
+  document.getElementById('spoVal').textContent = editServing === 1 ? '1×' : `${editServing}×`;
+}
+function closeServingPopup() {
+  editTarget = null;
+  document.getElementById('servingOverlay').classList.remove('open');
+}
+function saveServingEdit() {
+  if (!editTarget) return;
+  const { dateStr, mealType, uid } = editTarget;
+  const dp   = getDayPlan(dateStr);
+  const item = (dp[mealType]||[]).find(m => m._uid === uid);
+  if (item) {
+    const bKcal = item._baseKcal    || (item.kcal    / (item.serving||1));
+    const bProt = item._baseProtein || (item.protein / (item.serving||1));
+    const bFib  = item._baseFiber   || (item.fiber   / (item.serving||1));
+    item.serving      = editServing;
+    item.kcal         = parseFloat((bKcal * editServing).toFixed(1));
+    item.protein      = parseFloat((bProt * editServing).toFixed(1));
+    item.fiber        = parseFloat((bFib  * editServing).toFixed(1));
+    item._baseKcal    = bKcal;
+    item._baseProtein = bProt;
+    item._baseFiber   = bFib;
+  }
+  saveState();
+  closeServingPopup();
+  render();
+}
+
+// ══════════════════════════════════════════════
+// CUSTOM MEAL MODAL
+// ══════════════════════════════════════════════
+function openCustomModal(existingId = null) {
+  editingCustomMealId = existingId;
+  const existing = existingId ? customMeals.find(m => m.id === existingId) : null;
+  document.getElementById('customModalTitle').textContent = existing ? 'Edit Meal' : 'Add Custom Meal';
+  document.getElementById('cmName').value     = existing ? existing.name    : '';
+  document.getElementById('cmKcal').value     = existing ? existing.kcal    : '';
+  document.getElementById('cmProtein').value  = existing ? existing.protein : '';
+  document.getElementById('cmFiber').value    = existing ? existing.fiber   : '';
+  document.getElementById('cmCategory').value = existing ? existing.cat     : 'dinner';
+  document.getElementById('customModalBackdrop').classList.add('open');
+  setTimeout(() => document.getElementById('cmName').focus(), 50);
+}
+function closeCustomModal() {
+  editingCustomMealId = null;
+  document.getElementById('customModalBackdrop').classList.remove('open');
+}
+function saveCustomMeal() {
+  const name = document.getElementById('cmName').value.trim();
+  const kcal = parseFloat(document.getElementById('cmKcal').value) || 0;
+  if (!name || !kcal) { alert('Please enter at least a name and calorie count.'); return; }
+  const data = {
+    name, cat: document.getElementById('cmCategory').value,
+    kcal, protein: parseFloat(document.getElementById('cmProtein').value)||0,
+    fiber: parseFloat(document.getElementById('cmFiber').value)||0, note:'Custom meal', custom:true,
+  };
+  if (editingCustomMealId) {
+    const idx = customMeals.findIndex(m => m.id === editingCustomMealId);
+    if (idx >= 0) customMeals[idx] = { ...customMeals[idx], ...data };
+  } else {
+    customMeals.push({ id:'custom-'+Date.now(), ...data });
+  }
+  saveState();
+  closeCustomModal();
+  if (document.getElementById('mealLibraryModal').classList.contains('open')) renderMealLibraryContent();
+  renderPickerList(pickerSearch);
+}
+
+// ══════════════════════════════════════════════
+// MEAL LIBRARY
+// ══════════════════════════════════════════════
+function openMealLibrary() {
+  mealLibrarySearch = '';
+  document.getElementById('mlSearch').value = '';
+  // Reset sort/tab buttons to current state
+  document.querySelectorAll('.ml-sort-btn').forEach(b => b.classList.remove('active'));
+  const sortBtnMap = { name:'mlSortName', kcal:'mlSortKcal', cat:'mlSortCat' };
+  document.getElementById(sortBtnMap[mealLibrarySort]).classList.add('active');
+  document.querySelectorAll('.ml-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById(mealLibraryTab === 'all' ? 'mlTabAll' : 'mlTabCustom').classList.add('active');
+  renderMealLibraryContent();
+  document.getElementById('mealLibraryModal').classList.add('open');
+}
+function closeMealLibrary() {
+  document.getElementById('mealLibraryModal').classList.remove('open');
+}
+function setLibraryTab(tab) {
+  mealLibraryTab = tab;
+  document.querySelectorAll('.ml-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById(tab === 'all' ? 'mlTabAll' : 'mlTabCustom').classList.add('active');
+  renderMealLibraryContent();
+}
+function setLibrarySort(sort) {
+  mealLibrarySort = sort;
+  document.querySelectorAll('.ml-sort-btn').forEach(b => b.classList.remove('active'));
+  const sortBtnMap = { name:'mlSortName', kcal:'mlSortKcal', cat:'mlSortCat' };
+  document.getElementById(sortBtnMap[sort]).classList.add('active');
+  renderMealLibraryContent();
+}
+function deleteCustomMeal(id) {
+  const meal = customMeals.find(m => m.id === id);
+  if (!meal) return;
+  if (!confirm(`Delete "${meal.name}" from your custom meals?`)) return;
+  customMeals = customMeals.filter(m => m.id !== id);
+  saveState();
+  renderMealLibraryContent();
+  renderPickerList(pickerSearch);
+}
+
+const ML_CAT_EMOJI  = { breakfast:'🌅', lunch:'☀️', dinner:'🌙', sides:'🥣', snacks:'🍎' };
+const ML_CAT_LABELS = { breakfast:'Breakfast', lunch:'Lunch', dinner:'Dinner', sides:'Sides', snacks:'Snacks' };
+
+function mlItemHtml(m) {
+  const catEmoji = ML_CAT_EMOJI[m.cat] || '';
+  const catLabel = ML_CAT_LABELS[m.cat] || m.cat;
+  const actions = m.custom
+    ? `<div class="ml-item-actions">
+        <button class="ml-edit-btn" title="Edit meal" onclick="openCustomModal('${m.id}')">✏</button>
+        <button class="ml-del-btn"  title="Delete meal" onclick="deleteCustomMeal('${m.id}')">×</button>
+       </div>`
+    : m.fromTracker
+    ? `<span class="ml-readonly-badge">Tracker</span>`
+    : `<span class="ml-readonly-badge">Built-in</span>`;
+  const note = m.note ? `<div class="ml-item-note">${m.note}</div>` : '';
+  return `<div class="ml-item">
+    <div class="ml-item-info">
+      <div class="ml-item-name" title="${m.name}">${m.name}</div>
+      <div class="ml-item-macros">${Math.round(m.kcal)} kcal · ${m.protein}g protein · ${m.fiber}g fiber</div>
+      ${note}
+    </div>
+    <span class="ml-cat-pill ml-cat-${m.cat}">${catEmoji} ${catLabel}</span>
+    ${actions}
+  </div>`;
+}
+
+function renderMealLibraryContent() {
+  // Update tab labels with counts
+  const total  = getAllMeals().length;
+  const custom = customMeals.length;
+  document.getElementById('mlTabAll').textContent    = `All Meals (${total})`;
+  document.getElementById('mlTabCustom').textContent = `⭐ My Custom (${custom})`;
+
+  let meals = mealLibraryTab === 'custom' ? [...customMeals] : getAllMeals();
+
+  // Filter by search
+  const q = mealLibrarySearch.trim().toLowerCase();
+  if (q) meals = meals.filter(m => m.name.toLowerCase().includes(q) || (m.note||'').toLowerCase().includes(q));
+
+  // Sort
+  if (mealLibrarySort === 'name') {
+    meals.sort((a,b) => a.name.localeCompare(b.name));
+  } else if (mealLibrarySort === 'kcal') {
+    meals.sort((a,b) => a.kcal - b.kcal);
+  } else { // cat
+    meals.sort((a,b) => (CAT_ORDER.indexOf(a.cat) - CAT_ORDER.indexOf(b.cat)) || a.name.localeCompare(b.name));
+  }
+
+  if (!libraryLinked && mealLibraryTab !== 'custom') {
+    document.getElementById('mlList').innerHTML = `<div class="ml-empty">📚 No meal library linked yet.<br><br>
+      <button class="tracker-btn tracker-btn-unlinked" style="margin:0 auto;display:inline-flex" onclick="linkLibraryFile();closeMealLibrary()">🔗 Link meal-library.md</button><br><br>
+      Open the file <strong>meal-library.md</strong> from your Meal Prep Application folder.</div>`;
+    return;
+  }
+  if (!meals.length) {
+    document.getElementById('mlList').innerHTML = `<div class="ml-empty">${q
+      ? `No meals match "<strong>${q}</strong>"`
+      : mealLibraryTab === 'custom'
+        ? 'No custom meals yet.<br>Click <strong>+ New Meal</strong> to add one!'
+        : 'No meals found.'}</div>`;
+    return;
+  }
+
+  let html = '';
+  if (mealLibrarySort === 'cat') {
+    for (const cat of CAT_ORDER) {
+      const catMeals = meals.filter(m => m.cat === cat);
+      if (!catMeals.length) continue;
+      html += `<div class="ml-section-hdr">${ML_CAT_EMOJI[cat]||''} ${ML_CAT_LABELS[cat]||cat}</div>`;
+      html += catMeals.map(mlItemHtml).join('');
+    }
+  } else {
+    html = meals.map(mlItemHtml).join('');
+  }
+  document.getElementById('mlList').innerHTML = html;
+}
+
+// ══════════════════════════════════════════════
+// COPY GROCERY LIST TO CLIPBOARD (for Notes)
+// ══════════════════════════════════════════════
+async function copyGroceryListForNotes(dates) {
+  const { ingredients, fallbackMeals } = buildGroceryList(dates);
+  if (!ingredients.length && !fallbackMeals.length) {
+    showToast('⚠ No meals planned this week yet');
+    return;
+  }
+  const wt = getWeekTotals(dates);
+  const weekLabel = fmtWeekLabel(dates);
+
+  // Group + sort ingredients (shared by both formats)
+  const grouped = {};
+  for (const ing of ingredients) { if (!grouped[ing.cat]) grouped[ing.cat]=[]; grouped[ing.cat].push(ing); }
+  for (const k of Object.keys(grouped)) grouped[k].sort((a,b) => a.name.localeCompare(b.name));
+
+  // ── Plain text (fallback) ──
+  const lines = [
+    `Grocery List — ${weekLabel}`,
+    `Week: ${Math.round(wt.kcal)} kcal · ${Math.round(wt.protein)}g protein · ${Math.round(wt.fiber)}g fiber`,
+    '',
+  ];
+  for (const gc of GROCERY_CATS) {
+    const ings = grouped[gc.key];
+    if (!ings || !ings.length) continue;
+    lines.push(`${gc.emoji} ${gc.label}`);
+    for (const ing of ings) lines.push(`☐  ${ing.name} — ${fmtQtyUnit(ing.qty, ing.unit)}`);
+    lines.push('');
+  }
+  if (fallbackMeals.length) {
+    lines.push('📋 Meal Components');
+    for (const m of fallbackMeals) lines.push(`☐  ${m.name}${m.totalServings !== 1 ? ' ×' + m.totalServings : ''}`);
+    lines.push('');
+  }
+  const plainText = lines.join('\n');
+
+  // ── HTML (rich paste — Notes renders headings + lists) ──
+  let html = `<html><head><meta charset="UTF-8"></head><body>`;
+  html += `<h2>🛒 Grocery List — ${weekLabel}</h2>`;
+  html += `<p><em>${Math.round(wt.kcal)} kcal &middot; ${Math.round(wt.protein)}g protein &middot; ${Math.round(wt.fiber)}g fiber</em></p>`;
+  for (const gc of GROCERY_CATS) {
+    const ings = grouped[gc.key];
+    if (!ings || !ings.length) continue;
+    html += `<h3>${gc.emoji} ${gc.label}</h3><ul>`;
+    for (const ing of ings) html += `<li>☐ ${ing.name} &mdash; ${fmtQtyUnit(ing.qty, ing.unit)}</li>`;
+    html += `</ul>`;
+  }
+  if (fallbackMeals.length) {
+    html += `<h3>📋 Meal Components</h3><ul>`;
+    for (const m of fallbackMeals) html += `<li>☐ ${m.name}${m.totalServings !== 1 ? ' &times;' + m.totalServings : ''}</li>`;
+    html += `</ul>`;
+  }
+  html += `</body></html>`;
+
+  // Try rich clipboard first (preferred by Notes), fall back to plain text
+  try {
+    await navigator.clipboard.write([
+      new ClipboardItem({
+        'text/plain': new Blob([plainText], { type: 'text/plain' }),
+        'text/html':  new Blob([html],      { type: 'text/html'  }),
+      })
+    ]);
+    showToast('📋 Copied! Open Notes and press ⌘V');
+  } catch(e) {
+    navigator.clipboard.writeText(plainText)
+      .then(() => showToast('📋 Copied! Open Notes and press ⌘V'))
+      .catch(() => showToast('⚠ Copy failed — check browser permissions'));
+  }
+}
+
+function showToast(msg, duration = 3200) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(el._timer);
+  el._timer = setTimeout(() => el.classList.remove('show'), duration);
+}
+
+// ══════════════════════════════════════════════
+// EXPORT / CLEAR
+// ══════════════════════════════════════════════
+function exportPlan(dates) {
+  const lines = [`# Weekly Meal Plan — ${fmtWeekLabel(dates)}`, ''];
+  for (const d of dates) {
+    const ds=toStr(d), dp=getDayPlan(ds), t=getDayTotals(ds);
+    const lbl = DAY_LABELS[d.getDay()===0?6:d.getDay()-1];
+    lines.push(`## ${lbl} ${d.toLocaleDateString('en',{month:'short',day:'numeric'})}`, '');
+    for (const mt of MEAL_TYPES) {
+      const items = dp[mt.key]||[];
+      if (items.length) lines.push(`**${mt.label}:** ${items.map(m=>`${m.name}${m.serving&&m.serving!==1?' ×'+m.serving:''} (~${Math.round(m.kcal)} kcal)`).join(' + ')}`);
+    }
+    if (t.kcal > 0) lines.push('', `*Totals: ${Math.round(t.kcal)} kcal | ${Math.round(t.protein)}g protein | ${Math.round(t.fiber)}g fiber*`);
+    lines.push('');
+  }
+  const blob = new Blob([lines.join('\n')], {type:'text/plain'});
+  const url = URL.createObjectURL(blob), a = document.createElement('a');
+  a.href = url; a.download = `meal-plan-${toStr(dates[0])}.md`; a.click(); URL.revokeObjectURL(url);
+}
+function clearWeek(dates) {
+  if (!confirm("Clear all meals from this week's plan?")) return;
+  for (const d of dates) delete plan[toStr(d)];
+  saveState(); render();
+}
+
+// ══════════════════════════════════════════════
+// RENDER
+// ══════════════════════════════════════════════
+function renderTotalsCell(ds) {
+  const t = getDayTotals(ds);
+  if (!t.kcal) return `<div class="totals-cell"><div class="totals-empty">—</div></div>`;
+
+  const kSt = kcalStatus(t.kcal);
+  const pPct = Math.min(100, Math.round((t.protein / GOALS.protein) * 100));
+  const fPct = Math.min(100, Math.round((t.fiber   / GOALS.fiber)   * 100));
+
+  return `<div class="totals-cell kcal-${kSt}">
+    <div class="total-kcal-row">
+      <span class="total-kcal-num">${Math.round(t.kcal)}</span>
+      <span class="total-kcal-unit">kcal</span>
+      <span class="total-kcal-badge">${kcalBadge(t.kcal)}</span>
+    </div>
+    <div class="macro-bar-row">
+      <span style="font-size:9px;color:#6B47A8;width:11px;flex-shrink:0">●</span>
+      <div class="bar-track bar-track-protein"><div class="bar-fill fill-protein" style="width:${pPct}%"></div></div>
+      <span class="macro-val ${minValClass(t.protein,GOALS.protein)}">${Math.round(t.protein)}g</span>
+      <span class="status-icon">${minIcon(t.protein,GOALS.protein)}</span>
+    </div>
+    <div class="macro-bar-row">
+      <span style="font-size:9px;color:#2D8F5C;width:11px;flex-shrink:0">●</span>
+      <div class="bar-track bar-track-fiber"><div class="bar-fill fill-fiber" style="width:${fPct}%"></div></div>
+      <span class="macro-val ${minValClass(t.fiber,GOALS.fiber)}">${Math.round(t.fiber)}g</span>
+      <span class="status-icon">${minIcon(t.fiber,GOALS.fiber)}</span>
+    </div>
+  </div>`;
+}
+
+function renderGrid(dates) {
+  const dayHdrs = dates.map((d,i) =>
+    `<div class="day-hdr${isToday(d)?' is-today':''}">
+      <div class="day-hdr-name">${DAY_LABELS[i]}</div>
+      <div class="day-hdr-date">${d.toLocaleDateString('en',{month:'short',day:'numeric'})}</div>
+    </div>`).join('');
+
+  const mealRows = MEAL_TYPES.map(mt => {
+    const cells = dates.map(d => {
+      const ds=toStr(d), dp=getDayPlan(ds), items=dp[mt.key]||[];
+      const isSel = selectedCell && selectedCell.dateStr===ds && selectedCell.mealType===mt.key;
+      const entries = items.map(item => {
+        const sv = item.serving || 1;
+        const showBadge = sv !== 1;
+        return `<div class="meal-entry">
+          <div class="meal-entry-name">${item.name}</div>
+          <div class="meal-entry-right">
+            ${showBadge ? `<span class="serving-badge">${sv}×</span>` : ''}
+            <span class="meal-entry-kcal" title="Click to edit serving" onclick="openServingPopup('${ds}','${mt.key}',${item._uid})">${Math.round(item.kcal)}</span>
+            <button class="meal-rm-btn" onclick="removeMeal('${ds}','${mt.key}',${item._uid})">×</button>
+          </div>
+        </div>`;
+      }).join('');
+      return `<div class="meal-cell${isSel?' is-selected':''}">
+        ${entries}
+        <button class="add-cell-btn" onclick="openPicker('${ds}','${mt.key}')">+ Add</button>
+      </div>`;
+    }).join('');
+    return `<div class="row-lbl"><span class="row-lbl-text">${mt.label}</span></div>${cells}`;
+  }).join('');
+
+  const totalCells = dates.map(d => renderTotalsCell(toStr(d))).join('');
+
+  return `<div class="grid-wrapper">
+    <div class="col-label"></div>${dayHdrs}
+    ${mealRows}
+    <div class="totals-lbl"><span class="totals-lbl-text">Totals</span></div>${totalCells}
+  </div>`;
+}
+
+function renderFooter(dates) {
+  const t = getWeekTotals(dates);
+  const planned = dates.filter(d => getDayTotals(toStr(d)).kcal > 0).length;
+  return `<div class="footer">
+    <div class="week-summary">
+      <span class="week-summary-label">This Week</span>
+      <div class="week-divider"></div>
+      <div class="week-metric"><div class="week-metric-val wm-kcal">${Math.round(t.kcal)}</div><div class="week-metric-lbl">kcal total</div></div>
+      <div class="week-metric"><div class="week-metric-val wm-protein">${Math.round(t.protein)}g</div><div class="week-metric-lbl">protein</div></div>
+      <div class="week-metric"><div class="week-metric-val wm-fiber">${Math.round(t.fiber)}g</div><div class="week-metric-lbl">fiber</div></div>
+      <div class="week-divider"></div>
+      <div class="week-metric"><div class="week-metric-val wm-days">${planned}<span style="font-size:12px;color:#9CA899">/7</span></div><div class="week-metric-lbl">days planned</div></div>
+    </div>
+    <div class="footer-actions">
+      <button class="action-btn action-btn-ghost" onclick="openMealLibrary()">📚 Library</button>
+      <button class="action-btn action-btn-ghost" onclick="openGroceryList(window._currentDates)">🛒 Grocery List</button>
+      <button class="action-btn action-btn-ghost" onclick="saveCurrentWeek(window._currentDates)">💾 Save Week</button>
+      <button class="action-btn action-btn-ghost" onclick="openSavedWeeksModal(window._currentDates)">📋 Templates</button>
+      <button class="action-btn action-btn-ghost" onclick="exportPlan(window._currentDates)">📥 Export</button>
+      <button class="action-btn action-btn-danger" onclick="clearWeek(window._currentDates)">🗑 Clear Week</button>
+    </div>
+  </div>`;
+}
+
+function render() {
+  const dates = getWeekDates(weekOffset);
+  window._currentDates = dates;
+  const libraryBtnHtml = libraryLinked
+    ? `<button class="tracker-btn tracker-btn-linked"   onclick="linkLibraryFile()">📚 Meal Library Linked ✓</button>`
+    : pendingLibraryHandle
+      ? `<button class="tracker-btn tracker-btn-pending" onclick="linkLibraryFile()">🔄 Reconnect Meal Library</button>`
+      : window.BAKED_LIBRARY && !window.showOpenFilePicker
+        ? `<button class="tracker-btn tracker-btn-linked" style="cursor:default">📚 Meals Ready ✓</button>`
+        : window.BAKED_LIBRARY
+          ? `<button class="tracker-btn tracker-btn-unlinked" onclick="linkLibraryFile()" title="Meals are pre-loaded. Link file for live updates.">🔗 Link for Live Updates</button>`
+          : `<button class="tracker-btn tracker-btn-unlinked" onclick="linkLibraryFile()">🔗 Link Meal Library</button>`;
+
+  document.getElementById('app').innerHTML = `
+    <div class="header">
+      <div class="header-brand">
+        <div class="header-logo">🥗</div>
+        <div><div class="header-title">Meal Prep Planner</div><div class="header-sub">Goal: 1,500 kcal · 100g protein · 25g fiber / day</div></div>
+      </div>
+      <div class="week-nav">
+        <button class="nav-btn" onclick="weekOffset--;render()">‹</button>
+        <div class="week-label">${fmtWeekLabel(dates)}</div>
+        <button class="nav-btn" onclick="weekOffset++;render()">›</button>
+        <button class="today-btn" onclick="weekOffset=0;render()">Today</button>
+      </div>
+      <div class="header-right">
+        <div class="goals-bar">
+          <div class="goal-pill"><div class="goal-dot dot-kcal"></div>1,500 kcal</div>
+          <div class="goal-pill"><div class="goal-dot dot-protein"></div>100g protein</div>
+          <div class="goal-pill"><div class="goal-dot dot-fiber"></div>25g fiber</div>
+        </div>
+        ${libraryBtnHtml}
+      </div>
+    </div>
+    <div class="main"><div class="planner-area">${renderGrid(dates)}</div></div>
+    ${renderFooter(dates)}
+  `;
+}
+
+// ══════════════════════════════════════════════
+// SAVE / LOAD WEEK TEMPLATES
+// ══════════════════════════════════════════════
+function saveCurrentWeek(dates) {
+  const planned = dates.filter(d => {
+    const dp = plan[toStr(d)];
+    return dp && ['breakfast','lunch','dinner','snacks'].some(mt => (dp[mt]||[]).length > 0);
+  }).length;
+  if (!planned) { alert('Nothing planned this week yet — add some meals first!'); return; }
+
+  const label = fmtWeekLabel(dates);
+  const snapshot = {};
+  for (const d of dates) {
+    const ds = toStr(d);
+    snapshot[ds] = JSON.parse(JSON.stringify(plan[ds] || {breakfast:[],lunch:[],dinner:[],snacks:[]}));
+  }
+  // Replace existing save for same week, otherwise prepend
+  savedWeeks = savedWeeks.filter(w => w.dateKey !== toStr(dates[0]));
+  savedWeeks.unshift({ label, dateKey: toStr(dates[0]), snapshot });
+  if (savedWeeks.length > 12) savedWeeks = savedWeeks.slice(0, 12);
+  saveState();
+  alert(`Saved: "${label}" — ${planned} day${planned !== 1 ? 's' : ''} planned.`);
+}
+
+function openSavedWeeksModal(dates) {
+  renderSavedWeeksList(dates);
+  document.getElementById('savedWeeksModal').classList.add('open');
+}
+function closeSavedWeeksModal() {
+  document.getElementById('savedWeeksModal').classList.remove('open');
+}
+function renderSavedWeeksList(dates) {
+  if (!savedWeeks.length) {
+    document.getElementById('savedWeeksList').innerHTML =
+      `<div class="saved-weeks-empty">No saved weeks yet.<br>Plan a week and click <strong>💾 Save Week</strong>.</div>`;
+    return;
+  }
+  document.getElementById('savedWeeksList').innerHTML = savedWeeks.map((w, i) => {
+    const dayCount = Object.values(w.snapshot).filter(dp =>
+      ['breakfast','lunch','dinner','snacks'].some(mt => (dp[mt]||[]).length > 0)
+    ).length;
+    return `<div class="saved-week-item">
+      <div>
+        <div class="saved-week-label">${w.label}</div>
+        <div class="saved-week-meta">${dayCount} day${dayCount !== 1 ? 's' : ''} planned</div>
+      </div>
+      <div class="saved-week-actions">
+        <button class="swa-load" onclick="loadSavedWeek(${i})">Load into this week</button>
+        <button class="swa-del" title="Delete" onclick="deleteSavedWeek(${i})">×</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+function loadSavedWeek(idx) {
+  const saved = savedWeeks[idx];
+  if (!saved) return;
+  if (!confirm(`Load "${saved.label}" into the current week? Existing meals will be replaced.`)) return;
+  const dates = window._currentDates;
+  const savedDates = Object.keys(saved.snapshot).sort();
+  dates.forEach((d, i) => {
+    const savedDs = savedDates[i];
+    if (savedDs) {
+      plan[toStr(d)] = JSON.parse(JSON.stringify(saved.snapshot[savedDs]));
+      // Re-stamp UIDs to avoid collisions
+      for (const mt of ['breakfast','lunch','dinner','snacks']) {
+        (plan[toStr(d)][mt] || []).forEach(m => { m._uid = Date.now() + Math.random(); });
+      }
+    }
+  });
+  saveState();
+  closeSavedWeeksModal();
+  render();
+}
+function deleteSavedWeek(idx) {
+  if (!confirm(`Delete "${savedWeeks[idx].label}"?`)) return;
+  savedWeeks.splice(idx, 1);
+  saveState();
+  renderSavedWeeksList(window._currentDates);
+}
+
+// ══════════════════════════════════════════════
+// GROCERY / PREP LIST
+// ══════════════════════════════════════════════
+function fmtQtyUnit(qty, unit) {
+  let q = Math.round(qty * 10) / 10;
+  let u = unit;
+  // Auto-scale
+  if (u === 'g'  && q >= 1000) { q = Math.round(q / 100) / 10; u = 'kg'; }
+  if (u === 'ml' && q >= 1000) { q = Math.round(q / 100) / 10; u = 'L';  }
+  // Format quantity
+  let qStr;
+  if (u === 'kg' || u === 'L') {
+    qStr = q % 1 === 0 ? q.toString() : q.toFixed(1);
+  } else if (q % 1 === 0) {
+    qStr = q.toString();
+  } else {
+    const fracs = [[0.25,'¼'],[0.5,'½'],[0.75,'¾'],[0.33,'⅓'],[0.67,'⅔'],[1.5,'1½'],[2.5,'2½']];
+    const match = fracs.find(([v]) => Math.abs(q - v) < 0.06);
+    qStr = match ? match[1] : q.toFixed(1);
+  }
+  return `${qStr} ${u}`;
+}
+
+function buildGroceryList(dates) {
+  const ingredients = {}; // key: `${cat}|||${name_lower}|||${unit}` → aggregated row
+  const fallbackMeals = {}; // for meals with no ingredient data
+
+  for (const d of dates) {
+    const ds = toStr(d);
+    const dp = plan[ds];
+    if (!dp) continue;
+    for (const mt of ['breakfast','lunch','dinner','snacks']) {
+      for (const m of (dp[mt] || [])) {
+        const sv = m.serving || 1;
+        let ingList = MEAL_INGR[m.id];
+        if (!ingList) {
+          // Fallback: match by normalized name (handles legacy tracker- prefixed IDs or custom meals)
+          const normClean = cleanMealName(m.name);
+          const match = libraryMeals.find(bm => cleanMealName(bm.name) === normClean);
+          if (match) ingList = MEAL_INGR[match.id];
+        }
+        if (ingList) {
+          for (const ing of ingList) {
+            const key = `${ing.c}|||${ing.n.toLowerCase()}|||${ing.u}`;
+            if (!ingredients[key]) ingredients[key] = { name: ing.n, qty: 0, unit: ing.u, cat: ing.c };
+            ingredients[key].qty = Math.round((ingredients[key].qty + ing.q * sv) * 100) / 100;
+          }
+        } else {
+          // Fallback for tracker/custom meals without ingredient data
+          const key = `meal|||${m.id || norm(m.name)}`;
+          if (!fallbackMeals[key]) fallbackMeals[key] = { name: m.name, cat: m.cat, totalServings: 0 };
+          fallbackMeals[key].totalServings = Math.round((fallbackMeals[key].totalServings + sv) * 100) / 100;
+        }
+      }
+    }
+  }
+  return {
+    ingredients: Object.values(ingredients),
+    fallbackMeals: Object.values(fallbackMeals),
+  };
+}
+
+function openGroceryList(dates) {
+  const { ingredients, fallbackMeals } = buildGroceryList(dates);
+  if (!ingredients.length && !fallbackMeals.length) {
+    alert('No meals planned this week yet — add some meals first!');
+    return;
+  }
+
+  const wt = getWeekTotals(dates);
+  const summaryHtml = `
+    <div class="grocery-week-summary">
+      <div class="grocery-summary-item"><div class="grocery-summary-val wm-kcal">${Math.round(wt.kcal)}</div><div class="grocery-summary-lbl">kcal / week</div></div>
+      <div class="grocery-summary-item"><div class="grocery-summary-val wm-protein">${Math.round(wt.protein)}g</div><div class="grocery-summary-lbl">protein</div></div>
+      <div class="grocery-summary-item"><div class="grocery-summary-val wm-fiber">${Math.round(wt.fiber)}g</div><div class="grocery-summary-lbl">fiber</div></div>
+      <div style="flex:1;text-align:right;font-size:11px;color:#9CA899">Tap ☐ to check off</div>
+    </div>`;
+
+  // Group and sort ingredients
+  const grouped = {};
+  for (const ing of ingredients) {
+    if (!grouped[ing.cat]) grouped[ing.cat] = [];
+    grouped[ing.cat].push(ing);
+  }
+  for (const k of Object.keys(grouped)) grouped[k].sort((a,b) => a.name.localeCompare(b.name));
+
+  let listHtml = '';
+  for (const gc of GROCERY_CATS) {
+    const ings = grouped[gc.key];
+    if (!ings || !ings.length) continue;
+    listHtml += `<div class="grocery-section"><div class="grocery-section-hdr">${gc.emoji} ${gc.label}</div>`;
+    for (const ing of ings) {
+      const uid = 'gi-' + Math.random().toString(36).slice(2);
+      listHtml += `
+        <div class="grocery-item" id="${uid}">
+          <div class="grocery-item-check" onclick="toggleGroceryCheck('${uid}')">☐</div>
+          <div class="grocery-item-info"><div class="grocery-item-name">${ing.name}</div></div>
+          <div class="grocery-item-qty">${fmtQtyUnit(ing.qty, ing.unit)}</div>
+        </div>`;
+    }
+    listHtml += '</div>';
+  }
+
+  // Fallback: meals without ingredient data
+  if (fallbackMeals.length) {
+    listHtml += `<div class="grocery-section"><div class="grocery-section-hdr">📋 Meal Components (no ingredient breakdown)</div>`;
+    for (const m of fallbackMeals) {
+      const uid = 'gi-' + Math.random().toString(36).slice(2);
+      const svLabel = m.totalServings !== 1 ? `${m.totalServings}× servings` : '1 serving';
+      listHtml += `
+        <div class="grocery-item" id="${uid}">
+          <div class="grocery-item-check" onclick="toggleGroceryCheck('${uid}')">☐</div>
+          <div class="grocery-item-info"><div class="grocery-item-name">${m.name}</div></div>
+          <div class="grocery-item-qty">${svLabel}</div>
+        </div>`;
+    }
+    listHtml += '</div>';
+  }
+
+  document.getElementById('groceryListContent').innerHTML = summaryHtml + listHtml;
+  document.getElementById('groceryListModal').classList.add('open');
+}
+
+function toggleGroceryCheck(uid) {
+  const el = document.getElementById(uid);
+  if (!el) return;
+  const check = el.querySelector('.grocery-item-check');
+  const name  = el.querySelector('.grocery-item-name');
+  const isChecked = check.classList.toggle('checked');
+  name.classList.toggle('checked', isChecked);
+  check.textContent = isChecked ? '☑' : '☐';
+}
+
+function closeGroceryList() {
+  document.getElementById('groceryListModal').classList.remove('open');
+}
+
+function exportGroceryList(dates) {
+  const { ingredients, fallbackMeals } = buildGroceryList(dates);
+  const wt = getWeekTotals(dates);
+  const lines = [
+    `# Grocery / Prep List — ${fmtWeekLabel(dates)}`,
+    `*Week: ${Math.round(wt.kcal)} kcal · ${Math.round(wt.protein)}g protein · ${Math.round(wt.fiber)}g fiber*`,
+    '',
+  ];
+  const grouped = {};
+  for (const ing of ingredients) { if (!grouped[ing.cat]) grouped[ing.cat] = []; grouped[ing.cat].push(ing); }
+  for (const gc of GROCERY_CATS) {
+    const ings = grouped[gc.key];
+    if (!ings || !ings.length) continue;
+    lines.push(`## ${gc.emoji} ${gc.label}`);
+    for (const ing of ings.sort((a,b) => a.name.localeCompare(b.name))) {
+      lines.push(`- [ ] ${ing.name} — ${fmtQtyUnit(ing.qty, ing.unit)}`);
+    }
+    lines.push('');
+  }
+  if (fallbackMeals.length) {
+    lines.push('## 📋 Meal Components');
+    for (const m of fallbackMeals) {
+      lines.push(`- [ ] ${m.name}${m.totalServings !== 1 ? ' ×' + m.totalServings : ''}`);
+    }
+    lines.push('');
+  }
+  const blob = new Blob([lines.join('\n')], {type:'text/plain'});
+  const url = URL.createObjectURL(blob), a = document.createElement('a');
+  a.href = url; a.download = `grocery-list-${toStr(dates[0])}.md`; a.click(); URL.revokeObjectURL(url);
+}
+
+// ══════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════
+loadState();
+// Pre-load baked meal library (works on all platforms, including mobile where File System API isn't available)
+if (window.BAKED_LIBRARY) {
+  libraryMeals = window.BAKED_LIBRARY.meals;
+  MEAL_INGR    = window.BAKED_LIBRARY.ingr;
+}
+render();
+loadStoredLibrary();  // On desktop: may override baked data with a live-linked file
+document.getElementById('customModalBackdrop').addEventListener('click', function(e) { if (e.target===this) closeCustomModal(); });
+document.getElementById('servingOverlay').addEventListener('click', function(e) { if (e.target===this) closeServingPopup(); });
+document.getElementById('savedWeeksModal').addEventListener('click', function(e) { if (e.target===this) closeSavedWeeksModal(); });
+document.getElementById('groceryListModal').addEventListener('click', function(e) { if (e.target===this) closeGroceryList(); });
+document.getElementById('mealLibraryModal').addEventListener('click', function(e) { if (e.target===this) closeMealLibrary(); });
+</script>
+</body>
+</html>
