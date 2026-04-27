@@ -5,24 +5,24 @@
 dateKey: 2026-04-27
 ### 2026-04-27
 breakfast: collagen-coffee(1), chia-kiwi(1)
-lunch: cottage-cheese-wrap(1)
+lunch: cottage-cheese-wrap(1), rotisserie-chicken-100g(0.5), cucumber-100g(0.5), cherry-tomatoes-50g(1)
 dinner: sinampalukan(1), rice-lentils-200(1)
 ### 2026-04-28
-breakfast: collagen-coffee(1), chia-mango-coconut(1), mango-100(0.5)
+breakfast: collagen-coffee(1), chia-mango-coconut(1), mango-100(0.75)
 lunch: chicken-salad(1)
 dinner: sinampalukan(1), rice-lentils-quinoa-200(1)
 snacks: cottage-cheese-100(0.75), blueberries-50(1.5)
 ### 2026-04-29
-breakfast: collagen-coffee(1), chia-mango-coconut(1), mango-100(0.5)
+breakfast: collagen-coffee(1), chia-mango-coconut(1), mango-100(0.75)
 lunch: chicken-salad(1)
 dinner: sinampalukan(1), rice-lentils-quinoa-200(1)
 snacks: cottage-cheese-100(0.75), blueberries-50(1.5)
 ### 2026-04-30
-breakfast: collagen-coffee(1), chia-mango-coconut(1), mango-100(0.5), metamucil-gummies(1)
+breakfast: collagen-coffee(1), chia-mango-coconut(1), mango-100(0.75), metamucil-gummies(1)
 lunch: turkey-marinara-sauce(1), kabocha-100(2.5)
 dinner: shrimp-cauli-alfredo(1), catelli-pasta(0.5)
 ### 2026-05-01
-breakfast: chia-kiwi(1), collagen-coffee(1), metamucil-gummies(1)
+breakfast: collagen-coffee(1), metamucil-gummies(1), chia-mango-coconut(1), mango-100(0.75)
 lunch: turkey-marinara-sauce(1), kabocha-100(2.5)
 dinner: shrimp-cauli-alfredo(1), catelli-pasta(0.5)
 ### 2026-05-02
@@ -180,6 +180,45 @@ dinner: lentils-100(0.75), rice-100(0.75), ginisang-munggo(1)
               "_baseProtein": 41,
               "_baseFiber": 0,
               "_uid": 1777302498948.2407
+            },
+            {
+              "id": "rotisserie-chicken-100g",
+              "name": "Shredded Rotisserie Chicken (100g)",
+              "cat": "dinner",
+              "kcal": 82.5,
+              "protein": 14.5,
+              "fiber": 0,
+              "serving": 0.5,
+              "_baseKcal": 165,
+              "_baseProtein": 29,
+              "_baseFiber": 0,
+              "_uid": 1777303237248.4321
+            },
+            {
+              "id": "cucumber-100g",
+              "name": "Cucumber (100g)",
+              "cat": "sides",
+              "kcal": 7.5,
+              "protein": 0.5,
+              "fiber": 0.5,
+              "serving": 0.5,
+              "_baseKcal": 15,
+              "_baseProtein": 1,
+              "_baseFiber": 1,
+              "_uid": 1777303247530.7292
+            },
+            {
+              "id": "cherry-tomatoes-50g",
+              "name": "Cherry Tomatoes (50g)",
+              "cat": "sides",
+              "kcal": 9,
+              "protein": 0,
+              "fiber": 1,
+              "serving": 1,
+              "_baseKcal": 9,
+              "_baseProtein": 0,
+              "_baseFiber": 1,
+              "_uid": 1777303250330.858
             }
           ],
           "dinner": [
@@ -245,10 +284,10 @@ dinner: lentils-100(0.75), rice-100(0.75), ginisang-munggo(1)
               "id": "mango-100",
               "name": "Mango (100g)",
               "cat": "sides",
-              "kcal": 30,
-              "protein": 0.4,
-              "fiber": 0.8,
-              "serving": 0.5,
+              "kcal": 45,
+              "protein": 0.6,
+              "fiber": 1.2,
+              "serving": 0.75,
               "_baseKcal": 60,
               "_baseProtein": 0.8,
               "_baseFiber": 1.6,
@@ -359,10 +398,10 @@ dinner: lentils-100(0.75), rice-100(0.75), ginisang-munggo(1)
               "id": "mango-100",
               "name": "Mango (100g)",
               "cat": "sides",
-              "kcal": 30,
-              "protein": 0.4,
-              "fiber": 0.8,
-              "serving": 0.5,
+              "kcal": 45,
+              "protein": 0.6,
+              "fiber": 1.2,
+              "serving": 0.75,
               "_baseKcal": 60,
               "_baseProtein": 0.8,
               "_baseFiber": 1.6,
@@ -473,10 +512,10 @@ dinner: lentils-100(0.75), rice-100(0.75), ginisang-munggo(1)
               "id": "mango-100",
               "name": "Mango (100g)",
               "cat": "sides",
-              "kcal": 30,
-              "protein": 0.4,
-              "fiber": 0.8,
-              "serving": 0.5,
+              "kcal": 45,
+              "protein": 0.6,
+              "fiber": 1.2,
+              "serving": 0.75,
               "_baseKcal": 60,
               "_baseProtein": 0.8,
               "_baseFiber": 1.6,
@@ -557,19 +596,6 @@ dinner: lentils-100(0.75), rice-100(0.75), ginisang-munggo(1)
         "2026-05-01": {
           "breakfast": [
             {
-              "id": "chia-kiwi",
-              "name": "Chia Pudding + Kiwi (80g)",
-              "cat": "breakfast",
-              "kcal": 334,
-              "protein": 23,
-              "fiber": 12,
-              "serving": 1,
-              "_baseKcal": 334,
-              "_baseProtein": 23,
-              "_baseFiber": 12,
-              "_uid": 1777143829391.4526
-            },
-            {
               "id": "collagen-coffee",
               "name": "Collagen Peptide + Black Coffee",
               "cat": "breakfast",
@@ -589,11 +615,39 @@ dinner: lentils-100(0.75), rice-100(0.75), ginisang-munggo(1)
               "kcal": 20,
               "protein": 0,
               "fiber": 5,
+              "note": "1 serving = 3 gummies",
               "serving": 1,
               "_baseKcal": 20,
               "_baseProtein": 0,
               "_baseFiber": 5,
-              "_uid": 1777143829391.6963
+              "_uid": 1777303397264.063
+            },
+            {
+              "id": "chia-mango-coconut",
+              "name": "Mango Coconut Chia Pudding",
+              "cat": "breakfast",
+              "kcal": 338,
+              "protein": 16,
+              "fiber": 12,
+              "note": "Meal-prep — 4 servings per batch. Refrigerate 4+ hrs or overnight.",
+              "serving": 1,
+              "_baseKcal": 338,
+              "_baseProtein": 16,
+              "_baseFiber": 12,
+              "_uid": 1777303400914.0405
+            },
+            {
+              "id": "mango-100",
+              "name": "Mango (100g)",
+              "cat": "sides",
+              "kcal": 45,
+              "protein": 0.6,
+              "fiber": 1.2,
+              "serving": 0.75,
+              "_baseKcal": 60,
+              "_baseProtein": 0.8,
+              "_baseFiber": 1.6,
+              "_uid": 1777303406931.756
             }
           ],
           "lunch": [
