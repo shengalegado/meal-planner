@@ -153,6 +153,14 @@ id: siggis | kcal: 100 | protein: 10 | fiber: 0
 |---|---|---|---|
 | Siggi's high protein vanilla yogurt | 100 | g | dairy |
 
+### Cottage Cheese Wrap
+id: cottage-cheese-wrap | kcal: 306 | protein: 41 | fiber: 0
+
+| Ingredient | Qty | Unit | Category |
+|---|---|---|---|
+| 1% Cottage Cheese | 225 | g | dairy |
+| Eggs | 2 | whole | protein |
+
 ---
 
 ## lunch
