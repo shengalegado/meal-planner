@@ -255,6 +255,13 @@ id: turkey-marinara-sauce | kcal: 353 | protein: 56 | fiber: 5
 
 ## dinner
 
+### Shredded Rotisserie Chicken (100g)
+id: rotisserie-chicken-100g | kcal: 165 | protein: 29 | fiber: 0
+
+| Ingredient | Qty | Unit | Category |
+|---|---|---|---|
+| Shredded rotisserie chicken, skin off | 100 | g | protein |
+
 ### Chicken Adobo
 id: chicken-adobo | kcal: 379 | protein: 42 | fiber: 1 | note: Base only — add rice + lentils. 3 servings per batch.
 
@@ -606,6 +613,20 @@ id: rice-lentils-quinoa-200 | kcal: 233 | protein: 9 | fiber: 6.4 | note: 1:½:�
 | White rice, dry (~45g raw = 100g cooked) | 45 | g | pantry |
 | Green/red lentils, dry (~22g raw = 50g cooked) | 22 | g | pantry |
 | Quinoa, dry (~18g raw = 50g cooked) | 18 | g | pantry |
+
+### Cherry Tomatoes (50g)
+id: cherry-tomatoes-50g | kcal: 9 | protein: 0 | fiber: 1
+
+| Ingredient | Qty | Unit | Category |
+|---|---|---|---|
+| Cherry tomatoes | 50 | g | produce |
+
+### Cucumber (100g)
+id: cucumber-100g | kcal: 15 | protein: 1 | fiber: 1
+
+| Ingredient | Qty | Unit | Category |
+|---|---|---|---|
+| Cucumber | 100 | g | produce |
 
 ---
 
