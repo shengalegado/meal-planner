@@ -153,6 +153,13 @@ id: siggis | kcal: 100 | protein: 10 | fiber: 0
 |---|---|---|---|
 | Siggi's high protein vanilla yogurt | 100 | g | dairy |
 
+### Oikos Greek Yogurt 1% High Protein (100g)
+id: oikos-1pct-high-protein-100g | kcal: 75 | protein: 13 | fiber: 0
+
+| Ingredient | Qty | Unit | Category |
+|---|---|---|---|
+| Oikos Greek Yogurt 1% High Protein | 100 | g | dairy |
+
 ### Cottage Cheese Wrap
 id: cottage-cheese-wrap | kcal: 306 | protein: 41 | fiber: 0
 
