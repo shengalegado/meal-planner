@@ -5,8 +5,9 @@
 dateKey: 2026-04-27
 ### 2026-04-27
 breakfast: collagen-coffee(1), chia-kiwi(1)
-lunch: cottage-cheese-wrap(1), rotisserie-chicken-100g(0.5), cucumber-100g(0.5), cherry-tomatoes-50g(1)
-dinner: sinampalukan(1), rice-lentils-200(1)
+lunch: cottage-cheese-wrap(1), rotisserie-chicken-100g(0.5), cucumber-100g(0.5), cherry-tomatoes-50g(1), oikos-1pct-high-protein-100g(0.25)
+dinner: sinampalukan(1), rice-lentils-200(0.75)
+snacks: apple-100(2)
 ### 2026-04-28
 breakfast: collagen-coffee(1), chia-mango-coconut(1), mango-100(0.75)
 lunch: chicken-salad(1)
@@ -219,6 +220,19 @@ dinner: lentils-100(0.75), rice-100(0.75), ginisang-munggo(1)
               "_baseProtein": 0,
               "_baseFiber": 1,
               "_uid": 1777303250330.858
+            },
+            {
+              "id": "oikos-1pct-high-protein-100g",
+              "name": "Oikos Greek Yogurt 1% High Protein (100g)",
+              "cat": "breakfast",
+              "kcal": 18.8,
+              "protein": 3.3,
+              "fiber": 0,
+              "serving": 0.25,
+              "_baseKcal": 75,
+              "_baseProtein": 13,
+              "_baseFiber": 0,
+              "_uid": 1777318887225.4697
             }
           ],
           "dinner": [
@@ -239,18 +253,32 @@ dinner: lentils-100(0.75), rice-100(0.75), ginisang-munggo(1)
               "id": "rice-lentils-200",
               "name": "Rice + Lentils (200g)",
               "cat": "sides",
-              "kcal": 230,
-              "protein": 11,
-              "fiber": 9,
+              "kcal": 172.5,
+              "protein": 8.3,
+              "fiber": 6.8,
               "note": "1:1 ratio — 100g rice + 100g lentils cooked",
-              "serving": 1,
+              "serving": 0.75,
               "_baseKcal": 230,
               "_baseProtein": 11,
               "_baseFiber": 9,
               "_uid": 1777302509538.655
             }
           ],
-          "snacks": []
+          "snacks": [
+            {
+              "id": "apple-100",
+              "name": "Apple (100g)",
+              "cat": "snacks",
+              "kcal": 104,
+              "protein": 0.6,
+              "fiber": 4.8,
+              "serving": 2,
+              "_baseKcal": 52,
+              "_baseProtein": 0.3,
+              "_baseFiber": 2.4,
+              "_uid": 1777318913039.4744
+            }
+          ]
         },
         "2026-04-28": {
           "breakfast": [
