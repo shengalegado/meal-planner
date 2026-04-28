@@ -506,6 +506,20 @@ id: chicken-noodle | kcal: 460 | protein: 52 | fiber: 8
 
 ## sides
 
+### Pumpkin Seeds (1 tbsp / 8g)
+id: pumpkin-seeds-1tbsp | kcal: 45 | protein: 2 | fiber: 1
+
+| Ingredient | Qty | Unit | Category |
+|---|---|---|---|
+| Pumpkin seeds | 8 | g | pantry |
+
+### Vector High-Protein Granola Vanilla (1 tbsp / 8g)
+id: vector-granola-vanilla-1tbsp | kcal: 34 | protein: 2 | fiber: 0
+
+| Ingredient | Qty | Unit | Category |
+|---|---|---|---|
+| Vector High-Protein Granola Vanilla | 8 | g | pantry |
+
 ### Cooked Rice (100g)
 id: rice-100 | kcal: 115 | protein: 2 | fiber: 1 | note: ×0.75 = 75g · ×0.5 = 50g
 
