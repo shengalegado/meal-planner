@@ -4,26 +4,26 @@
 ## Apr 27 – May 3, 2026
 dateKey: 2026-04-27
 ### 2026-04-27
-breakfast: collagen-coffee(1), chia-kiwi(1)
+breakfast: collagen-coffee(1), chia-base(1)
 lunch: cottage-cheese-wrap(1), rotisserie-chicken-100g(0.5), cucumber-100g(0.5), cherry-tomatoes-50g(1), oikos-1pct-high-protein-100g(0.25)
-dinner: sinampalukan(1), rice-lentils-200(0.75)
+dinner: sinampalukan(1), rice-lentils-200(1)
 snacks: apple-100(2)
 ### 2026-04-28
-breakfast: collagen-coffee(1), chia-mango-coconut(1), mango-100(0.75)
+breakfast: collagen-coffee(1), chia-mango-coconut(1), pumpkin-seeds-1tbsp(1), vector-granola-vanilla-1tbsp(1)
 lunch: chicken-salad(1)
 dinner: sinampalukan(1), rice-lentils-quinoa-200(1)
-snacks: cottage-cheese-100(0.75), blueberries-50(1.5)
+snacks: cottage-cheese-100(0.75), blueberries-50(1)
 ### 2026-04-29
-breakfast: collagen-coffee(1), chia-mango-coconut(1), mango-100(0.75)
+breakfast: collagen-coffee(1), chia-mango-coconut(1), pumpkin-seeds-1tbsp(1), vector-granola-vanilla-1tbsp(1)
 lunch: chicken-salad(1)
 dinner: sinampalukan(1), rice-lentils-quinoa-200(1)
-snacks: cottage-cheese-100(0.75), blueberries-50(1.5)
+snacks: cottage-cheese-100(0.75), blueberries-50(1)
 ### 2026-04-30
-breakfast: collagen-coffee(1), chia-mango-coconut(1), mango-100(0.75), metamucil-gummies(1)
+breakfast: collagen-coffee(1), chia-mango-coconut(1), pumpkin-seeds-1tbsp(1), vector-granola-vanilla-1tbsp(1)
 lunch: turkey-marinara-sauce(1), kabocha-100(2.5)
 dinner: shrimp-cauli-alfredo(1), catelli-pasta(0.5)
 ### 2026-05-01
-breakfast: collagen-coffee(1), metamucil-gummies(1), chia-mango-coconut(1), mango-100(0.75)
+breakfast: collagen-coffee(1), metamucil-gummies(1), chia-mango-coconut(1)
 lunch: turkey-marinara-sauce(1), kabocha-100(2.5)
 dinner: shrimp-cauli-alfredo(1), catelli-pasta(0.5)
 ### 2026-05-02
@@ -155,17 +155,17 @@ dinner: lentils-100(0.75), rice-100(0.75), ginisang-munggo(1)
               "_uid": 1777143829390.6726
             },
             {
-              "id": "chia-kiwi",
-              "name": "Chia Pudding + Kiwi (80g)",
+              "id": "chia-base",
+              "name": "Regular chia pudding base",
               "cat": "breakfast",
-              "kcal": 334,
-              "protein": 23,
-              "fiber": 12,
+              "kcal": 268,
+              "protein": 22,
+              "fiber": 10,
               "serving": 1,
-              "_baseKcal": 334,
-              "_baseProtein": 23,
-              "_baseFiber": 12,
-              "_uid": 1777302492282.0684
+              "_baseKcal": 268,
+              "_baseProtein": 22,
+              "_baseFiber": 10,
+              "_uid": 1777320525869.8416
             }
           ],
           "lunch": [
@@ -253,11 +253,11 @@ dinner: lentils-100(0.75), rice-100(0.75), ginisang-munggo(1)
               "id": "rice-lentils-200",
               "name": "Rice + Lentils (200g)",
               "cat": "sides",
-              "kcal": 172.5,
-              "protein": 8.3,
-              "fiber": 6.8,
+              "kcal": 230,
+              "protein": 11,
+              "fiber": 9,
               "note": "1:1 ratio — 100g rice + 100g lentils cooked",
-              "serving": 0.75,
+              "serving": 1,
               "_baseKcal": 230,
               "_baseProtein": 11,
               "_baseFiber": 9,
@@ -276,7 +276,7 @@ dinner: lentils-100(0.75), rice-100(0.75), ginisang-munggo(1)
               "_baseKcal": 52,
               "_baseProtein": 0.3,
               "_baseFiber": 2.4,
-              "_uid": 1777318913039.4744
+              "_uid": 1777320513352.337
             }
           ]
         },
@@ -309,17 +309,30 @@ dinner: lentils-100(0.75), rice-100(0.75), ginisang-munggo(1)
               "_uid": 1777143829391.1055
             },
             {
-              "id": "mango-100",
-              "name": "Mango (100g)",
+              "id": "pumpkin-seeds-1tbsp",
+              "name": "Pumpkin Seeds (1 tbsp / 8g)",
               "cat": "sides",
               "kcal": 45,
-              "protein": 0.6,
-              "fiber": 1.2,
-              "serving": 0.75,
-              "_baseKcal": 60,
-              "_baseProtein": 0.8,
-              "_baseFiber": 1.6,
-              "_uid": 1777143829391.1938
+              "protein": 2,
+              "fiber": 1,
+              "serving": 1,
+              "_baseKcal": 45,
+              "_baseProtein": 2,
+              "_baseFiber": 1,
+              "_uid": 1777381010781.7666
+            },
+            {
+              "id": "vector-granola-vanilla-1tbsp",
+              "name": "Vector High-Protein Granola Vanilla (1 tbsp / 8g)",
+              "cat": "sides",
+              "kcal": 34,
+              "protein": 2,
+              "fiber": 0,
+              "serving": 1,
+              "_baseKcal": 34,
+              "_baseProtein": 2,
+              "_baseFiber": 0,
+              "_uid": 1777382377600.241
             }
           ],
           "lunch": [
@@ -377,20 +390,20 @@ dinner: lentils-100(0.75), rice-100(0.75), ginisang-munggo(1)
               "_baseKcal": 85,
               "_baseProtein": 12,
               "_baseFiber": 0,
-              "_uid": 1777143829391.4978
+              "_uid": 1777382347568.0374
             },
             {
               "id": "blueberries-50",
               "name": "Blueberries (50g)",
               "cat": "snacks",
-              "kcal": 43.5,
-              "protein": 0.6,
-              "fiber": 2.3,
-              "serving": 1.5,
+              "kcal": 29,
+              "protein": 0.4,
+              "fiber": 1.5,
+              "serving": 1,
               "_baseKcal": 29,
               "_baseProtein": 0.4,
               "_baseFiber": 1.5,
-              "_uid": 1777143829391.7612
+              "_uid": 1777382353434.697
             }
           ]
         },
@@ -423,17 +436,30 @@ dinner: lentils-100(0.75), rice-100(0.75), ginisang-munggo(1)
               "_uid": 1777143829391.012
             },
             {
-              "id": "mango-100",
-              "name": "Mango (100g)",
+              "id": "pumpkin-seeds-1tbsp",
+              "name": "Pumpkin Seeds (1 tbsp / 8g)",
               "cat": "sides",
               "kcal": 45,
-              "protein": 0.6,
-              "fiber": 1.2,
-              "serving": 0.75,
-              "_baseKcal": 60,
-              "_baseProtein": 0.8,
-              "_baseFiber": 1.6,
-              "_uid": 1777143829391.348
+              "protein": 2,
+              "fiber": 1,
+              "serving": 1,
+              "_baseKcal": 45,
+              "_baseProtein": 2,
+              "_baseFiber": 1,
+              "_uid": 1777381043032.014
+            },
+            {
+              "id": "vector-granola-vanilla-1tbsp",
+              "name": "Vector High-Protein Granola Vanilla (1 tbsp / 8g)",
+              "cat": "sides",
+              "kcal": 34,
+              "protein": 2,
+              "fiber": 0,
+              "serving": 1,
+              "_baseKcal": 34,
+              "_baseProtein": 2,
+              "_baseFiber": 0,
+              "_uid": 1777382381971.6057
             }
           ],
           "lunch": [
@@ -491,20 +517,20 @@ dinner: lentils-100(0.75), rice-100(0.75), ginisang-munggo(1)
               "_baseKcal": 85,
               "_baseProtein": 12,
               "_baseFiber": 0,
-              "_uid": 1777143829391.1265
+              "_uid": 1777382358368.035
             },
             {
               "id": "blueberries-50",
               "name": "Blueberries (50g)",
               "cat": "snacks",
-              "kcal": 43.5,
-              "protein": 0.6,
-              "fiber": 2.3,
-              "serving": 1.5,
+              "kcal": 29,
+              "protein": 0.4,
+              "fiber": 1.5,
+              "serving": 1,
               "_baseKcal": 29,
               "_baseProtein": 0.4,
               "_baseFiber": 1.5,
-              "_uid": 1777143829391.416
+              "_uid": 1777382362818.278
             }
           ]
         },
@@ -537,30 +563,30 @@ dinner: lentils-100(0.75), rice-100(0.75), ginisang-munggo(1)
               "_uid": 1777143829391.89
             },
             {
-              "id": "mango-100",
-              "name": "Mango (100g)",
+              "id": "pumpkin-seeds-1tbsp",
+              "name": "Pumpkin Seeds (1 tbsp / 8g)",
               "cat": "sides",
               "kcal": 45,
-              "protein": 0.6,
-              "fiber": 1.2,
-              "serving": 0.75,
-              "_baseKcal": 60,
-              "_baseProtein": 0.8,
-              "_baseFiber": 1.6,
-              "_uid": 1777143829391.19
+              "protein": 2,
+              "fiber": 1,
+              "serving": 1,
+              "_baseKcal": 45,
+              "_baseProtein": 2,
+              "_baseFiber": 1,
+              "_uid": 1777381048984.9375
             },
             {
-              "id": "metamucil-gummies",
-              "name": "Metamucil Fibre Gummies (3 gummies)",
-              "cat": "snacks",
-              "kcal": 20,
-              "protein": 0,
-              "fiber": 5,
+              "id": "vector-granola-vanilla-1tbsp",
+              "name": "Vector High-Protein Granola Vanilla (1 tbsp / 8g)",
+              "cat": "sides",
+              "kcal": 34,
+              "protein": 2,
+              "fiber": 0,
               "serving": 1,
-              "_baseKcal": 20,
-              "_baseProtein": 0,
-              "_baseFiber": 5,
-              "_uid": 1777143829391.0112
+              "_baseKcal": 34,
+              "_baseProtein": 2,
+              "_baseFiber": 0,
+              "_uid": 1777383036462.899
             }
           ],
           "lunch": [
@@ -663,19 +689,6 @@ dinner: lentils-100(0.75), rice-100(0.75), ginisang-munggo(1)
               "_baseProtein": 16,
               "_baseFiber": 12,
               "_uid": 1777303400914.0405
-            },
-            {
-              "id": "mango-100",
-              "name": "Mango (100g)",
-              "cat": "sides",
-              "kcal": 45,
-              "protein": 0.6,
-              "fiber": 1.2,
-              "serving": 0.75,
-              "_baseKcal": 60,
-              "_baseProtein": 0.8,
-              "_baseFiber": 1.6,
-              "_uid": 1777303406931.756
             }
           ],
           "lunch": [
