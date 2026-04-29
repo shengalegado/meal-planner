@@ -111,7 +111,7 @@ id: chia-mod-blue | kcal: 321 | protein: 16 | fiber: 10
 | Blueberries | 50 | g | produce |
 
 ### Mango Coconut Chia Pudding
-id: chia-mango-coconut | kcal: 338 | protein: 16 | fiber: 12 | note: Meal-prep — 4 servings per batch. Refrigerate 4+ hrs or overnight.
+id: chia-mango-coconut | kcal: 417 | protein: 20 | fiber: 13 | note: Meal-prep — 4 servings per batch. Refrigerate 4+ hrs or overnight.
 
 | Ingredient | Qty | Unit | Category |
 |---|---|---|---|
@@ -122,6 +122,8 @@ id: chia-mango-coconut | kcal: 338 | protein: 16 | fiber: 12 | note: Meal-prep �
 | Vanilla extract | 0.25 | tsp | pantry |
 | Chia seeds | 30 | g | pantry |
 | Coconut shavings, unsweetened | 5 | g | pantry |
+| Pumpkin seeds | 8 | g | pantry |
+| Vector High-Protein Granola Vanilla | 8 | g | pantry |
 
 ### Collagen Peptide + Black Coffee
 id: collagen-coffee | kcal: 36 | protein: 9 | fiber: 0 | note: Sports Research 1 scoop
@@ -652,6 +654,13 @@ id: cucumber-100g | kcal: 15 | protein: 1 | fiber: 1
 ---
 
 ## snacks
+
+### Mary's Gone Crackers Original (30g / 12 crackers)
+id: marys-gone-crackers-30g | kcal: 140 | protein: 4 | fiber: 3
+
+| Ingredient | Qty | Unit | Category |
+|---|---|---|---|
+| Mary's Gone Crackers Original | 30 | g | pantry |
 
 ### Matcha Latte (Iced, Almond Milk)
 id: matcha | kcal: 85 | protein: 2 | fiber: 0
