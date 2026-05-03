@@ -7,8 +7,10 @@ dateKey: 2026-05-04
 breakfast: chia-mango-coconut(1), mango-100(0.5), collagen-coffee(1)
 snacks: chicken-curry(1), rice-lentils-quinoa-200(1)
 ### 2026-05-05
+breakfast: chia-mango-coconut(1), vector-granola-vanilla-1tbsp(1), pumpkin-seeds-1tbsp(1), collagen-coffee(1)
 snacks: chicken-curry(1), rice-lentils-quinoa-200(1)
 ### 2026-05-06
+breakfast: chia-mango-coconut(1), vector-granola-vanilla-1tbsp(1), pumpkin-seeds-1tbsp(1), collagen-coffee(1)
 ### 2026-05-07
 ### 2026-05-08
 ### 2026-05-09
@@ -231,7 +233,62 @@ dinner: lentils-100(0.75), rice-100(0.75), ginisang-munggo(1)
           ]
         },
         "2026-05-05": {
-          "breakfast": [],
+          "breakfast": [
+            {
+              "id": "chia-mango-coconut",
+              "name": "Mango Coconut Chia Pudding",
+              "cat": "breakfast",
+              "kcal": 417,
+              "protein": 20,
+              "fiber": 13,
+              "note": "Meal-prep — 4 servings per batch. Refrigerate 4+ hrs or overnight.",
+              "serving": 1,
+              "_baseKcal": 417,
+              "_baseProtein": 20,
+              "_baseFiber": 13,
+              "_uid": 1777807836419.2214
+            },
+            {
+              "id": "vector-granola-vanilla-1tbsp",
+              "name": "Vector High-Protein Granola Vanilla (1 tbsp / 8g)",
+              "cat": "sides",
+              "kcal": 34,
+              "protein": 2,
+              "fiber": 0,
+              "serving": 1,
+              "_baseKcal": 34,
+              "_baseProtein": 2,
+              "_baseFiber": 0,
+              "_uid": 1777807845085.9407
+            },
+            {
+              "id": "pumpkin-seeds-1tbsp",
+              "name": "Pumpkin Seeds (1 tbsp / 8g)",
+              "cat": "sides",
+              "kcal": 45,
+              "protein": 2,
+              "fiber": 1,
+              "serving": 1,
+              "_baseKcal": 45,
+              "_baseProtein": 2,
+              "_baseFiber": 1,
+              "_uid": 1777807857902.2722
+            },
+            {
+              "id": "collagen-coffee",
+              "name": "Collagen Peptide + Black Coffee",
+              "cat": "breakfast",
+              "kcal": 36,
+              "protein": 9,
+              "fiber": 0,
+              "note": "Sports Research 1 scoop",
+              "serving": 1,
+              "_baseKcal": 36,
+              "_baseProtein": 9,
+              "_baseFiber": 0,
+              "_uid": 1777807877119.9314
+            }
+          ],
           "lunch": [],
           "dinner": [],
           "snacks": [
@@ -266,7 +323,62 @@ dinner: lentils-100(0.75), rice-100(0.75), ginisang-munggo(1)
           ]
         },
         "2026-05-06": {
-          "breakfast": [],
+          "breakfast": [
+            {
+              "id": "chia-mango-coconut",
+              "name": "Mango Coconut Chia Pudding",
+              "cat": "breakfast",
+              "kcal": 417,
+              "protein": 20,
+              "fiber": 13,
+              "note": "Meal-prep — 4 servings per batch. Refrigerate 4+ hrs or overnight.",
+              "serving": 1,
+              "_baseKcal": 417,
+              "_baseProtein": 20,
+              "_baseFiber": 13,
+              "_uid": 1777807840252.274
+            },
+            {
+              "id": "vector-granola-vanilla-1tbsp",
+              "name": "Vector High-Protein Granola Vanilla (1 tbsp / 8g)",
+              "cat": "sides",
+              "kcal": 34,
+              "protein": 2,
+              "fiber": 0,
+              "serving": 1,
+              "_baseKcal": 34,
+              "_baseProtein": 2,
+              "_baseFiber": 0,
+              "_uid": 1777807862169.1902
+            },
+            {
+              "id": "pumpkin-seeds-1tbsp",
+              "name": "Pumpkin Seeds (1 tbsp / 8g)",
+              "cat": "sides",
+              "kcal": 45,
+              "protein": 2,
+              "fiber": 1,
+              "serving": 1,
+              "_baseKcal": 45,
+              "_baseProtein": 2,
+              "_baseFiber": 1,
+              "_uid": 1777807869252.224
+            },
+            {
+              "id": "collagen-coffee",
+              "name": "Collagen Peptide + Black Coffee",
+              "cat": "breakfast",
+              "kcal": 36,
+              "protein": 9,
+              "fiber": 0,
+              "note": "Sports Research 1 scoop",
+              "serving": 1,
+              "_baseKcal": 36,
+              "_baseProtein": 9,
+              "_baseFiber": 0,
+              "_uid": 1777807872586.1936
+            }
+          ],
           "lunch": [],
           "dinner": [],
           "snacks": []
