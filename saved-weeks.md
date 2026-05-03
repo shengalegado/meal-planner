@@ -14,10 +14,9 @@ snacks: chicken-curry(1), rice-lentils-quinoa-200(0.75)
 ### 2026-05-06
 breakfast: chia-mango-coconut(1), vector-granola-vanilla-1tbsp(1), pumpkin-seeds-1tbsp(1), collagen-coffee(1)
 lunch: egg-whites-100g(1.5), kabocha-100(2.5), cottage-cheese-100(0.75)
-snacks: beef-enoki(1), rice-lentils-quinoa-200(0.75)
+snacks: chicken-curry(1), rice-lentils-quinoa-200(1)
 ### 2026-05-07
 breakfast: chia-kiwi(1), collagen-coffee(1)
-snacks: beef-enoki(1), rice-lentils-quinoa-200(0.75)
 ### 2026-05-08
 ### 2026-05-09
 ### 2026-05-10
@@ -537,31 +536,32 @@ dinner: lentils-100(0.75), rice-100(0.75), ginisang-munggo(1)
           "dinner": [],
           "snacks": [
             {
-              "id": "beef-enoki",
-              "name": "Beef Enoki Mushroom Wraps",
+              "id": "chicken-curry",
+              "name": "Filipino Chicken Curry with Coconut Milk",
               "cat": "dinner",
-              "kcal": 530,
-              "protein": 51,
-              "fiber": 3,
+              "kcal": 471,
+              "protein": 42,
+              "fiber": 4.6,
+              "note": "4 servings per batch.",
               "serving": 1,
-              "_baseKcal": 530,
-              "_baseProtein": 51,
-              "_baseFiber": 3,
-              "_uid": 1777808988344.0935
+              "_baseKcal": 471,
+              "_baseProtein": 42,
+              "_baseFiber": 4.6,
+              "_uid": 1777809381981.5857
             },
             {
               "id": "rice-lentils-quinoa-200",
               "name": "Rice + Lentils + Quinoa (200g)",
               "cat": "sides",
-              "kcal": 174.8,
-              "protein": 6.8,
-              "fiber": 4.8,
+              "kcal": 233,
+              "protein": 9,
+              "fiber": 6.4,
               "note": "1:½:½ ratio — 100g rice + 50g lentils + 50g quinoa cooked",
-              "serving": 0.75,
+              "serving": 1,
               "_baseKcal": 233,
               "_baseProtein": 9,
               "_baseFiber": 6.4,
-              "_uid": 1777808993712.9822
+              "_uid": 1777809391730.7615
             }
           ]
         },
@@ -597,35 +597,7 @@ dinner: lentils-100(0.75), rice-100(0.75), ginisang-munggo(1)
           ],
           "lunch": [],
           "dinner": [],
-          "snacks": [
-            {
-              "id": "beef-enoki",
-              "name": "Beef Enoki Mushroom Wraps",
-              "cat": "dinner",
-              "kcal": 530,
-              "protein": 51,
-              "fiber": 3,
-              "serving": 1,
-              "_baseKcal": 530,
-              "_baseProtein": 51,
-              "_baseFiber": 3,
-              "_uid": 1777809095336.1707
-            },
-            {
-              "id": "rice-lentils-quinoa-200",
-              "name": "Rice + Lentils + Quinoa (200g)",
-              "cat": "sides",
-              "kcal": 174.8,
-              "protein": 6.8,
-              "fiber": 4.8,
-              "note": "1:½:½ ratio — 100g rice + 50g lentils + 50g quinoa cooked",
-              "serving": 0.75,
-              "_baseKcal": 233,
-              "_baseProtein": 9,
-              "_baseFiber": 6.4,
-              "_uid": 1777809105203.2659
-            }
-          ]
+          "snacks": []
         },
         "2026-05-08": {
           "breakfast": [],
