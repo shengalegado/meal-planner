@@ -266,6 +266,9 @@ id: turkey-marinara-sauce | kcal: 353 | protein: 56 | fiber: 5
 
 ### Spinach and Feta Wrap - Starbucks
 id: custom-1777807646205 | kcal: 290 | protein: 20 | fiber: 4 | note: Custom meal
+
+### Hummus
+id: custom-1777845411676 | kcal: 175 | protein: 6 | fiber: 6 | note: Custom meal
 ## dinner
 
 ### Shredded Rotisserie Chicken (100g)
