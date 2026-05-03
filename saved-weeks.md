@@ -12,27 +12,30 @@ snacks: apple-100(2)
 breakfast: collagen-coffee(1), chia-mango-coconut(1), pumpkin-seeds-1tbsp(1), vector-granola-vanilla-1tbsp(1)
 lunch: chicken-salad(1), cherry-tomatoes-50g(1), cucumber-100g(0.5)
 dinner: sinampalukan(1), rice-lentils-quinoa-200(1)
+snacks: marys-gone-crackers-30g(0.5)
 ### 2026-04-29
 breakfast: chia-mango-coconut(1), pumpkin-seeds-1tbsp(1), vector-granola-vanilla-1tbsp(1), collagen-coffee(1)
-lunch: chicken-salad(1)
+lunch: chicken-salad(1), cherry-tomatoes-50g(1), cucumber-100g(0.5)
 dinner: rice-lentils-quinoa-200(1), sinampalukan(1)
-snacks: cottage-cheese-100(0.75), blueberries-50(1)
+snacks: kabocha-100(1.5)
 ### 2026-04-30
 breakfast: collagen-coffee(1), chia-mango-coconut(1), vector-granola-vanilla-1tbsp(1), pumpkin-seeds-1tbsp(1)
 lunch: turkey-marinara-sauce(1), kabocha-100(2.5)
 dinner: rice-lentils-quinoa-200(0.75), ginger-soy-chicken(1)
 ### 2026-05-01
-breakfast: collagen-coffee(1), chia-mango-coconut(1), vector-granola-vanilla-1tbsp(1), pumpkin-seeds-1tbsp(1)
+breakfast: collagen-coffee(1), chia-mango-coconut(1)
 lunch: turkey-marinara-sauce(1), kabocha-100(2.5)
-dinner: shrimp-cauli-alfredo(1), catelli-pasta(0.5)
+dinner: shrimp-cauli-alfredo(1), catelli-pasta(0.5), broccoli-100(2)
+snacks: siggis(1)
 ### 2026-05-02
-breakfast: chia-kiwi(1), collagen-coffee(1)
-lunch: turkey-marinara-sauce(1), kabocha-100(2)
-dinner: chicken-curry(1), rice-lentils-quinoa-200(0.75)
+breakfast: custom-1777807565888(1)
+lunch: custom-1777807646205(1)
+dinner: shrimp-cauli-alfredo(1), rice-lentils-200(1.25)
+snacks: matcha(1)
 ### 2026-05-03
-breakfast: chia-kiwi(1), collagen-coffee(1)
+breakfast: collagen-coffee(1), chia-mango-coconut(1), mango-100(0.5)
 lunch: eggs-100g(1), egg-whites-100g(0.75), kabocha-100(2.5), cottage-cheese-100(0.75)
-dinner: chicken-curry(1), rice-lentils-quinoa-200(1)
+dinner: turkey-marinara-sauce(1), rice-lentils-200(1)
 
 ## Apr 13–19, 2026
 dateKey: 2026-04-13
@@ -403,7 +406,21 @@ dinner: lentils-100(0.75), rice-100(0.75), ginisang-munggo(1)
               "_uid": 1777143829391.0679
             }
           ],
-          "snacks": []
+          "snacks": [
+            {
+              "id": "marys-gone-crackers-30g",
+              "name": "Mary's Gone Crackers Original (30g / 12 crackers)",
+              "cat": "snacks",
+              "kcal": 70,
+              "protein": 2,
+              "fiber": 1.5,
+              "serving": 0.5,
+              "_baseKcal": 140,
+              "_baseProtein": 4,
+              "_baseFiber": 3,
+              "_uid": 1777467922207.5571
+            }
+          ]
         },
         "2026-04-29": {
           "breakfast": [
@@ -474,6 +491,32 @@ dinner: lentils-100(0.75), rice-100(0.75), ginisang-munggo(1)
               "_baseProtein": 29,
               "_baseFiber": 6,
               "_uid": 1777395591798.1167
+            },
+            {
+              "id": "cherry-tomatoes-50g",
+              "name": "Cherry Tomatoes (50g)",
+              "cat": "sides",
+              "kcal": 9,
+              "protein": 0,
+              "fiber": 1,
+              "serving": 1,
+              "_baseKcal": 9,
+              "_baseProtein": 0,
+              "_baseFiber": 1,
+              "_uid": 1777425788780.3508
+            },
+            {
+              "id": "cucumber-100g",
+              "name": "Cucumber (100g)",
+              "cat": "sides",
+              "kcal": 7.5,
+              "protein": 0.5,
+              "fiber": 0.5,
+              "serving": 0.5,
+              "_baseKcal": 15,
+              "_baseProtein": 1,
+              "_baseFiber": 1,
+              "_uid": 1777425793964.5693
             }
           ],
           "dinner": [
@@ -508,30 +551,17 @@ dinner: lentils-100(0.75), rice-100(0.75), ginisang-munggo(1)
           ],
           "snacks": [
             {
-              "id": "cottage-cheese-100",
-              "name": "Cottage Cheese 1% (100g)",
+              "id": "kabocha-100",
+              "name": "Kabocha Squash, Roasted (100g)",
               "cat": "sides",
-              "kcal": 63.8,
-              "protein": 9,
-              "fiber": 0,
-              "serving": 0.75,
-              "_baseKcal": 85,
-              "_baseProtein": 12,
-              "_baseFiber": 0,
-              "_uid": 1777396970939.1003
-            },
-            {
-              "id": "blueberries-50",
-              "name": "Blueberries (50g)",
-              "cat": "snacks",
-              "kcal": 29,
-              "protein": 0.4,
-              "fiber": 1.5,
-              "serving": 1,
-              "_baseKcal": 29,
-              "_baseProtein": 0.4,
-              "_baseFiber": 1.5,
-              "_uid": 1777396975577.9573
+              "kcal": 60,
+              "protein": 1.5,
+              "fiber": 3.8,
+              "serving": 1.5,
+              "_baseKcal": 40,
+              "_baseProtein": 1,
+              "_baseFiber": 2.5,
+              "_uid": 1777565453597.6982
             }
           ]
         },
@@ -678,32 +708,6 @@ dinner: lentils-100(0.75), rice-100(0.75), ginisang-munggo(1)
               "_baseProtein": 16,
               "_baseFiber": 12,
               "_uid": 1777303400914.0405
-            },
-            {
-              "id": "vector-granola-vanilla-1tbsp",
-              "name": "Vector High-Protein Granola Vanilla (1 tbsp / 8g)",
-              "cat": "sides",
-              "kcal": 34,
-              "protein": 2,
-              "fiber": 0,
-              "serving": 1,
-              "_baseKcal": 34,
-              "_baseProtein": 2,
-              "_baseFiber": 0,
-              "_uid": 1777397001422.6414
-            },
-            {
-              "id": "pumpkin-seeds-1tbsp",
-              "name": "Pumpkin Seeds (1 tbsp / 8g)",
-              "cat": "sides",
-              "kcal": 45,
-              "protein": 2,
-              "fiber": 1,
-              "serving": 1,
-              "_baseKcal": 45,
-              "_baseProtein": 2,
-              "_baseFiber": 1,
-              "_uid": 1777397005959.52
             }
           ],
           "lunch": [
@@ -760,112 +764,119 @@ dinner: lentils-100(0.75), rice-100(0.75), ginisang-munggo(1)
               "_baseProtein": 21,
               "_baseFiber": 5,
               "_uid": 1777143829391.752
+            },
+            {
+              "id": "broccoli-100",
+              "name": "Broccoli (100g)",
+              "cat": "sides",
+              "kcal": 68,
+              "protein": 4,
+              "fiber": 4,
+              "serving": 2,
+              "_baseKcal": 34,
+              "_baseProtein": 2,
+              "_baseFiber": 2,
+              "_uid": 1777657960564.8706
             }
           ],
-          "snacks": []
+          "snacks": [
+            {
+              "id": "siggis",
+              "name": "Siggi's High Protein Vanilla Yogurt (100g)",
+              "cat": "breakfast",
+              "kcal": 100,
+              "protein": 10,
+              "fiber": 0,
+              "serving": 1,
+              "_baseKcal": 100,
+              "_baseProtein": 10,
+              "_baseFiber": 0,
+              "_uid": 1777648097071.6707
+            }
+          ]
         },
         "2026-05-02": {
           "breakfast": [
             {
-              "id": "chia-kiwi",
-              "name": "Chia Pudding + Kiwi (80g)",
+              "id": "custom-1777807565888",
+              "name": "Onion and Chives Scone - The Harp",
               "cat": "breakfast",
-              "kcal": 334,
-              "protein": 23,
-              "fiber": 12,
+              "kcal": 350,
+              "protein": 8,
+              "fiber": 2,
+              "note": "Custom meal",
+              "custom": true,
               "serving": 1,
-              "_baseKcal": 334,
-              "_baseProtein": 23,
-              "_baseFiber": 12,
-              "_uid": 1777143829391.0923
-            },
-            {
-              "id": "collagen-coffee",
-              "name": "Collagen Peptide + Black Coffee",
-              "cat": "breakfast",
-              "kcal": 36,
-              "protein": 9,
-              "fiber": 0,
-              "serving": 1,
-              "_baseKcal": 36,
-              "_baseProtein": 9,
-              "_baseFiber": 0,
-              "_uid": 1777143829391.3103
+              "_baseKcal": 350,
+              "_baseProtein": 8,
+              "_baseFiber": 2,
+              "_uid": 1777807574154.7737
             }
           ],
           "lunch": [
             {
-              "id": "turkey-marinara-sauce",
-              "name": "Turkey Marinara Sauce, no pasta",
+              "id": "custom-1777807646205",
+              "name": "Spinach and Feta Wrap - Starbucks",
               "cat": "lunch",
-              "kcal": 353,
-              "protein": 56,
-              "fiber": 5,
+              "kcal": 290,
+              "protein": 20,
+              "fiber": 4,
+              "note": "Custom meal",
+              "custom": true,
               "serving": 1,
-              "_baseKcal": 353,
-              "_baseProtein": 56,
-              "_baseFiber": 5,
-              "_uid": 1777143829391.8235
-            },
-            {
-              "id": "kabocha-100",
-              "name": "Kabocha Squash, Roasted (100g)",
-              "cat": "sides",
-              "kcal": 80,
-              "protein": 2,
-              "fiber": 5,
-              "serving": 2,
-              "_baseKcal": 40,
-              "_baseProtein": 1,
-              "_baseFiber": 2.5,
-              "_uid": 1777143829391.872
+              "_baseKcal": 290,
+              "_baseProtein": 20,
+              "_baseFiber": 4,
+              "_uid": 1777807651187.4849
             }
           ],
           "dinner": [
             {
-              "id": "chicken-curry",
-              "name": "Filipino Chicken Curry with Coconut Milk",
+              "id": "shrimp-cauli-alfredo",
+              "name": "Shrimp Cauliflower Alfredo",
               "cat": "dinner",
-              "kcal": 471,
-              "protein": 42,
-              "fiber": 4.6,
+              "kcal": 379,
+              "protein": 57,
+              "fiber": 3,
               "serving": 1,
-              "_baseKcal": 471,
-              "_baseProtein": 42,
-              "_baseFiber": 4.6,
-              "_uid": 1777143829391.8586
+              "_baseKcal": 379,
+              "_baseProtein": 57,
+              "_baseFiber": 3,
+              "_uid": 1777807470271.7903
             },
             {
-              "id": "rice-lentils-quinoa-200",
-              "name": "Rice + Lentils + Quinoa (200g)",
+              "id": "rice-lentils-200",
+              "name": "Rice + Lentils (200g)",
               "cat": "sides",
-              "kcal": 174.8,
-              "protein": 6.8,
-              "fiber": 4.8,
-              "serving": 0.75,
-              "_baseKcal": 233,
-              "_baseProtein": 9,
-              "_baseFiber": 6.4,
-              "_uid": 1777143829391.9507
+              "kcal": 287.5,
+              "protein": 13.8,
+              "fiber": 11.3,
+              "note": "1:1 ratio — 100g rice + 100g lentils cooked",
+              "serving": 1.25,
+              "_baseKcal": 230,
+              "_baseProtein": 11,
+              "_baseFiber": 9,
+              "_uid": 1777807478839.902
             }
           ],
-          "snacks": []
+          "snacks": [
+            {
+              "id": "matcha",
+              "name": "Matcha Latte (Iced, Almond Milk)",
+              "cat": "snacks",
+              "kcal": 85,
+              "protein": 2,
+              "fiber": 0,
+              "serving": 1,
+              "_baseKcal": 85,
+              "_baseProtein": 2,
+              "_baseFiber": 0,
+              "_uid": 1777807529871.8032
+            }
+          ]
         },
         "2026-05-03": {
           "breakfast": [
-            {
-              "id": "chia-kiwi",
-              "name": "Chia Pudding + Kiwi (80g)",
-              "cat": "breakfast",
-              "kcal": 334,
-              "protein": 23,
-              "fiber": 12,
-              "serving": 1,
-              "_baseKcal": 334,
-              "_baseProtein": 23,
-              "_baseFiber": 12,
-              "_uid": 1777143829391.5454
-            },
             {
               "id": "collagen-coffee",
               "name": "Collagen Peptide + Black Coffee",
@@ -878,6 +889,33 @@ dinner: lentils-100(0.75), rice-100(0.75), ginisang-munggo(1)
               "_baseProtein": 9,
               "_baseFiber": 0,
               "_uid": 1777143829391.3113
+            },
+            {
+              "id": "chia-mango-coconut",
+              "name": "Mango Coconut Chia Pudding",
+              "cat": "breakfast",
+              "kcal": 417,
+              "protein": 20,
+              "fiber": 13,
+              "note": "Meal-prep — 4 servings per batch. Refrigerate 4+ hrs or overnight.",
+              "serving": 1,
+              "_baseKcal": 417,
+              "_baseProtein": 20,
+              "_baseFiber": 13,
+              "_uid": 1777807674853.441
+            },
+            {
+              "id": "mango-100",
+              "name": "Mango (100g)",
+              "cat": "sides",
+              "kcal": 30,
+              "protein": 0.4,
+              "fiber": 0.8,
+              "serving": 0.5,
+              "_baseKcal": 60,
+              "_baseProtein": 0.8,
+              "_baseFiber": 1.6,
+              "_uid": 1777807677321.9827
             }
           ],
           "lunch": [
@@ -936,30 +974,31 @@ dinner: lentils-100(0.75), rice-100(0.75), ginisang-munggo(1)
           ],
           "dinner": [
             {
-              "id": "chicken-curry",
-              "name": "Filipino Chicken Curry with Coconut Milk",
-              "cat": "dinner",
-              "kcal": 471,
-              "protein": 42,
-              "fiber": 4.6,
+              "id": "turkey-marinara-sauce",
+              "name": "Turkey Marinara Sauce, no pasta",
+              "cat": "lunch",
+              "kcal": 353,
+              "protein": 56,
+              "fiber": 5,
               "serving": 1,
-              "_baseKcal": 471,
-              "_baseProtein": 42,
-              "_baseFiber": 4.6,
-              "_uid": 1777143829391.1973
+              "_baseKcal": 353,
+              "_baseProtein": 56,
+              "_baseFiber": 5,
+              "_uid": 1777807700536.119
             },
             {
-              "id": "rice-lentils-quinoa-200",
-              "name": "Rice + Lentils + Quinoa (200g)",
+              "id": "rice-lentils-200",
+              "name": "Rice + Lentils (200g)",
               "cat": "sides",
-              "kcal": 233,
-              "protein": 9,
-              "fiber": 6.4,
+              "kcal": 230,
+              "protein": 11,
+              "fiber": 9,
+              "note": "1:1 ratio — 100g rice + 100g lentils cooked",
               "serving": 1,
-              "_baseKcal": 233,
-              "_baseProtein": 9,
-              "_baseFiber": 6.4,
-              "_uid": 1777143829391.0027
+              "_baseKcal": 230,
+              "_baseProtein": 11,
+              "_baseFiber": 9,
+              "_uid": 1777807711154.0854
             }
           ],
           "snacks": []
