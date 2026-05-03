@@ -5,13 +5,19 @@
 dateKey: 2026-05-04
 ### 2026-05-04
 breakfast: chia-mango-coconut(1), mango-100(0.5), collagen-coffee(1)
-snacks: chicken-curry(1), rice-lentils-quinoa-200(1)
+lunch: eggs-100g(1), egg-whites-100g(0.75), kabocha-100(2.5), cottage-cheese-100(0.75)
+snacks: chicken-curry(1), rice-lentils-quinoa-200(0.75)
 ### 2026-05-05
-breakfast: chia-mango-coconut(1), vector-granola-vanilla-1tbsp(1), pumpkin-seeds-1tbsp(1), collagen-coffee(1)
-snacks: chicken-curry(1), rice-lentils-quinoa-200(1)
+breakfast: chia-mango-coconut(1), vector-granola-vanilla-1tbsp(1), pumpkin-seeds-1tbsp(0.5), collagen-coffee(0.5)
+lunch: eggs-100g(1), egg-whites-100g(0.75), kabocha-100(2.5), cottage-cheese-100(0.75)
+snacks: chicken-curry(1), rice-lentils-quinoa-200(0.75)
 ### 2026-05-06
 breakfast: chia-mango-coconut(1), vector-granola-vanilla-1tbsp(1), pumpkin-seeds-1tbsp(1), collagen-coffee(1)
+lunch: egg-whites-100g(1.5), kabocha-100(2.5), cottage-cheese-100(0.75)
+snacks: beef-enoki(1), rice-lentils-quinoa-200(0.75)
 ### 2026-05-07
+breakfast: chia-kiwi(1), collagen-coffee(1)
+snacks: beef-enoki(1), rice-lentils-quinoa-200(0.75)
 ### 2026-05-08
 ### 2026-05-09
 ### 2026-05-10
@@ -199,7 +205,61 @@ dinner: lentils-100(0.75), rice-100(0.75), ginisang-munggo(1)
               "_uid": 1777807818702.0332
             }
           ],
-          "lunch": [],
+          "lunch": [
+            {
+              "id": "eggs-100g",
+              "name": "Whole Eggs (100g)",
+              "cat": "sides",
+              "kcal": 155,
+              "protein": 13,
+              "fiber": 0,
+              "note": "~2 large eggs with yolk",
+              "serving": 1,
+              "_baseKcal": 155,
+              "_baseProtein": 13,
+              "_baseFiber": 0,
+              "_uid": 1777808869645.5042
+            },
+            {
+              "id": "egg-whites-100g",
+              "name": "Egg Whites (100g)",
+              "cat": "sides",
+              "kcal": 39,
+              "protein": 8.3,
+              "fiber": 0,
+              "serving": 0.75,
+              "_baseKcal": 52,
+              "_baseProtein": 11,
+              "_baseFiber": 0,
+              "_uid": 1777808876579.1663
+            },
+            {
+              "id": "kabocha-100",
+              "name": "Kabocha Squash, Roasted (100g)",
+              "cat": "sides",
+              "kcal": 100,
+              "protein": 2.5,
+              "fiber": 6.3,
+              "serving": 2.5,
+              "_baseKcal": 40,
+              "_baseProtein": 1,
+              "_baseFiber": 2.5,
+              "_uid": 1777808890829.4788
+            },
+            {
+              "id": "cottage-cheese-100",
+              "name": "Cottage Cheese 1% (100g)",
+              "cat": "sides",
+              "kcal": 63.8,
+              "protein": 9,
+              "fiber": 0,
+              "serving": 0.75,
+              "_baseKcal": 85,
+              "_baseProtein": 12,
+              "_baseFiber": 0,
+              "_uid": 1777808898429.9558
+            }
+          ],
           "dinner": [],
           "snacks": [
             {
@@ -220,11 +280,11 @@ dinner: lentils-100(0.75), rice-100(0.75), ginisang-munggo(1)
               "id": "rice-lentils-quinoa-200",
               "name": "Rice + Lentils + Quinoa (200g)",
               "cat": "sides",
-              "kcal": 233,
-              "protein": 9,
-              "fiber": 6.4,
+              "kcal": 174.8,
+              "protein": 6.8,
+              "fiber": 4.8,
               "note": "1:½:½ ratio — 100g rice + 50g lentils + 50g quinoa cooked",
-              "serving": 1,
+              "serving": 0.75,
               "_baseKcal": 233,
               "_baseProtein": 9,
               "_baseFiber": 6.4,
@@ -265,10 +325,10 @@ dinner: lentils-100(0.75), rice-100(0.75), ginisang-munggo(1)
               "id": "pumpkin-seeds-1tbsp",
               "name": "Pumpkin Seeds (1 tbsp / 8g)",
               "cat": "sides",
-              "kcal": 45,
-              "protein": 2,
-              "fiber": 1,
-              "serving": 1,
+              "kcal": 22.5,
+              "protein": 1,
+              "fiber": 0.5,
+              "serving": 0.5,
               "_baseKcal": 45,
               "_baseProtein": 2,
               "_baseFiber": 1,
@@ -278,18 +338,72 @@ dinner: lentils-100(0.75), rice-100(0.75), ginisang-munggo(1)
               "id": "collagen-coffee",
               "name": "Collagen Peptide + Black Coffee",
               "cat": "breakfast",
-              "kcal": 36,
-              "protein": 9,
+              "kcal": 18,
+              "protein": 4.5,
               "fiber": 0,
               "note": "Sports Research 1 scoop",
-              "serving": 1,
+              "serving": 0.5,
               "_baseKcal": 36,
               "_baseProtein": 9,
               "_baseFiber": 0,
               "_uid": 1777807877119.9314
             }
           ],
-          "lunch": [],
+          "lunch": [
+            {
+              "id": "eggs-100g",
+              "name": "Whole Eggs (100g)",
+              "cat": "sides",
+              "kcal": 155,
+              "protein": 13,
+              "fiber": 0,
+              "note": "~2 large eggs with yolk",
+              "serving": 1,
+              "_baseKcal": 155,
+              "_baseProtein": 13,
+              "_baseFiber": 0,
+              "_uid": 1777808916762.6304
+            },
+            {
+              "id": "egg-whites-100g",
+              "name": "Egg Whites (100g)",
+              "cat": "sides",
+              "kcal": 39,
+              "protein": 8.3,
+              "fiber": 0,
+              "serving": 0.75,
+              "_baseKcal": 52,
+              "_baseProtein": 11,
+              "_baseFiber": 0,
+              "_uid": 1777808925779.1443
+            },
+            {
+              "id": "kabocha-100",
+              "name": "Kabocha Squash, Roasted (100g)",
+              "cat": "sides",
+              "kcal": 100,
+              "protein": 2.5,
+              "fiber": 6.3,
+              "serving": 2.5,
+              "_baseKcal": 40,
+              "_baseProtein": 1,
+              "_baseFiber": 2.5,
+              "_uid": 1777808932495.9878
+            },
+            {
+              "id": "cottage-cheese-100",
+              "name": "Cottage Cheese 1% (100g)",
+              "cat": "sides",
+              "kcal": 63.8,
+              "protein": 9,
+              "fiber": 0,
+              "serving": 0.75,
+              "_baseKcal": 85,
+              "_baseProtein": 12,
+              "_baseFiber": 0,
+              "_uid": 1777808937762.5146
+            }
+          ],
           "dinner": [],
           "snacks": [
             {
@@ -310,11 +424,11 @@ dinner: lentils-100(0.75), rice-100(0.75), ginisang-munggo(1)
               "id": "rice-lentils-quinoa-200",
               "name": "Rice + Lentils + Quinoa (200g)",
               "cat": "sides",
-              "kcal": 233,
-              "protein": 9,
-              "fiber": 6.4,
+              "kcal": 174.8,
+              "protein": 6.8,
+              "fiber": 4.8,
               "note": "1:½:½ ratio — 100g rice + 50g lentils + 50g quinoa cooked",
-              "serving": 1,
+              "serving": 0.75,
               "_baseKcal": 233,
               "_baseProtein": 9,
               "_baseFiber": 6.4,
@@ -379,15 +493,139 @@ dinner: lentils-100(0.75), rice-100(0.75), ginisang-munggo(1)
               "_uid": 1777807872586.1936
             }
           ],
-          "lunch": [],
+          "lunch": [
+            {
+              "id": "egg-whites-100g",
+              "name": "Egg Whites (100g)",
+              "cat": "sides",
+              "kcal": 78,
+              "protein": 16.5,
+              "fiber": 0,
+              "serving": 1.5,
+              "_baseKcal": 52,
+              "_baseProtein": 11,
+              "_baseFiber": 0,
+              "_uid": 1777808965462.9949
+            },
+            {
+              "id": "kabocha-100",
+              "name": "Kabocha Squash, Roasted (100g)",
+              "cat": "sides",
+              "kcal": 100,
+              "protein": 2.5,
+              "fiber": 6.3,
+              "serving": 2.5,
+              "_baseKcal": 40,
+              "_baseProtein": 1,
+              "_baseFiber": 2.5,
+              "_uid": 1777808970678.8281
+            },
+            {
+              "id": "cottage-cheese-100",
+              "name": "Cottage Cheese 1% (100g)",
+              "cat": "sides",
+              "kcal": 63.8,
+              "protein": 9,
+              "fiber": 0,
+              "serving": 0.75,
+              "_baseKcal": 85,
+              "_baseProtein": 12,
+              "_baseFiber": 0,
+              "_uid": 1777808975628.329
+            }
+          ],
           "dinner": [],
-          "snacks": []
+          "snacks": [
+            {
+              "id": "beef-enoki",
+              "name": "Beef Enoki Mushroom Wraps",
+              "cat": "dinner",
+              "kcal": 530,
+              "protein": 51,
+              "fiber": 3,
+              "serving": 1,
+              "_baseKcal": 530,
+              "_baseProtein": 51,
+              "_baseFiber": 3,
+              "_uid": 1777808988344.0935
+            },
+            {
+              "id": "rice-lentils-quinoa-200",
+              "name": "Rice + Lentils + Quinoa (200g)",
+              "cat": "sides",
+              "kcal": 174.8,
+              "protein": 6.8,
+              "fiber": 4.8,
+              "note": "1:½:½ ratio — 100g rice + 50g lentils + 50g quinoa cooked",
+              "serving": 0.75,
+              "_baseKcal": 233,
+              "_baseProtein": 9,
+              "_baseFiber": 6.4,
+              "_uid": 1777808993712.9822
+            }
+          ]
         },
         "2026-05-07": {
-          "breakfast": [],
+          "breakfast": [
+            {
+              "id": "chia-kiwi",
+              "name": "Chia Pudding + Kiwi (80g)",
+              "cat": "breakfast",
+              "kcal": 334,
+              "protein": 23,
+              "fiber": 12,
+              "serving": 1,
+              "_baseKcal": 334,
+              "_baseProtein": 23,
+              "_baseFiber": 12,
+              "_uid": 1777809082004.4036
+            },
+            {
+              "id": "collagen-coffee",
+              "name": "Collagen Peptide + Black Coffee",
+              "cat": "breakfast",
+              "kcal": 36,
+              "protein": 9,
+              "fiber": 0,
+              "note": "Sports Research 1 scoop",
+              "serving": 1,
+              "_baseKcal": 36,
+              "_baseProtein": 9,
+              "_baseFiber": 0,
+              "_uid": 1777809086203.4746
+            }
+          ],
           "lunch": [],
           "dinner": [],
-          "snacks": []
+          "snacks": [
+            {
+              "id": "beef-enoki",
+              "name": "Beef Enoki Mushroom Wraps",
+              "cat": "dinner",
+              "kcal": 530,
+              "protein": 51,
+              "fiber": 3,
+              "serving": 1,
+              "_baseKcal": 530,
+              "_baseProtein": 51,
+              "_baseFiber": 3,
+              "_uid": 1777809095336.1707
+            },
+            {
+              "id": "rice-lentils-quinoa-200",
+              "name": "Rice + Lentils + Quinoa (200g)",
+              "cat": "sides",
+              "kcal": 174.8,
+              "protein": 6.8,
+              "fiber": 4.8,
+              "note": "1:½:½ ratio — 100g rice + 50g lentils + 50g quinoa cooked",
+              "serving": 0.75,
+              "_baseKcal": 233,
+              "_baseProtein": 9,
+              "_baseFiber": 6.4,
+              "_uid": 1777809105203.2659
+            }
+          ]
         },
         "2026-05-08": {
           "breakfast": [],
