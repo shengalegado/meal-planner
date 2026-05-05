@@ -11,6 +11,13 @@
 
 ## breakfast
 
+### Onion and Chives Scone - The Harp
+id: onion-chives-scone-the-harp | kcal: 350 | protein: 8 | fiber: 2
+
+| Ingredient | Qty | Unit | Category |
+|---|---|---|---|
+| Onion and chives scone (The Harp) | 1 | piece | pantry |
+
 ### Regular chia pudding base
 id: chia-base | kcal: 268 | protein: 22 | fiber: 10
 
@@ -173,6 +180,13 @@ id: cottage-cheese-wrap | kcal: 306 | protein: 41 | fiber: 0
 ---
 
 ## lunch
+
+### Spinach and Feta Wrap - Starbucks
+id: spinach-feta-wrap-starbucks | kcal: 290 | protein: 20 | fiber: 4
+
+| Ingredient | Qty | Unit | Category |
+|---|---|---|---|
+| Spinach and feta wrap (Starbucks) | 1 | piece | pantry |
 
 ### Cottage Cheese Chicken Wrap with Filling
 id: cottage-cheese-chicken-wrap | kcal: 372 | protein: 40 | fiber: 3 | note: 1 of 3 servings — chicken thighs no skin, no olive oil. Wrap = CC + egg; fill with chicken, pesto, hummus, arugula, tomatoes.
@@ -533,6 +547,13 @@ id: chicken-noodle | kcal: 460 | protein: 52 | fiber: 8
 ---
 
 ## sides
+
+### Hummus (100g)
+id: hummus-100g | kcal: 175 | protein: 6 | fiber: 6
+
+| Ingredient | Qty | Unit | Category |
+|---|---|---|---|
+| Hummus | 100 | g | pantry |
 
 ### Pumpkin Seeds (1 tbsp / 8g)
 id: pumpkin-seeds-1tbsp | kcal: 45 | protein: 2 | fiber: 1
