@@ -172,9 +172,22 @@ id: cottage-cheese-wrap | kcal: 306 | protein: 41 | fiber: 0
 
 ---
 
-### Onion and Chives Scone - The Harp
-id: custom-1777807565888 | kcal: 350 | protein: 8 | fiber: 2 | note: Custom meal
 ## lunch
+
+### Cottage Cheese Chicken Wrap with Filling
+id: cottage-cheese-chicken-wrap | kcal: 372 | protein: 40 | fiber: 3 | note: 1 of 3 servings — chicken thighs no skin, no olive oil. Wrap = CC + egg; fill with chicken, pesto, hummus, arugula, tomatoes.
+
+| Ingredient | Qty | Unit | Category |
+|---|---|---|---|
+| Low-fat cottage cheese | 113 | g | dairy |
+| Eggs | 1 | whole | protein |
+| Chives | 4 | g | produce |
+| Flat-leaf parsley | 5 | g | produce |
+| Chicken thigh, boneless skinless | 100 | g | protein |
+| Pesto | 5 | g | pantry |
+| Hummus | 20 | g | pantry |
+| Baby arugula | 35 | g | produce |
+| Roasted tomatoes | 50 | g | produce |
 
 ### Turkey Sandwich
 id: turkey-sandwich | kcal: 330 | protein: 25 | fiber: 4 | note: 2 protein bread, 3 turkey, 1 Kraft cheese, veg
@@ -264,12 +277,18 @@ id: turkey-marinara-sauce | kcal: 353 | protein: 56 | fiber: 5
 
 ---
 
-### Spinach and Feta Wrap - Starbucks
-id: custom-1777807646205 | kcal: 290 | protein: 20 | fiber: 4 | note: Custom meal
-
-### Hummus
-id: custom-1777845411676 | kcal: 175 | protein: 6 | fiber: 6 | note: Custom meal
 ## dinner
+
+### Ginisang Ampalaya w/ Eggs
+id: ginisang-ampalaya-eggs | kcal: 178 | protein: 16 | fiber: 6 | note: 1 of 2 servings. Bitter gourd sautéed with eggs and egg whites.
+
+| Ingredient | Qty | Unit | Category |
+|---|---|---|---|
+| Bitter gourd (ampalaya) | 225 | g | produce |
+| Whole eggs | 1.5 | whole | protein |
+| Egg whites | 50 | g | protein |
+| Onion | 25 | g | produce |
+| Garlic | 4 | g | produce |
 
 ### Shredded Rotisserie Chicken (100g)
 id: rotisserie-chicken-100g | kcal: 165 | protein: 29 | fiber: 0
