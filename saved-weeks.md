@@ -7,13 +7,14 @@ dateKey: 2026-05-04
 breakfast: chia-mango-coconut(1), collagen-coffee(1)
 lunch: turkey-marinara-sauce(0.5), rice-lentils-200(0.5), kabocha-100(1.5)
 dinner: chicken-curry(1), rice-lentils-200(0.75)
+snacks: hummus-100g(0.5)
 ### 2026-05-05
-breakfast: chia-mango-coconut(1), mango-100(0.5), collagen-coffee(1)
-lunch: rice-lentils-200(0.5), ginisang-ampalaya-eggs(1), kabocha-100(1.5)
+breakfast: chia-mango-coconut(1), collagen-coffee(1)
+lunch: rice-lentils-200(0.5), ginisang-ampalaya-eggs(1)
 dinner: chicken-curry(1), rice-lentils-200(0.75)
 ### 2026-05-06
-breakfast: chia-mango-coconut(1), vector-granola-vanilla-1tbsp(1), pumpkin-seeds-1tbsp(1), collagen-coffee(1)
-lunch: turkey-marinara-sauce(0.5), rice-lentils-200(0.5), kabocha-100(0.75)
+breakfast: chia-mango-coconut(1), collagen-coffee(1)
+lunch: turkey-marinara-sauce(0.5), rice-lentils-200(0.5), kabocha-100(1.5)
 dinner: chicken-curry(1), rice-lentils-200(0.75)
 ### 2026-05-07
 breakfast: chia-kiwi(1), collagen-coffee(1)
@@ -270,7 +271,21 @@ dinner: lentils-100(0.75), rice-100(0.75), ginisang-munggo(1)
               "_uid": 1777904951613.9912
             }
           ],
-          "snacks": []
+          "snacks": [
+            {
+              "id": "hummus-100g",
+              "name": "Hummus (100g)",
+              "cat": "sides",
+              "kcal": 87.5,
+              "protein": 3,
+              "fiber": 3,
+              "serving": 0.5,
+              "_baseKcal": 175,
+              "_baseProtein": 6,
+              "_baseFiber": 6,
+              "_uid": 1777991660737.876
+            }
+          ]
         },
         "2026-05-05": {
           "breakfast": [
@@ -287,19 +302,6 @@ dinner: lentils-100(0.75), rice-100(0.75), ginisang-munggo(1)
               "_baseProtein": 20,
               "_baseFiber": 13,
               "_uid": 1777807836419.2214
-            },
-            {
-              "id": "mango-100",
-              "name": "Mango (100g)",
-              "cat": "sides",
-              "kcal": 30,
-              "protein": 0.4,
-              "fiber": 0.8,
-              "serving": 0.5,
-              "_baseKcal": 60,
-              "_baseProtein": 0.8,
-              "_baseFiber": 1.6,
-              "_uid": 1777991631336.7363
             },
             {
               "id": "collagen-coffee",
@@ -344,19 +346,6 @@ dinner: lentils-100(0.75), rice-100(0.75), ginisang-munggo(1)
               "_baseProtein": 16,
               "_baseFiber": 6,
               "_uid": 1777991533486.8396
-            },
-            {
-              "id": "kabocha-100",
-              "name": "Kabocha Squash, Roasted (100g)",
-              "cat": "sides",
-              "kcal": 60,
-              "protein": 1.5,
-              "fiber": 3.8,
-              "serving": 1.5,
-              "_baseKcal": 40,
-              "_baseProtein": 1,
-              "_baseFiber": 2.5,
-              "_uid": 1777991606286.9253
             }
           ],
           "dinner": [
@@ -408,32 +397,6 @@ dinner: lentils-100(0.75), rice-100(0.75), ginisang-munggo(1)
               "_uid": 1777807840252.274
             },
             {
-              "id": "vector-granola-vanilla-1tbsp",
-              "name": "Vector High-Protein Granola Vanilla (1 tbsp / 8g)",
-              "cat": "sides",
-              "kcal": 34,
-              "protein": 2,
-              "fiber": 0,
-              "serving": 1,
-              "_baseKcal": 34,
-              "_baseProtein": 2,
-              "_baseFiber": 0,
-              "_uid": 1777807862169.1902
-            },
-            {
-              "id": "pumpkin-seeds-1tbsp",
-              "name": "Pumpkin Seeds (1 tbsp / 8g)",
-              "cat": "sides",
-              "kcal": 45,
-              "protein": 2,
-              "fiber": 1,
-              "serving": 1,
-              "_baseKcal": 45,
-              "_baseProtein": 2,
-              "_baseFiber": 1,
-              "_uid": 1777807869252.224
-            },
-            {
               "id": "collagen-coffee",
               "name": "Collagen Peptide + Black Coffee",
               "cat": "breakfast",
@@ -480,10 +443,10 @@ dinner: lentils-100(0.75), rice-100(0.75), ginisang-munggo(1)
               "id": "kabocha-100",
               "name": "Kabocha Squash, Roasted (100g)",
               "cat": "sides",
-              "kcal": 30,
-              "protein": 0.8,
-              "fiber": 1.9,
-              "serving": 0.75,
+              "kcal": 60,
+              "protein": 1.5,
+              "fiber": 3.8,
+              "serving": 1.5,
               "_baseKcal": 40,
               "_baseProtein": 1,
               "_baseFiber": 2.5,
