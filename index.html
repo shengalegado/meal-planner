@@ -838,6 +838,10 @@ select.form-input option      { background:#1A1E1B; }
 .recipe-ing-name              { flex:1; }
 .recipe-ing-qty               { color:#7A8C76; white-space:nowrap; flex-shrink:0; }
 .recipe-no-ings               { font-size:11px; color:#374040; font-style:italic; }
+.recipe-steps-hdr             { font-size:9px; font-weight:700; color:#4E5C4A; text-transform:uppercase; letter-spacing:0.08em; margin-top:10px; margin-bottom:6px; }
+.recipe-steps-list            { padding-left:16px; margin:0; }
+.recipe-steps-list li         { font-size:11px; color:#9CAD98; padding:3px 0; border-bottom:1px solid #222825; line-height:1.4; }
+.recipe-steps-list li:last-child { border-bottom:none; }
 .recipes-empty                { text-align:center; padding:60px 20px; color:#4E5C4A; font-size:14px; }
 </style>
 </head>
@@ -1361,7 +1365,9 @@ const MEAL_INGREDIENTS = {
   ],
 };
 // Live ingredient map — populated by parseMealLibrary(); overrides the stub above.
-let MEAL_INGR = {};
+let MEAL_INGR  = {};
+// Live steps map — populated by parseMealLibrary(); keyed by meal id, value is array of step strings.
+let MEAL_STEPS = {};
 
 // ══════════════════════════════════════════════
 // STATE
@@ -1614,7 +1620,8 @@ async function getStoredLibraryHandle() {
 function parseMealLibrary(content) {
   libraryMdContent = content; // store raw text for GitHub writes
   const meals = [];
-  const ingr = {};
+  const ingr  = {};
+  const stps  = {};
   const VALID_CATS = ['breakfast','lunch','dinner','sides','snacks'];
 
   // Split on ## category headings
@@ -1651,12 +1658,14 @@ function parseMealLibrary(content) {
 
       meals.push({ id, name, cat, kcal, protein, fiber, ...(note ? { note } : {}) });
 
-      // Parse ingredient table
-      const ings = [];
+      // Parse ingredient table and steps
+      const ings  = [];
+      const steps = [];
       let inTable = false;
+      let inSteps = false;
       for (const line of lines) {
         const trimmed = line.trim();
-        if (/^\|\s*ingredient/i.test(trimmed)) { inTable = true; continue; }
+        if (/^\|\s*ingredient/i.test(trimmed)) { inTable = true; inSteps = false; continue; }
         if (inTable && /^\|\s*[-:]+/.test(trimmed)) continue; // separator row
         if (inTable && trimmed.startsWith('|')) {
           const cells = trimmed.split('|').map(c => c.trim()).filter(Boolean);
@@ -1669,13 +1678,21 @@ function parseMealLibrary(content) {
         } else if (inTable && trimmed && !trimmed.startsWith('|')) {
           inTable = false;
         }
+        if (/^\*\*steps\*\*/i.test(trimmed) || /^steps:/i.test(trimmed)) { inSteps = true; continue; }
+        if (inSteps && /^\d+\.\s+/.test(trimmed)) {
+          steps.push(trimmed.replace(/^\d+\.\s+/, ''));
+        } else if (inSteps && trimmed && !/^\d+\./.test(trimmed)) {
+          inSteps = false;
+        }
       }
-      if (ings.length > 0) ingr[id] = ings;
+      if (ings.length  > 0) ingr[id]  = ings;
+      if (steps.length > 0) stps[id]  = steps;
     }
   }
 
   libraryMeals = meals;
   MEAL_INGR    = ingr;
+  MEAL_STEPS   = stps;
 }
 
 // Fetches meal-library.md from the same server (works on GitHub Pages).
@@ -2391,7 +2408,8 @@ function renderRecipesPage() {
   }).join('');
 
   const cards = filtered.map(m => {
-    const ings   = MEAL_INGR[m.id] || [];
+    const ings   = MEAL_INGR[m.id]  || [];
+    const steps  = MEAL_STEPS[m.id] || [];
     const catCls = `ml-cat-${m.cat}`;
     const catLbl = CAT_LABELS[m.cat] || m.cat;
 
@@ -2400,6 +2418,10 @@ function renderRecipesPage() {
           `<li><span class="recipe-ing-name">${i.n}</span><span class="recipe-ing-qty">${i.q} ${i.u}</span></li>`
         ).join('')}</ul>`
       : `<div class="recipe-no-ings">No ingredient breakdown available.</div>`;
+
+    const stepsHtml = steps.length
+      ? `<div class="recipe-steps-hdr">Steps</div><ol class="recipe-steps-list">${steps.map(s => `<li>${s}</li>`).join('')}</ol>`
+      : '';
 
     const noteHtml = m.note
       ? `<div class="recipe-card-note" title="${m.note}">📝 ${m.note}</div>`
@@ -2421,6 +2443,7 @@ function renderRecipesPage() {
       <div class="recipe-card-body">
         <div class="recipe-ings-hdr">Ingredients (1 serving)</div>
         ${ingRows}
+        ${stepsHtml}
       </div>
     </div>`;
   }).join('') || `<div class="recipes-empty">No recipes match your search.</div>`;
@@ -2438,9 +2461,15 @@ function renderRecipesPage() {
 }
 
 function renderRecipesView() {
-  // Re-render only the .main content (keeps header/footer intact)
   const mainEl = document.querySelector('.main');
-  if (mainEl) mainEl.innerHTML = renderRecipesPage();
+  if (!mainEl) return;
+  const hadFocus = document.activeElement && document.activeElement.classList.contains('recipes-search');
+  const prevPos  = hadFocus ? document.activeElement.selectionStart : null;
+  mainEl.innerHTML = renderRecipesPage();
+  if (hadFocus) {
+    const inp = mainEl.querySelector('.recipes-search');
+    if (inp) { inp.focus(); if (prevPos !== null) inp.setSelectionRange(prevPos, prevPos); }
+  }
 }
 
 function openRecipes() {
@@ -3071,6 +3100,7 @@ loadGhConfig();
 if (window.BAKED_LIBRARY) {
   libraryMeals = window.BAKED_LIBRARY.meals;
   MEAL_INGR    = window.BAKED_LIBRARY.ingr;
+  MEAL_STEPS   = window.BAKED_LIBRARY.steps || {};
 }
 render();
 loadRemoteLibrary();      // GitHub Pages: fetches meal-library.md automatically
