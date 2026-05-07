@@ -832,3 +832,5 @@ id: sleepytime-tea | kcal: 15 | protein: 0 | fiber: 0
 |---|---|---|---|
 | Sleepytime tea bag | 1 | each | pantry |
 | Honey | 3 | ml | pantry |
+### Turkey Bacon Sandwich (1/2) - The Harp
+id: custom-1778173180334 | kcal: 300 | protein: 15 | fiber: 3 | note: Custom meal
