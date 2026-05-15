@@ -700,6 +700,8 @@ id: cucumber-100g | kcal: 15 | protein: 1 | fiber: 1
 
 ---
 
+### Lean Ground Beef and Pork (100g)
+id: custom-1778871331171 | kcal: 230 | protein: 19 | fiber: 0 | note: Custom meal
 ## snacks
 
 ### Mary's Gone Crackers Original (30g / 12 crackers)
